@@ -1,6 +1,6 @@
 # Elastic search domain name
 variable "domain" {
-  default = "gs-aula-test-es"
+  default = "gs-test-es"
 }
 
 variable "access_key" {
