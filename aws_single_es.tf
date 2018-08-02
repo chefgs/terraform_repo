@@ -3,22 +3,27 @@ variable "domain" {
   default = "gs-test-es"
 }
 
+# AWS access key
 variable "access_key" {
 default = "A*******************Q"
 }
 
+# AWS secret key
 variable "secret" {
 default = "y*******************O"
 }
 
+# AWS account id
 variable "aws_account_id" {
 default = "123456789"
 }
 
+# Region of the ES
 variable "region" {
 default = "us-west-2"
 }
 
+# AWS account config
 provider "aws" {
   access_key = "${var.access_key}"
   secret_key = "${var.secret}"
@@ -29,7 +34,7 @@ provider "aws" {
 
 # data "aws_caller_identity" "current" {}
 
-# Terraform AWS ES command
+# Terraform AWS ES Resource definition section
 resource "aws_elasticsearch_domain" "es" {
   domain_name           = "${var.domain}"
   elasticsearch_version = "6.2"
