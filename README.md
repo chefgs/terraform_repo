@@ -19,3 +19,4 @@
  Run the below commands from the path where .tf is located to spin up Elastic search single node cluster,<br>
  3. terraform init<br>
  4. terraform apply<br>
+ 5. type "yes" when prompted
