@@ -1,4 +1,4 @@
-# Terraform file to spin-up Single node Elastic search in AWS.
+# Terraform config file to spin-up "Single node ElasticSearch" in AWS.
 <h2>
   Instructions to use
   </h2>
