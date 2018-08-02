@@ -1,7 +1,7 @@
-# terraform_repo
-<h1>
-  Instructions
-  </h1>
+# Terraform file to spin-up Single node Elastic search in AWS.
+<h2>
+  Instructions to use
+  </h2>
  
  <h2>
   Install and Configure Terraform
