@@ -47,7 +47,7 @@
 ElasticSearch Index Query Output
 </h3> 
 The sample query output of the ES indexing search will return output as below,<br>
-```json
+<blockquote>
 $ curl -XGET 'https://search-gs-test-es-w5244m45osr2culitoamyi3k2i.us-west-2.es.amazonaws.com/node-test7/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "Smith" }}}'
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
@@ -78,7 +78,7 @@ $ curl -XGET 'https://search-gs-test-es-w5244m45osr2culitoamyi3k2i.us-west-2.es.
     ]
   }
 }
-```
+</blockquote>
 
 <h2>
 Alerts and Monitoring
@@ -89,16 +89,15 @@ Also the query status can be monitored via AWS console.
 <h2>
 Resolving issues while executing node.js
 </h2> 
-Error 1: Error: Hostname/IP doesn't match certificate's altnames: "Host: https. is
- not in the cert's altnames: DNS:*.us-west-2.es.amazonaws.com"
-<br>
+Error 1:<br>
+Error: Hostname/IP doesn't match certificate's altnames: "Host: https. is
+ not in the cert's altnames: DNS:*.us-west-2.es.amazonaws.com"<br>
 Root cause<br>
 It is due to the wrong representation of ES domain in js variable<br>
 Applied fix<br>
 Domain value Should NOT be having any slash '/' (for ex: e.g. search-domain.region.es.amazonaws.com)<br><br>
 
 Error 2: AWS creds crypto error<br>
-<br>
 Root Cause: AWS access, secret and session key not set properly<br>
 Applied fix<br>
 Run the below mentioned AWS STS CLI command to generate temporary AWS access, secret and session key.<br>
@@ -107,3 +106,9 @@ export AWS_ACCESS_KEY_ID="your-access-key"<br>
 export AWS_SECRET_ACCESS_KEY="your-secret-key"<br>
 export AWS_SESSION_TOKEN=""your-session-token"<br><br>
 
+<h2>
+  Installation of required AWS packages
+  </h2>
+  <a href="https://docs.aws.amazon.com/cli/latest/userguide/installing.html">AWS CLI </a><br>
+  <a href="https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/installing-jssdk.html">AWS JS SDK<a><br>
+  
