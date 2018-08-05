@@ -6,11 +6,11 @@
 <h3>
   Installation of required AWS packages
   </h3>
-  <a href="https://docs.aws.amazon.com/cli/latest/userguide/installing.html">AWS CLI </a><br>
+  <a href="https://docs.aws.amazon.com/cli/latest/userguide/installing.html">AWS CLI</a>and<a href="https://docs.aws.amazon.com/cli/latest/reference/configure/">Configure CLI</a><br>
   <a href="https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/installing-jssdk.html">AWS JS SDK<a><br>
 
-Terraform config needs, AWS secret, access and account ID to work. <br>
-Node.js needs temporary keys for AWS secret, access and token. <br>
+- Terraform config needs, AWS secret, access and account ID to work. <br>
+- Node.js needs temporary keys for AWS secret, access and token. <br>
 
 Run the below mentioned AWS STS CLI command to generate temporary AWS access, secret and session key.<br>
 `aws sts get-session-token`<br>
