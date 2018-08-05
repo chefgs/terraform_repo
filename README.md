@@ -1,4 +1,4 @@
-# "Single node ElasticSearch" with Node.JS Index deloyed in AWS.
+# "Single node ElasticSearch" with "Node.JS Index" deployed in AWS.
 <h2>
   Instructions to use
   </h2>
