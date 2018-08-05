@@ -1,4 +1,4 @@
-# "Single node ElasticSearch" with "Node.JS Index" deployed in AWS.
+# "Single node ElasticSearch" with Node.JS Index deloyed in AWS.
 <h2>
   Instructions to use
   </h2>
@@ -6,9 +6,9 @@
 <h2>
 Source File Details
 </h2>
-Terraform config file: aws_single_es.tf<br>
-Node.js source for adding index to ES: es_index.tf<br>
-Json inputs to be added as index: feed.json<br>
+aws_single_es.tf - Terraform config file<br>
+es_index.js - Node.js source for adding index to ES<br>
+feed.json - Json inputs to be added as index<br>
  <h2>
  
   Install and Configure Terraform
@@ -93,11 +93,11 @@ $ curl -XGET 'https://search-gs-test-es-w5244m45osr2culitoamyi3k2i.us-west-2.es.
 <h2>
 Alerts and Monitoring
 </h2>
-AWS has the facility to monitor the ElasticSearch service through alerts.<br>
-Also the query status can be monitored via AWS console.
+- AWS has the facility to monitor the ElasticSearch service through Cloudwatch alerts.<br>
+- Also the query status can be monitored ElasticSearch page via AWS console.
 
-<a href="https://aws.amazon.com/blogs/database/get-started-with-amazon-elasticsearch-service-set-cloudwatch-alarms-on-key-metrics/">AWS Cloudwatch basics and Setup alarm</a> for ElasticSearch<br>
-List of <a href="https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/cloudwatch-alarms.html">AWS Cloudwatch</a> Alert types for ES<br>
+- <a href="https://aws.amazon.com/blogs/database/get-started-with-amazon-elasticsearch-service-set-cloudwatch-alarms-on-key-metrics/">AWS Cloudwatch basics and Setup alarm</a> for ElasticSearch<br>
+- List of <a href="https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/cloudwatch-alarms.html">AWS Cloudwatch</a> Alert types for ES<br>
 
  
 <h2>
