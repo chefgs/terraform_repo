@@ -1,0 +1,11 @@
+{
+    "user": "John",
+    "post_date": "2009-11-15T13:12:00", 
+    "message": "John Trying out Elasticsearch, so far so good",
+	"user": "Smith",
+    "post_date": "2009-11-15T14:12:12",
+    "message": "Another tweet like sample for Smith",
+	"user": "Dash",
+    "post_date": "2009-11-15T14:12:12",
+    "message": "Dash message for ES test"	
+}

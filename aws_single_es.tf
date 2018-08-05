@@ -1,21 +1,21 @@
 # Elastic search domain name
 variable "domain" {
-  default = "gs-test-es"
+  default = "gs-demo-es"
 }
 
 # AWS access key
 variable "access_key" {
-default = "A*******************Q"
+default = "A************Q"
 }
 
 # AWS secret key
 variable "secret" {
-default = "y*******************O"
+default = "u************s"
 }
 
 # AWS account id
 variable "aws_account_id" {
-default = "123456789"
+default = "123456789876"
 }
 
 # Region of the ES
@@ -59,7 +59,7 @@ resource "aws_elasticsearch_domain" "es" {
       "Effect": "Allow",
       "Principal": {
         "AWS": [
-          "${var.aws_account_id}"
+          "*"
         ]
       },
       "Action": [

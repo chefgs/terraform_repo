@@ -1,0 +1,6 @@
+.terraform
+node_modules
+package-lock.json
+terraform.tfstate
+*lock*
+*tfstate*

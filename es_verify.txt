@@ -1,0 +1,39 @@
+Index query invocation:
+$ curl -XGET 'https://search-gs-test-es-w5244m45osr2culitoamyi3k2i.us-west-2.es.amazonaws.com/node-test/_search?pretty=true' -H 'Content-Type: application/json' -d '
+> {
+>     "query" : {
+>         "match" : { "year": "2011" }
+>     }
+> }'
+
+Index query output:
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   548  100   485  100    63    485     63  0:00:01  0:00:01 --:--:--   334{
+  "took" : 175,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 1,
+    "max_score" : 0.2876821,
+    "hits" : [
+      {
+        "_index" : "node-test",
+        "_type" : "node-type",
+        "_id" : "1",
+        "_score" : 0.2876821,
+        "_source" : {
+          "title" : "Moneyball",
+          "director" : "Bennett Miller",
+          "year" : "2011"
+        }
+      }
+    ]
+  }
+}
+
