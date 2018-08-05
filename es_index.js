@@ -4,7 +4,7 @@ var region = 'us-west-2'; // e.g. us-west-1
 var domain = 'search-domainName-w5***********i.us-west-2.es.amazonaws.com'; // Modify the ES domain URL - e.g. search-domain.region.es.amazonaws.com
 var index = 'es-node-test';
 var type = 'node-type';
-var id = '1';
+var id = '1'; // Change the ID value and add more index data
 /*
 var json = {
   "title": "Moneyball",
