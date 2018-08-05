@@ -2,8 +2,15 @@
 <h2>
   Instructions to use
   </h2>
- 
+
+<h2>
+Source File Details
+</h2>
+Terraform config file: aws_single_es.tf<br>
+Node.js source for adding index to ES: es_index.tf<br>
+Json inputs to be added as index: feed.json<br>
  <h2>
+ 
   Install and Configure Terraform
   </h2>
   Refer here <a href="https://www.terraform.io/downloads.html">for installing terraform</a><br>
