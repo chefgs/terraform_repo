@@ -94,7 +94,7 @@ $ curl -XGET 'https://search-gs-test-es-w5244m45osr2culitoamyi3k2i.us-west-2.es.
 Alerts and Monitoring
 </h2>
 - AWS has the facility to monitor the ElasticSearch service through Cloudwatch alerts.<br>
-- Also the query status can be monitored ElasticSearch page via AWS console.
+- Also the query status can be monitored ElasticSearch page via AWS console.<br>
 - <a href="https://aws.amazon.com/blogs/database/get-started-with-amazon-elasticsearch-service-set-cloudwatch-alarms-on-key-metrics/">AWS Cloudwatch basics and Setup alarm</a> for ElasticSearch<br>
 - List of <a href="https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/cloudwatch-alarms.html">AWS Cloudwatch</a> Alert types for ES<br>
 
