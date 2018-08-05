@@ -1,7 +1,29 @@
 # "Single node ElasticSearch" with Node.JS Index deloyed in AWS.
-<h2>
-  Instructions to use
+
+ <h2>
+   Important note & Pre-requisite
   </h2>
+<h3>
+  Installation of required AWS packages
+  </h3>
+  <a href="https://docs.aws.amazon.com/cli/latest/userguide/installing.html">AWS CLI </a><br>
+  <a href="https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/installing-jssdk.html">AWS JS SDK<a><br>
+
+Terraform config needs, AWS secret, access and account ID to work. <br>
+Node.js needs temporary keys for AWS secret, access and token. <br>
+
+Run the below mentioned AWS STS CLI command to generate temporary AWS access, secret and session key.<br>
+`aws sts get-session-token`<br>
+Add the generated temporary key values into Windows Envrionment variable<br>
+export AWS_ACCESS_KEY_ID="your-access-key"<br>
+export AWS_SECRET_ACCESS_KEY="your-secret-key"<br>
+export AWS_SESSION_TOKEN=""your-session-token"<br>
+ 
+ <h2>
+  Install and Configure Terraform
+  </h2>
+  Refer here <a href="https://www.terraform.io/downloads.html">for installing terraform</a><br>
+  Add terraform executable path to ENV variables
 
 <h2>
 Source File Details
@@ -9,13 +31,6 @@ Source File Details
 aws_single_es.tf - Terraform config file<br>
 es_index.js - Node.js source for adding index to ES<br>
 feed.json - Json inputs to be added as index<br>
- <h2>
- 
-  Install and Configure Terraform
-  </h2>
-  Refer here <a href="https://www.terraform.io/downloads.html">for installing terraform</a><br>
-  Add terraform executable path to ENV variables
-  
  
  <h2>
   Steps to spin up the ES in AWS 
@@ -118,12 +133,6 @@ Add those temporary key values into Windows Envrionment variable<br>
 export AWS_ACCESS_KEY_ID="your-access-key"<br>
 export AWS_SECRET_ACCESS_KEY="your-secret-key"<br>
 export AWS_SESSION_TOKEN=""your-session-token"<br><br>
-
-<h2>
-  Installation of required AWS packages
-  </h2>
-  <a href="https://docs.aws.amazon.com/cli/latest/userguide/installing.html">AWS CLI </a><br>
-  <a href="https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/installing-jssdk.html">AWS JS SDK<a><br>
   
 <h2>
   Other references
