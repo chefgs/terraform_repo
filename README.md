@@ -37,10 +37,10 @@
  Verifying the ElasticSearch and Added Index using ES Query
  </h2>
  1. ElasticSearch index can be tested using the ES domain endpoint and ES search query.<br>
- 2. Use the below curl command to test the ES index<br>
+ 2. Use the below curl command to test the ES index fed via feed.json<br>
  The sample uses twitter like json response to process using the ES domain we have created above.<br>
  <font face='courier new'>
-  curl -XGET 'https://search-gs-test-es-w5244m45osr2culitoamyi3k2i.us-west-2.es.amazonaws.com/node-test7/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "Smith" }}}'<br>
+  curl -XGET 'https://search-gs-test-es-w5244m45osr2culitoamyi3k2i.us-west-2.es.amazonaws.com/node-test7/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "Smith" }}}'<br><br>
   curl -XGET 'https://search-gs-test-es-w5244m45osr2culitoamyi3k2i.us-west-2.es.amazonaws.com/node-test7/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "John" }}}'<br>
 </font>
 <h3>
@@ -48,7 +48,7 @@ ElasticSearch Index Query Output
 </h3> 
 The sample query output of the ES indexing search will return output as below,<br>
 <blockquote>
-$ curl -XGET 'https://search-gs-test-es-w5244m45osr2culitoamyi3k2i.us-west-2.es.amazonaws.com/node-test7/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "Smith" }}}'
+$ curl -XGET 'https://search-gs-test-es-w5244m45osr2culitoamyi3k2i.us-west-2.es.amazonaws.com/node-test7/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "Smith" }}}'<br><br>
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100   562  100   519  100    43    519     43  0:00:01  0:00:01 --:--:--   473{
@@ -112,3 +112,9 @@ export AWS_SESSION_TOKEN=""your-session-token"<br><br>
   <a href="https://docs.aws.amazon.com/cli/latest/userguide/installing.html">AWS CLI </a><br>
   <a href="https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/installing-jssdk.html">AWS JS SDK<a><br>
   
+<h2>
+  Other references
+  </h2>
+  <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/full-text-queries.html"> ES Query reference </a><br>
+  <a href="https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-indexing-programmatic.html#es-indexing-programmatic-node">Node.js index sample</a><br>
+  <a href="https://github.com/elastic/elasticsearch"> Github ElasticSerch repo</a><br>
