@@ -26,10 +26,13 @@
  <h2>
  Setup ElasticSearch Index using node.js
  </h2>
- 1. Execute the node.js code using below command<br>
+ 1. Pick-up the ElasticSearch domain name URL from AWS console or AWS CLI command<br>
+ 2. Execute the node.js code using below command<br>
  <i>node es_index.js</i><br>
  node.js code will be using the "feed.json" file to feed the index data to ElasticSearch.<br>
- 2. If execution is successful the console will show, <i>"201 created"</i><br>
+ 3. If execution is successful the console will show, <i>"201 created"</i><br>
+ 4. Edit the feed.json file with another data and modify the "var id" value es_index.js file.<br>
+ 5. Then repeat step 2, to feed another json index search data.
  
  Optionally, we can verify the ElasticSearch domain and added index from AWS console.<br>
  
