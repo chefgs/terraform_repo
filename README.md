@@ -17,17 +17,17 @@
  2. cd terraform_repo<br>
  3. Open the .tf file and edit/save the variable section to add the AWS access key, secret key and account id.<br>
  4. Run the below commands from the path where .tf is located to spin up Elastic search single node cluster,<br>
- ```terraform init```<br>
- ```terraform apply```<br>
- ```type "yes" when prompted```<br>
+ `terraform init`<br>
+ terraform apply<br>
+ type "yes" when prompted<br>
  
- 5. Proceed to create ES index, after the ElasticSearch creation is completed.
+ 5. Proceed to create ES index, after the ElasticSearch creation is completed.<br>
 
  <h2>
  Setup ElasticSearch Index using node.js
  </h2>
  1. Execute the node.js code using below command<br>
- ```node es_index.js ```<br>
+ ```"node es_index.js"```<br>
  node.js code will be using the ```feed.json``` file to feed the index data to ElasticSearch.<br>
  
  2. If execution is successful the console will show, ```"201 created"```<br><br>
