@@ -65,15 +65,15 @@ feed.json - Json inputs to be added as index<br>
  2. Use the below curl command to test the ES index fed via feed.json<br>
  The sample uses twitter like json response to process using the ES domain we have created above.<br>
  <font face='courier new'>
-  curl -XGET 'https://search-gs-test-es-w5244m45osr2culitoamyi3k2i.us-west-2.es.amazonaws.com/node-test7/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "Smith" }}}'<br><br>
-  curl -XGET 'https://search-gs-test-es-w5244m45osr2culitoamyi3k2i.us-west-2.es.amazonaws.com/node-test7/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "John" }}}'<br>
+  curl -XGET 'https://search-gs-demo-es-vjgctwz2jolpvhsmd2iicuj5mu.us-west-2.es.amazonaws.com/es-node-test/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "Dash" }}}'<br><br>
+  curl -XGET 'https://search-gs-demo-es-vjgctwz2jolpvhsmd2iicuj5mu.us-west-2.es.amazonaws.com/es-node-test/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "John" }}}'<br>
 </font>
 <h3>
 ElasticSearch Index Query Output
 </h3> 
 The sample query output of the ES indexing search will return output as below,<br>
 <blockquote>
-$ curl -XGET 'https://search-gs-test-es-w5244m45osr2culitoamyi3k2i.us-west-2.es.amazonaws.com/node-test7/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "Smith" }}}'<br><br>
+$ curl -XGET 'https://search-gs-demo-es-vjgctwz2jolpvhsmd2iicuj5mu.us-west-2.es.amazonaws.com/es-node-test/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "Smith" }}}'<br><br>
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100   562  100   519  100    43    519     43  0:00:01  0:00:01 --:--:--   473{
