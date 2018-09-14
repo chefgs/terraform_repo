@@ -1,15 +1,12 @@
-# "Single node ElasticSearch" with Node.JS Index deployed in AWS.
+# Single node ElasticSearch with Node.JS Index deployed in AWS
+## Important note & Pre-requisite
+### Installation of required AWS packages
+- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/installing.html)
+- [Configure CLI](https://docs.aws.amazon.com/cli/latest/reference/configure/)
+- [AWS JS SDK](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/installing-jssdk.html)
 
- <h2>
-   Important note & Pre-requisite
-  </h2>
-<h3>
-  Installation of required AWS packages
-  </h3>
-  <a href="https://docs.aws.amazon.com/cli/latest/userguide/installing.html">AWS CLI</a> and <a href="https://docs.aws.amazon.com/cli/latest/reference/configure/">Configure CLI</a><br>
-  <a href="https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/installing-jssdk.html">AWS JS SDK<a><br>
-
-- Terraform config needs, AWS secret, access and account ID to work. <br>
+### AWS account config
+- Terraform needs, AWS secret, access and account ID to work. <br>
 - Node.js needs temporary keys for AWS secret, access and token. <br>
 
 Run the below mentioned AWS STS CLI command to generate temporary AWS access, secret and session key.<br>
@@ -19,22 +16,16 @@ export AWS_ACCESS_KEY_ID="your-access-key"<br>
 export AWS_SECRET_ACCESS_KEY="your-secret-key"<br>
 export AWS_SESSION_TOKEN=""your-session-token"<br>
  
- <h2>
-  Install and Configure Terraform
-  </h2>
-  Refer here <a href="https://www.terraform.io/downloads.html">for installing terraform</a><br>
-  Add terraform executable path to ENV variables
+###  Install and Configure Terraform
+- Refer here [for installing terraform](https://www.terraform.io/downloads.html)
+- Add terraform executable path to ENV variables
 
-<h2>
-Source File Details
-</h2>
+### Source File Details
 aws_single_es.tf - Terraform config file<br>
 es_index.js - Node.js source for adding index to ES<br>
 feed.json - Json inputs to be added as index<br>
  
- <h2>
-  Steps to spin up the ES in AWS 
-  </h2>
+### Steps to spin up the ES in AWS 
  1. Clone the repository terraform_repo<br>
  2. cd terraform_repo<br>
  3. Open the .tf file and edit/save the variable section to add the AWS access key, secret key and account id.<br>
@@ -45,9 +36,7 @@ feed.json - Json inputs to be added as index<br>
  type "yes" when prompted<br>
  5. Proceed to create ES index, after the ElasticSearch creation is completed.<br>
 
- <h2>
- Setup ElasticSearch Index using node.js
- </h2>
+### Setup ElasticSearch Index using node.js
  1. Pick-up the ElasticSearch domain name URL from AWS console or AWS CLI command<br>
  2. Execute the node.js code using below command<br>
  <i>node es_index.js</i><br>
@@ -58,9 +47,7 @@ feed.json - Json inputs to be added as index<br>
  
  Optionally, we can verify the ElasticSearch domain and added index from AWS console.<br>
  
- <h2>
- Verifying the ElasticSearch and Added Index using ES Query
- </h2>
+### Verifying the ElasticSearch and Added Index using ES Query
  1. ElasticSearch index can be tested using the ES domain endpoint and ES search query.<br>
  2. Use the below curl command to test the ES index fed via feed.json<br>
  The sample uses twitter like json response to process using the ES domain we have created above.<br>
@@ -68,9 +55,8 @@ feed.json - Json inputs to be added as index<br>
   curl -XGET 'https://search-gs-demo-es-vjgctwz2jolpvhsmd2iicuj5mu.us-west-2.es.amazonaws.com/es-node-test/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "Dash" }}}'<br><br>
   curl -XGET 'https://search-gs-demo-es-vjgctwz2jolpvhsmd2iicuj5mu.us-west-2.es.amazonaws.com/es-node-test/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "John" }}}'<br>
 </font>
-<h3>
-ElasticSearch Index Query Output
-</h3> 
+
+#### ElasticSearch Index Query Output 
 The sample query output of the ES indexing search will return output as below,<br>
 <blockquote>
 $ curl -XGET 'https://search-gs-demo-es-vjgctwz2jolpvhsmd2iicuj5mu.us-west-2.es.amazonaws.com/es-node-test/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "Smith" }}}'<br><br>
@@ -105,18 +91,14 @@ $ curl -XGET 'https://search-gs-demo-es-vjgctwz2jolpvhsmd2iicuj5mu.us-west-2.es.
 }
 </blockquote>
 
-<h2>
-Alerts and Monitoring
-</h2>
+### Alerts and Monitoring
 - AWS has the facility to monitor the ElasticSearch service through Cloudwatch alerts.<br>
 - Also the query status can be monitored ElasticSearch page via AWS console.<br>
 - <a href="https://aws.amazon.com/blogs/database/get-started-with-amazon-elasticsearch-service-set-cloudwatch-alarms-on-key-metrics/">AWS Cloudwatch basics and Setup alarm</a> for ElasticSearch<br>
 - List of <a href="https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/cloudwatch-alarms.html">AWS Cloudwatch</a> Alert types for ES<br>
 
  
-<h2>
-Resolving issues while executing node.js
-</h2> 
+### Resolving issues while executing node.js
 Error 1:<br>
 Error: Hostname/IP doesn't match certificate's altnames: "Host: https. is
  not in the cert's altnames: DNS:*.us-west-2.es.amazonaws.com"<br>
@@ -134,9 +116,7 @@ export AWS_ACCESS_KEY_ID="your-access-key"<br>
 export AWS_SECRET_ACCESS_KEY="your-secret-key"<br>
 export AWS_SESSION_TOKEN=""your-session-token"<br><br>
   
-<h2>
-  Other references
-  </h2>
+### Other references
   <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/full-text-queries.html"> ES Query reference </a><br>
   <a href="https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-indexing-programmatic.html#es-indexing-programmatic-node">Node.js index sample</a><br>
   <a href="https://github.com/elastic/elasticsearch"> Github ElasticSerch repo</a><br>
