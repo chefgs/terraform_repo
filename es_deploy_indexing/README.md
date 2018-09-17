@@ -26,23 +26,24 @@ es_index.js - Node.js source for adding index to ES<br>
 feed.json - Json inputs to be added as index<br>
  
 ### Steps to spin up the ES in AWS 
- 1. Clone the repository terraform_repo<br>
- 2. cd terraform_repo<br>
- 3. Open the .tf file and edit/save the variable section to add the AWS access key, secret key and account id.<br>
- 4. Run the below commands from the path where .tf is located to spin up Elastic search single node cluster,<br>
-<i>
+ 1. Clone the repository terraform_repo
+ 2. cd terraform_repo
+ 3. Open the .tf file and edit/save the variable section to add the AWS access key, secret key and account id.
+ 4. Run the below commands from the path where .tf is located to spin up Elastic search single node cluster,
+```
  terraform init<br>
- terraform apply<br></i>
+ terraform apply<br>
+ ```
  type "yes" when prompted<br>
  5. Proceed to create ES index, after the ElasticSearch creation is completed.<br>
 
 ### Setup ElasticSearch Index using node.js
- 1. Pick-up the ElasticSearch domain name URL from AWS console or AWS CLI command<br>
- 2. Execute the node.js code using below command<br>
- <i>node es_index.js</i><br>
- node.js code will be using the "feed.json" file to feed the index data to ElasticSearch.<br>
- 3. If execution is successful the console will show, <i>"201 created"</i><br>
- 4. Edit the feed.json file with another data and modify the "var id" value es_index.js file.<br>
+ 1. Pick-up the ElasticSearch domain name URL from AWS console or AWS CLI command
+ 2. Execute the node.js code using below command
+ `node es_index.js`
+ node.js code will be using the `feed.json` file to feed the index data to ElasticSearch.
+ 3. If execution is successful the console will show `201 created`
+ 4. Edit the `feed.json` file with another data and modify the "var id" value in `es_index.js` file.
  5. Then repeat step 2, to feed another json index search data.
  
  Optionally, we can verify the ElasticSearch domain and added index from AWS console.<br>
@@ -51,14 +52,14 @@ feed.json - Json inputs to be added as index<br>
  1. ElasticSearch index can be tested using the ES domain endpoint and ES search query.<br>
  2. Use the below curl command to test the ES index fed via feed.json<br>
  The sample uses twitter like json response to process using the ES domain we have created above.<br>
- <font face='courier new'>
-  curl -XGET 'https://search-gs-demo-es-vjgctwz2jolpvhsmd2iicuj5mu.us-west-2.es.amazonaws.com/es-node-test/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "Dash" }}}'<br><br>
-  curl -XGET 'https://search-gs-demo-es-vjgctwz2jolpvhsmd2iicuj5mu.us-west-2.es.amazonaws.com/es-node-test/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "John" }}}'<br>
-</font>
+ ```
+ curl -XGET 'https://search-gs-demo-es-vjgctwz2jolpvhsmd2iicuj5mu.us-west-2.es.amazonaws.com/es-node-test/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "Dash" }}}'
+ curl -XGET 'https://search-gs-demo-es-vjgctwz2jolpvhsmd2iicuj5mu.us-west-2.es.amazonaws.com/es-node-test/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "John" }}}'
+ ```
 
 #### ElasticSearch Index Query Output 
-The sample query output of the ES indexing search will return output as below,<br>
-<blockquote>
+The sample query output of the ES indexing search will return output as below,
+```
 $ curl -XGET 'https://search-gs-demo-es-vjgctwz2jolpvhsmd2iicuj5mu.us-west-2.es.amazonaws.com/es-node-test/_search?pretty=true' -H 'Content-Type: application/json' -d '{"query" : {"match" : { "user": "Smith" }}}'<br><br>
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
@@ -89,7 +90,7 @@ $ curl -XGET 'https://search-gs-demo-es-vjgctwz2jolpvhsmd2iicuj5mu.us-west-2.es.
     ]
   }
 }
-</blockquote>
+```
 
 ### Alerts and Monitoring
 - AWS has the facility to monitor the ElasticSearch service through Cloudwatch alerts.<br>
