@@ -30,10 +30,6 @@ provider "aws" {
   region     = "${var.region}"
 }
 
-# data "aws_region" "current" {}
-
-# data "aws_caller_identity" "current" {}
-
 # Terraform AWS ES Resource definition section
 resource "aws_elasticsearch_domain" "es" {
   domain_name           = "${var.domain}"
