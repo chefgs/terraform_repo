@@ -1,6 +1,6 @@
 
-
 provider "google" {
+  version = "~> 2.11"
   credentials = "${file(".keys//account.json")}"
   project     = "tensile-tenure-225805"
   region      = "us-central1"
@@ -9,7 +9,7 @@ provider "google" {
 
 resource "google_compute_instance" "default" {
   name         = "gcp-tf-vm"
-  machine_type = "f1-micro"
+  machine_type = "n1-standard-1"
   zone         = "us-central1-a"
 
   tags = ["vm", "tf"]
@@ -23,6 +23,7 @@ resource "google_compute_instance" "default" {
 
   // Local SSD disk
   scratch_disk {
+   interface = "SCSI" 
   }
 
   network_interface {
@@ -38,10 +39,12 @@ resource "google_compute_instance" "default" {
     vm = "tf"
   }
 
-  #metadata_startup_script = "echo hi > /test.txt"
+  #metadata_startup_script = "initscript.sh"
+  metadata_startup_script = "${file("initscript.sh")}"
 
   service_account {
     email = "704858967734-compute@developer.gserviceaccount.com"
     scopes = ["userinfo-email", "compute-ro", "storage-ro"]
   }
 }
+
