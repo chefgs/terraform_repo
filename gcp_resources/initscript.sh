@@ -1,4 +1,6 @@
 #!/bin/bash
+# Init script will be executed when the intance is created
+# This scripts installs wget, ansible and git packages
 mkdir -p /data/installers
 mkdir -p /data/ansible
 cd /data/installers/
