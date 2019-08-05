@@ -4,7 +4,7 @@
 - Terraform example of creating an immutable instance on Google Cloud
 - This source can be used to create GCE instance in Google Cloud
 - The GCE instance should be having Git, Ansible and wget pre-installed when the instance is first available to use.
-- Instance details, centos-7 on GCE instace type "n1-standard-1 (1 vCPU and 2GB RAM)"
+- Instance details, centos-7 on GCE instace type "n1-standard-1 (1 vCPU and ~4GB RAM)"
 
 ### Important Pre-Requisites
 1. Create a project in the Google Cloud Console and set up billing on that project. 
