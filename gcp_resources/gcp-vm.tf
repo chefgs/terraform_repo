@@ -1,23 +1,43 @@
+variable "gcp_project_id" {
+  default = "tensile-tenure-225805"
+}
+variable "region" {
+  default = "us-central1"
+}
+variable "zone" {
+  default = "us-central1-c"
+}
+variable "vm_name" {
+  default = "gcp_tf_vm"
+}
+variable "vm_type" {
+  default = "n1-standard-1"
+}
+variable "vm_image" {
+  default = "centos-cloud/centos-7"
+}
+variable "vm_image_type" {
+  default = "pd-standard"
+}
 
 provider "google" {
   version = "~> 2.11"
   credentials = "${file(".keys//account.json")}"
-  project     = "tensile-tenure-225805"
-  region      = "us-central1"
-  zone        = "us-central1-c"
+  project     = "${var.gcp_project_id}"
+  region      = "${var.region}"
+  zone        = "${var.zone}"
 }
 
 resource "google_compute_instance" "default" {
-  name         = "gcp-tf-vm"
-  machine_type = "n1-standard-1"
-  zone         = "us-central1-a"
+  name         = "${var.vm_name}"
+  machine_type = "${var.vm_type}"
 
   tags = ["vm", "tf"]
 
   boot_disk {
     initialize_params {
-      image = "centos-cloud/centos-7"
-      type = "pd-standard"
+      image = "${var.vm_image}"
+      type = "${var.vm_image_type}"
     }
   }
 
