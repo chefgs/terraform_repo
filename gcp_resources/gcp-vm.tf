@@ -19,6 +19,9 @@ variable "vm_image" {
 variable "vm_image_type" {
   default = "pd-standard"
 }
+variable "source_account_email" {
+  default = "dummy_source_account_email"
+}
 
 provider "google" {
   version = "~> 2.11"
@@ -63,7 +66,7 @@ resource "google_compute_instance" "default" {
   metadata_startup_script = "${file("initscript.sh")}"
 
   service_account {
-    email = "704858967734-compute@developer.gserviceaccount.com"
+    email = "${var.source_account_email}"
     scopes = ["userinfo-email", "compute-ro", "storage-ro"]
   }
 }
