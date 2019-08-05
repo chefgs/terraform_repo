@@ -1,4 +1,4 @@
-## Single node ElasticSearch with Node.JS Index deployed in AWS
+## Google Cloud Computing Engine creation using Terraform
 ### Important Pre-Requisites
 1. Create a project in the Google Cloud Console and set up billing on that project. 
 2. #### Adding credential
