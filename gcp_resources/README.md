@@ -36,7 +36,7 @@
  5. Run the below commands from the path where .tf is located to spin up GCE instance,
  ```
  terraform init
- terraform apply
+ terraform apply -var-file=gcp-vm-vars.tfvars
  ```
  type "yes" when prompted<br>
  6. This completes the creation of GCE instance in Google cloud using terraform.
