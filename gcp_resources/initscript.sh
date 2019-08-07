@@ -39,3 +39,4 @@ git clone https://github.com/chefgs/ansible_playbooks.git >> $outfile
 echo "Executing Playbook" >> $outfile
 cd /data/ansible/ansible_playbooks/cloud_init_playbook/
 ansible-playbook playbook.yml -i ansible/hosts.ini >> /var/log/ansiblerun.out
+echo "Completed Executing Metadata Script" >> $outfile
