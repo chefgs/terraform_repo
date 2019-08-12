@@ -22,6 +22,9 @@ variable "vm_image_type" {
 variable "source_account_email" {
   default = "dummy_source_account_email"
 }
+variable "metadata_script_changed" {
+  default = "false"
+}
 
 provider "google" {
   version = "~> 2.11"
@@ -60,9 +63,9 @@ resource "google_compute_instance" "default" {
 
   metadata = {
     vm = "tf"
+    metadata_script_modified = "${var.metadata_script_changed}"
   }
 
-  #metadata_startup_script = "initscript.sh"
   metadata_startup_script = "${file("initscript.sh")}"
 
   service_account {
