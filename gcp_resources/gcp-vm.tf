@@ -26,6 +26,7 @@ variable "metadata_script" {
   default = "initscript_chef.sh"
 }
 
+
 provider "google" {
   version = "~> 2.11"
   credentials = "${file(".keys//account.json")}"
