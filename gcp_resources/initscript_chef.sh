@@ -29,3 +29,4 @@ git clone https://github.com/chefgs/cookbooks.git >> $outfile
 echo "Executing chef-client" >> $outfile
 cd /data/chef_cookbooks
 chef-client -z -o apache >> /var/log/chefrun.out
+#

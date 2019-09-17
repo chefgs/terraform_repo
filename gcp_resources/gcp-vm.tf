@@ -25,6 +25,9 @@ variable "source_account_email" {
 variable "metadata_script" {
   default = "initscript_chef.sh"
 }
+variable "metadata_script_changed" {
+  default = "true"
+}
 
 
 provider "google" {
@@ -64,6 +67,7 @@ resource "google_compute_instance" "default" {
 
   metadata = {
     vm = "tf"
+    metadata_script_changed = "${var.metadata_script_changed}"
   }
 
   metadata_startup_script = "${file("${var.metadata_script}")}"
