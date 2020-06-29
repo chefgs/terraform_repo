@@ -22,6 +22,17 @@ mv terraform /usr/local/bin/
 ```
 `If terraform executable stored in anyother path, make sure the path is added in $PATH variable permenantly.`
 
+## Why custom provider development required?
+According to Terraform documentation, 
+
+There are a few possible reasons for authoring a custom Terraform provider, such as:
+
+1. An internal private cloud whose functionality is either proprietary or would not benefit the open source community.
+
+2. A "work in progress" provider being tested locally before contributing back.
+
+3. Extensions of an existing provider
+
 ## How to develop provider code with Go
 ### Highlevel Steps
 1. Required source files `main.go`, `provider.go`, `resource_server.go`
