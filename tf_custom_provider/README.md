@@ -22,7 +22,21 @@ mv terraform /usr/local/bin/
 ```
 `If terraform executable stored in anyother path, make sure the path is added in $PATH variable permenantly.`
 
-## TBA: How to develop provider code with Go
+## How to develop provider code with Go
+### Highlevel Steps
+1. Required source files main.go, provider.go, resource_server.go
+
+2. resource_server.go will have the resource function declaration and definition like create, delete etc, it also gets the input params required to create resources. 
+
+4. The resource server functions has to be called in the provider.go
+
+5. Test the provider by creating main.tf, by providing the resource inputs. (terraform init)
+
+6. We need to define the logic of resource operations like create and delete using the custom provider api calls, to apply the terraform template, which perform the resource operation.
+
+7. After adding the logic for resource operations, we can try "terraform apply" command to check the resource operation 
+
+8. The custom provider executable should be placed inside the "~/.terraform.d/plugins" path to enable the access to the custom provider functionality
 
 ## Step4: Build go code and create tf provider executable
 ```
@@ -34,6 +48,8 @@ go build -o terraform-provider-customprovider
 ```
 Third-party plugins (both providers and provisioners) can be manually installed into the user plugins directory
 Located at %APPDATA%\terraform.d\plugins on Windows and ~/.terraform.d/plugins on other systems.
+
+Copy the custom provider executable created in the step above to Terraform plugin directory
 ```
 ## Step5: Create terraform file and crate/destroy resource
 ```
