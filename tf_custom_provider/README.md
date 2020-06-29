@@ -24,19 +24,19 @@ mv terraform /usr/local/bin/
 
 ## How to develop provider code with Go
 ### Highlevel Steps
-1. Required source files main.go, provider.go, resource_server.go
+1. Required source files `main.go`, `provider.go`, `resource_server.go`
 
-2. resource_server.go will have the resource function declaration and definition like create, delete etc, it also gets the input params required to create resources. 
+2. `resource_server.go` will have the resource function declaration and definition like create, delete etc, it also gets the input params required to create resources. 
 
-4. The resource server functions has to be called in the provider.go
+4. The resource server functions has to be called in the `provider.go`
 
-5. Test the provider by creating main.tf, by providing the resource inputs. (terraform init)
+5. Test the provider by creating `main.tf`, by providing the resource inputs. (execute `terraform init`)
 
-6. We need to define the logic of resource operations like create and delete using the custom provider api calls, to apply the terraform template, which perform the resource operation.
+6. Our code repo example implemented with mock resource creation for the provider called 'customprovider'. In real-time case, it has to be changed for the provider name of respective cloud or on-premises server. Most of proivders have API calls to be consumed for resource operation like create/update/delete etc.. So We need to define the logic of resource operations like create and delete using the custom provider api calls, to apply the terraform template.
 
 7. After adding the logic for resource operations, we can try "terraform apply" command to check the resource operation 
 
-8. The custom provider executable should be placed inside the "~/.terraform.d/plugins" path to enable the access to the custom provider functionality
+8. The custom provider executable should be placed inside the "~/.terraform.d/plugins" (in Linux server) path to enable the access to the custom provider functionality
 
 ## Step4: Build go code and create tf provider executable
 ```
