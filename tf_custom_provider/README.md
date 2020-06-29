@@ -33,21 +33,29 @@ There are a few possible reasons for authoring a custom Terraform provider, such
 
 3. Extensions of an existing provider
 
+Refer the Hashicorp Documentation on [writing custom providers](https://www.terraform.io/docs/extend/writing-custom-providers.html)
+
 ## How to develop provider code with Go
 ### Highlevel Steps
 1. Required source files `main.go`, `provider.go`, `resource_server.go`
 
-2. `resource_server.go` will have the resource function declaration and definition like create, delete etc, it also gets the input params required to create resources. 
+2. The resource server functions has to be called in the `provider.go`. Go entry point function is `main.go`.
 
-4. The resource server functions has to be called in the `provider.go`
+3. `resource_server.go` will have the resource function declaration and definition like create, delete etc, it also gets the input params required to create resources. 
+```
+The code layout looks like this:
+.
+├── main.go
+├── provider.go
+├── resource_server.go
+```
+4. Our code repo example implemented with mock resource creation for the provider called 'customprovider'. In real-time case, it has to be changed for the provider name of respective cloud or on-premises server. Most of proivders have API calls to be consumed for resource operation like create/update/delete etc.. So We need to define the logic of resource operations like create and delete using the custom provider api calls, to apply the terraform template.
 
-5. Test the provider by creating `main.tf`, by providing the resource inputs. (execute `terraform init`)
+5. Test the provider by creating `main.tf`, by providing the resource inputs. (execute `terraform init`). In our code sample just the number of server count added as an input parameter.
 
-6. Our code repo example implemented with mock resource creation for the provider called 'customprovider'. In real-time case, it has to be changed for the provider name of respective cloud or on-premises server. Most of proivders have API calls to be consumed for resource operation like create/update/delete etc.. So We need to define the logic of resource operations like create and delete using the custom provider api calls, to apply the terraform template.
+6. After adding the logic for resource operations, we can try "terraform apply" command to check the resource operation 
 
-7. After adding the logic for resource operations, we can try "terraform apply" command to check the resource operation 
-
-8. The custom provider executable should be placed inside the "~/.terraform.d/plugins" (in Linux server) path to enable the access to the custom provider functionality
+7. The custom provider executable should be placed inside the "~/.terraform.d/plugins" (in Linux server) path to enable the access to the custom provider functionality
 
 ## Step4: Build go code and create tf provider executable
 ```
