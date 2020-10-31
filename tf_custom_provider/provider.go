@@ -1,3 +1,4 @@
+// provider.go
 package main
 
 import (
@@ -11,4 +12,3 @@ func Provider() *schema.Provider {
                 },
         }
 }
-
