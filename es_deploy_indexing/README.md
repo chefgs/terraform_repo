@@ -118,6 +118,6 @@ export AWS_SECRET_ACCESS_KEY="your-secret-key"<br>
 export AWS_SESSION_TOKEN=""your-session-token"<br><br>
   
 ### Other references
-  <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/full-text-queries.html"> ES Query reference </a><br>
-  <a href="https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-indexing-programmatic.html#es-indexing-programmatic-node">Node.js index sample</a><br>
-  <a href="https://github.com/elastic/elasticsearch"> Github ElasticSerch repo</a><br>
+  - [ES Query reference](https://www.elastic.co/guide/en/elasticsearch/reference/current/full-text-queries.html)
+  - <a href="https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-indexing-programmatic.html#es-indexing-programmatic-node">Node.js index sample</a><br>
+  - <a href="https://github.com/elastic/elasticsearch"> Github ElasticSerch repo</a><br>
