@@ -212,7 +212,7 @@ output "web_instance_ip" {
 ```
 region =  "us-west-2"
 instance_type = "t2.micro"
-instance_key = "gs-ubuntu-key"
+instance_key = "aws_ec2_pem_file_name"
 creds = "~/.aws/credentials"
 vpc_cidr = "178.0.0.0/16"
 public_subnet_cidr = "178.0.10.0/24"
