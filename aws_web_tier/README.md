@@ -207,6 +207,7 @@ output "web_instance_ip" {
 ```
 - Since we have the custom variables defined in our terraform file, we have provide the values for those custom variables
 - So we have to create a `tfvars` files and provide the custom variable values
+- User has to provide the EC2 instance `pem file` key name in `instance_key` value
 - aws.tfvars
 ```
 region =  "us-west-2"
