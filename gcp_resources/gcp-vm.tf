@@ -1,5 +1,5 @@
 variable "gcp_project_id" {
-  default = "tensile-tenure-225805"
+  default = "-225805"
 }
 variable "region" {
   default = "us-central1"
@@ -28,52 +28,53 @@ variable "metadata_script" {
 variable "metadata_script_changed" {
   default = "true"
 }
+variable "creds_file" {
+  default = ".keys/account.json"
+}
 
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 3.0"
+    }
+  }
+}
 
 provider "google" {
-  version = "~> 2.11"
-  credentials = "${file(".keys//account.json")}"
-  project     = "${var.gcp_project_id}"
-  region      = "${var.region}"
-  zone        = "${var.zone}"
+  credentials = var.creds_file
+  project     = var.gcp_project_id
+  region      = var.region
+  zone        = var.zone
 }
 
 resource "google_compute_instance" "default" {
-  name         = "${var.vm_name}"
-  machine_type = "${var.vm_type}"
+  name         = var.vm_name
+  machine_type = var.vm_type
 
   tags = ["vm", "tf"]
 
   boot_disk {
     initialize_params {
-      image = "${var.vm_image}"
-      type = "${var.vm_image_type}"
+      image = var.vm_image
+      type = var.vm_image_type
     }
   }
-
-  // Local SSD disk
-  //scratch_disk {
-  // interface = "SCSI" 
-  //}
 
   network_interface {
     network = "default"
     subnetwork = "default"
-
-    access_config {
-      // Ephemeral IP
-    }
   }
 
   metadata = {
     vm = "tf"
-    metadata_script_changed = "${var.metadata_script_changed}"
+    metadata_script_changed = var.metadata_script_changed
   }
 
-  metadata_startup_script = "${file("${var.metadata_script}")}"
+  metadata_startup_script = var.metadata_script
 
   service_account {
-    email = "${var.source_account_email}"
+    email = var.source_account_email
     scopes = ["userinfo-email", "compute-ro", "storage-ro"]
   }
 }
