@@ -1,18 +1,16 @@
 #!/bin/bash
-mkdir -p /data/installers
 mkdir -p /data/chef_cookbooks
-cd /data/installers/
-rm -rf /data/cookbooks/*
+rm -rf /data/chef_cookbooks/*
 outfile='/var/log/userdata.out'
 
 # Install Chef client v14
-if [ ! -f /bin/chef-client ] ; then
+if [ ! -f /usr/bin/chef-client ] ; then
 echo "Installing chef client" >> $outfile
-curl -L https://omnitruck.chef.io/install.sh | sudo bash >> $outfile
+curl -L https://omnitruck.chef.io/install.sh | sudo bash -s -- -v 15.8.23 >> $outfile
 fi
 
 # Install git
-if [ ! -f /bin/git ] ; then
+if [ ! -f /usr/bin/git ] ; then
 yum install git -y >> $outfile
 fi
 
@@ -23,5 +21,5 @@ git clone https://github.com/chefgs/cookbooks.git >> $outfile
 
 echo "Executing chef-client" >> $outfile
 cd /data/chef_cookbooks
-chef-client -z -o apache --chef-license accept >> /var/log/chefrun.out
+sudo chef-client -z -o apache --chef-license accept >> /var/log/chefrun.out
 ##
