@@ -4,16 +4,11 @@ mkdir -p /data/chef_cookbooks
 cd /data/installers/
 rm -rf /data/cookbooks/*
 outfile='/var/log/userdata.out'
-# Install wget
-if [ ! -f /bin/wget ] ; then
-yum install wget -y >> $outfile
-fi
 
 # Install Chef client v14
 if [ ! -f /bin/chef-client ] ; then
 echo "Installing chef client" >> $outfile
-wget https://packages.chef.io/files/stable/chef/14.3.37/el/7/chef-14.3.37-1.el7.x86_64.rpm >> $outfile
-rpm -i chef-14*.rpm >> $outfile
+curl -L https://omnitruck.chef.io/install.sh | sudo bash >> $outfile
 fi
 
 # Install git
@@ -28,5 +23,5 @@ git clone https://github.com/chefgs/cookbooks.git >> $outfile
 
 echo "Executing chef-client" >> $outfile
 cd /data/chef_cookbooks
-chef-client -z -o apache >> /var/log/chefrun.out
-#
+chef-client -z -o apache --chef-license accept >> /var/log/chefrun.out
+##
