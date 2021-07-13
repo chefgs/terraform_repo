@@ -23,3 +23,10 @@ echo "Executing chef-client" >> $outfile
 cd /data/chef_cookbooks
 sudo chef-client -z -o apache --chef-license accept >> /var/log/chefrun.out
 ##
+if [ -d /var/www/html/ ] ; then
+echo "Apache server created successfully, hence create sample html site" >> $outfile
+cat  <<'EOF' >> /var/www/html/index.html
+<html><body><p>Apache server in Google Cloud</p>
+<p>Created using metadata startup script from a local script file.</p></body></html>
+EOF
+fi
