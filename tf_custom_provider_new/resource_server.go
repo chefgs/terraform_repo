@@ -31,12 +31,7 @@ func resourceServerCreate(d *schema.ResourceData, m interface{}) error {
 
         // https://www.uuidtools.com/api/generate/v1/count/uuid_count
         body := strings.NewReader(uuid_count)
-        req, err := http.NewRequest("GET", "https://www.uuidtools.com/api/generate/v1/count/", body)
-        if err != nil {
-                log.Fatal(err)
-        }
-        req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-        resp, err := http.DefaultClient.Do(req)
+        resp, err := http.Get("https://www.uuidtools.com/api/generate/v1/count/10")
         if err != nil {
                 log.Fatal(err)
         }
@@ -54,6 +49,7 @@ func resourceServerUpdate(d *schema.ResourceData, m interface{}) error {
 }
 
 func resourceServerDelete(d *schema.ResourceData, m interface{}) error {
+        d.SetId("")
         return nil
 }
 
