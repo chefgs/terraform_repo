@@ -10,7 +10,7 @@ terraform {
 # Configure the AWS Provider
 provider "aws" {
   region = var.region
-  shared_credentials_file = var.creds
+  shared_credentials_file = "var.creds_path.var.creds_file"
   profile = "default"
 }
 

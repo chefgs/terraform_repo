@@ -4,8 +4,11 @@ default = "us-west-2"
 variable "instance_type" {
 default = "t2.micro"
 }
-variable "creds" {
-default = "~/.aws/credentials"
+variable "creds_path" {
+default = "~/.aws/"
+}
+variable "creds_file" {
+default = "credentials"
 }
 variable "instance_key" {
 default = "aws_ec2_pem_file_name2"
