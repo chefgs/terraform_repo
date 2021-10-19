@@ -1,11 +1,11 @@
 # Terraform Custom Provider Development Guide
-## Step1: Go env setup 
+## Go env setup 
 ```
 wget https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz
 tar -C /usr/local -xvzf go1.14.2.linux-amd64.tar.gz
 mkdir -p go/src go/pkg go/bin
 ```
-## Step2: Add Below env vars to .profile
+## Add Below env vars to .profile
 ```
 export "PATH=$PATH:/usr/local/go/bin"
 export "GOPATH=$HOME/go"
@@ -14,7 +14,7 @@ source ~/.profile
 go version
 ```
 
-## Step3: Terraform setup
+## Terraform setup
 ```
 wget https://releases.hashicorp.com/terraform/0.12.24/terraform_0.12.24_linux_amd64.zip
 unzip terraform_0.12.24_linux_amd64.zip
@@ -57,22 +57,65 @@ The code layout looks like this:
 
 7. The custom provider executable should be placed inside the "~/.terraform.d/plugins" (in Linux server) path to enable the access to the custom provider functionality
 
-## Step4: Build go code and create tf provider executable
+## Build go code and create tf provider executable
 ```
 cd tf_custom_provider/
 go mod init
 go mod tidy
 go build -o terraform-provider-customprovider
 ```
+## Steps to copy provider executable to Plug-ins directory
+- So, in order to copy and use the custom provider we have created, we need to create the below directory structure inside the Plugins directory,
+  - Linux based system - `~/.terraform.d/plugins/${host_name}/${namespace}/${type}/${version}/${target}`
+  - Windows based system `%APPDATA%\terraform.d\plugins\${host_name}/${namespace}/${type}/${version}/${target}`
+Where,
+  - host_name-> somehostname.com
+  - namespace-> Custom provider name space
+  - type-> Custom provider type
+  - version-> semantic versioning of the provider (ex: 1.0.0)
+  - target-> target operating system
+- Our custom provider should placed in the directory as below,
 ```
-Third-party plugins (both providers and provisioners) can be manually installed into the user plugins directory
-Located at %APPDATA%\terraform.d\plugins on Windows and ~/.terraform.d/plugins on other systems.
+~/.terraform.d/plugins/terraform-example.com/exampleprovider/example/1.0.0/linux_amd64/terraform-provider-example
+```
 
-Copy the custom provider executable created in the step above to Terraform plugin directory
+- So first step is, we need to the create the directory as part of our provider installation 
 ```
-## Step5: Create terraform file and crate/destroy resource
+mkdir -p ~/.terraform.d/plugins/terraform-example.com/exampleprovider/example/1.0.0/linux_amd64
 ```
-vim main.tf
+
+Then, copy the `terraform-provider-example` binary into that location: 
+```
+cp terraform-provider-example ~/.terraform.d/plugins/terraform-example.com/exampleprovider/example/1.0.0/linux_amd64
+```
+
+## Create Terraform `.tf` files
+- Test the provider by creating `main.tf`, by providing the resource inputs.
+- We have added the number of server count (`uuid_count`) as an input parameter for the demo purpose. 
+
+### main.tf
+Create `main.tf` file with code to create custom provider resource
+```
+resource "example_server" "my-server-name" {
+	uuid_count = "1"
+}
+```
+
+### version.tf
+- Create a file called `versions.tf` and add the path to custom provider name and version
+```
+terraform {
+  required_providers {
+    example = {
+      version = "~> 1.0.0"
+      source  = "terraform-example.com/exampleprovider/example"
+    }
+  }
+}
+```
+
+## Create terraform file and crate/destroy resource
+```
 terraform init
 terraform plan
 terraform apply
