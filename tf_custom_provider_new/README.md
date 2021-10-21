@@ -1,6 +1,6 @@
 # Terraform Custom Provider Development Guide
 ## Go env setup 
-- Refer `Golang` offcial page for installation details specific to Operating system
+- Refer `Golang` [offcial page](https://golang.org/doc/install) for installation details specific to each Operating system
 - Below steps are specific to Ubuntu OS,
 ```
 wget https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz
