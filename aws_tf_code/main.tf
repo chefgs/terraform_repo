@@ -76,8 +76,6 @@ resource "aws_instance" "web" {
 
   tags = {
     Name = "web_instance"
-    Purpose = "TerraformBootcamp"
-	  createdby = "Saravanan Gnanaguru"
   }
 
   volume_tags = {
