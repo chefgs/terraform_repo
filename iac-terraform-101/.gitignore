@@ -1,0 +1,9 @@
+.terraform*
+tfplan*
+
+# Files which may contain passwords, secrets, and sensitive values
+*.tfstate*
+*.tfplan*
+
+# Terraform lock file override - this is required to have version locking for providers and tf cli
+!.terraform.lock.hcl
