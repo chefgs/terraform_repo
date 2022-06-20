@@ -1,8 +1,3 @@
-provider "kubernetes" {
-  config_path    = "~/.kube/config"
-  config_context = "minikube"
-}
-
 resource "kubernetes_namespace" "example" {
   metadata {
     name = "k8s-ns-by-tf"
@@ -15,6 +10,7 @@ resource "kubernetes_deployment" "example" {
     labels = {
       test = "MyExampleApp"
     }
+    namespace = "k8s-ns-by-tf"
   }
 
   spec {
@@ -31,7 +27,6 @@ resource "kubernetes_deployment" "example" {
         labels = {
           test = "MyExampleApp"
         }
-        namespace = "k8s-ns-by-tf"
       }
 
       spec {
