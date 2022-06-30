@@ -127,7 +127,7 @@ resource "aws_route_table_association" "public_rt_asso" {
   2. Powershell script in Windows based system
 ```
 resource "aws_instance" "web" {
-  ami             = "ami-005e54dee72cc1d00" 
+  ami             = "ami-0d70546e43a941d70" 
   instance_type   = var.instance_type
   key_name        = var.instance_key
   subnet_id       = aws_subnet.public_subnet.id
@@ -268,7 +268,7 @@ Terraform will perform the following actions:
 
   # aws_instance.web will be created
   + resource "aws_instance" "web" {
-      + ami                                  = "ami-005e54dee72cc1d00"
+      + ami                                  = "ami-0d70546e43a941d70"
       + arn                                  = (known after apply)
       + associate_public_ip_address          = (known after apply)
       + availability_zone                    = (known after apply)

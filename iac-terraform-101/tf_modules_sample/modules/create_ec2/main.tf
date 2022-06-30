@@ -1,5 +1,5 @@
 resource "aws_instance" "sample_ec2" {
-  ami           = "ami-005e54dee72cc1d00"
+  ami           = "ami-0d70546e43a941d70"
   instance_type = "t2.micro"
   key_name = var.instance_key
 
