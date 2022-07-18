@@ -1,3 +1,3 @@
 resource "example_server" "my-server-name" {
-	uuid_count = "1"
+	uuid_count = "2"
 }
