@@ -34,16 +34,18 @@ provider "aws" {
 resource "aws_elasticsearch_domain" "es" {
   domain_name           = "${var.domain}"
   elasticsearch_version = "6.2"
+
   cluster_config {
     instance_type = "t2.small.elasticsearch"
 	instance_count = "1"
   }
+
   ebs_options {
-  "ebs_enabled" = "true"
-  "volume_size" = "10"
+    ebs_enabled = "true"
+    volume_size = "10"
   }
 
-  advanced_options {
+  advanced_options = {
     "rest.action.multi.allow_explicit_index" = "true"
   }
 
