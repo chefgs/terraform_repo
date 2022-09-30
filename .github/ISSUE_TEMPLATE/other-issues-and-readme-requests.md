@@ -1,5 +1,5 @@
 ---
-name: Other isses and Readme changes
+name: Other issues and Readme requests
 about: Describe this issue template's purpose here.
 title: ''
 labels: ''
