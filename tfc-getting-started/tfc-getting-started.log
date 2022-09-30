@@ -1,0 +1,354 @@
+infracloud@saravanan-gnanaguru:~/github/terraform_repo$ terraform login
+Terraform will request an API token for app.terraform.io using your browser.
+
+If login is successful, Terraform will store the token in plain text in
+the following file for use by subsequent commands:
+    /home/infracloud/.terraform.d/credentials.tfrc.json
+
+Do you want to proceed?
+  Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+
+---------------------------------------------------------------------------------
+
+Terraform must now open a web browser to the tokens page for app.terraform.io.
+
+If a browser does not open this automatically, open the following URL to proceed:
+    https://app.terraform.io/app/settings/tokens?source=terraform-login
+
+
+---------------------------------------------------------------------------------
+
+Generate a token using your browser, and copy-paste it into this prompt.
+
+Terraform will store the token in plain text in the following file
+for use by subsequent commands:
+    /home/infracloud/.terraform.d/credentials.tfrc.json
+
+Token for app.terraform.io:
+  Enter a value: Opening in existing browser session.
+
+
+
+Retrieved token for user gsaravanan-tf
+
+
+---------------------------------------------------------------------------------
+
+                                          -                                
+                                          -----                           -
+                                          ---------                      --
+                                          ---------  -                -----
+                                           ---------  ------        -------
+                                             -------  ---------  ----------
+                                                ----  ---------- ----------
+                                                  --  ---------- ----------
+   Welcome to Terraform Cloud!                     -  ---------- -------
+                                                      ---  ----- ---
+   Documentation: terraform.io/docs/cloud             --------   -
+                                                      ----------
+                                                      ----------
+                                                       ---------
+                                                           -----
+                                                               -
+
+
+   New to TFC? Follow these steps to instantly apply an example configuration:
+
+   $ git clone https://github.com/hashicorp/tfc-getting-started.git
+   $ cd tfc-getting-started
+   $ scripts/setup.sh
+
+
+infracloud@saravanan-gnanaguru:~/github/terraform_repo$ git clone https://github.com/hashicorp/tfc-getting-started.git
+Cloning into 'tfc-getting-started'...
+remote: Enumerating objects: 167, done.
+remote: Counting objects: 100% (43/43), done.
+remote: Compressing objects: 100% (16/16), done.
+remote: Total 167 (delta 31), reused 27 (delta 27), pack-reused 124
+Receiving objects: 100% (167/167), 38.55 KiB | 196.00 KiB/s, done.
+Resolving deltas: 100% (77/77), done.
+infracloud@saravanan-gnanaguru:~/github/terraform_repo$ cd tfc-getting-started/
+infracloud@saravanan-gnanaguru:~/github/terraform_repo/tfc-getting-started$ bash scripts/setup.sh 
+
+
+--------------------------------------------------------------------------
+Getting Started with Terraform Cloud
+-------------------------------------------------------------------------
+
+Terraform Cloud offers secure, easy-to-use remote state management and allows
+you to run Terraform remotely in a controlled environment. Terraform Cloud runs
+can be performed on demand or triggered automatically by various events.
+
+This script will set up everything you need to get started. You'll be
+applying some example infrastructure - for free - in less than a minute.
+
+First, we'll do some setup and configure Terraform to use Terraform Cloud.
+
+Press any key to continue (ctrl-c to quit):
+
+Creating an organization and workspace...
+
+Writing remote backend configuration to backend.tf...
+
+========================================================================
+
+Ready to go; the example configuration is set up to use Terraform Cloud!
+
+An example workspace named 'getting-started' was created for you.
+You can view this workspace in the Terraform Cloud UI here:
+https://app.terraform.io/app/example-org-d9b657/workspaces/getting-started
+
+Next, we'll run 'terraform init' to initialize the backend and providers:
+
+$ terraform init
+
+Press any key to continue (ctrl-c to quit):
+
+
+Initializing the backend...
+
+Successfully configured the backend "remote"! Terraform will automatically
+use this backend unless the backend configuration changes.
+
+Initializing provider plugins...
+- Finding latest version of hashicorp/fakewebservices...
+- Installing hashicorp/fakewebservices v0.2.3...
+- Installed hashicorp/fakewebservices v0.2.3 (signed by HashiCorp)
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+
+...
+
+========================================================================
+
+Now it’s time for 'terraform plan', to see what changes Terraform will perform:
+
+$ terraform plan
+
+Press any key to continue (ctrl-c to quit):
+
+Running plan in the remote backend. Output will stream here. Pressing Ctrl-C
+will stop streaming the logs, but will not stop the plan running remotely.
+
+Preparing the remote plan...
+
+To view this run in a browser, visit:
+https://app.terraform.io/app/example-org-d9b657/getting-started/runs/run-agrTNVAvcRN6tqSN
+
+Waiting for the plan to start...
+
+Terraform v1.2.8
+on linux_amd64
+Initializing plugins and modules...
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # fakewebservices_database.prod_db will be created
+  + resource "fakewebservices_database" "prod_db" {
+      + id   = (known after apply)
+      + name = "Production DB"
+      + size = 256
+    }
+
+  # fakewebservices_load_balancer.primary_lb will be created
+  + resource "fakewebservices_load_balancer" "primary_lb" {
+      + id      = (known after apply)
+      + name    = "Primary Load Balancer"
+      + servers = [
+          + "Server 1",
+          + "Server 2",
+        ]
+    }
+
+  # fakewebservices_server.servers[0] will be created
+  + resource "fakewebservices_server" "servers" {
+      + id   = (known after apply)
+      + name = "Server 1"
+      + type = "t2.micro"
+      + vpc  = "Primary VPC"
+    }
+
+  # fakewebservices_server.servers[1] will be created
+  + resource "fakewebservices_server" "servers" {
+      + id   = (known after apply)
+      + name = "Server 2"
+      + type = "t2.micro"
+      + vpc  = "Primary VPC"
+    }
+
+  # fakewebservices_vpc.primary_vpc will be created
+  + resource "fakewebservices_vpc" "primary_vpc" {
+      + cidr_block = "0.0.0.0/1"
+      + id         = (known after apply)
+      + name       = "Primary VPC"
+    }
+
+Plan: 5 to add, 0 to change, 0 to destroy.
+
+
+------------------------------------------------------------------------
+
+Cost estimation:
+
+Resources: 0 of 5 estimated
+           $0.0/mo +$0.0
+
+...
+
+========================================================================
+
+The plan is complete!
+
+This plan was initiated from your local machine, but executed within
+Terraform Cloud!
+
+Terraform Cloud runs Terraform on disposable virtual machines in
+its own cloud infrastructure. This 'remote execution' helps provide consistency
+and visibility for critical provisioning operations. It also enables notifications,
+version control integration, and powerful features like Sentinel policy enforcement
+and cost estimation (shown in the output above).
+
+To actually make changes, we'll run 'terraform apply'. We'll also auto-approve
+the result, since this is an example:
+
+$ terraform apply -auto-approve
+
+Press any key to continue (ctrl-c to quit):
+
+Running apply in the remote backend. Output will stream here. Pressing Ctrl-C
+will cancel the remote apply if it's still pending. If the apply started it
+will stop streaming the logs, but will not stop the apply running remotely.
+
+Preparing the remote apply...
+
+To view this run in a browser, visit:
+https://app.terraform.io/app/example-org-d9b657/getting-started/runs/run-6SPQEiZ5x3BViVm8
+
+Waiting for the plan to start...
+
+Terraform v1.2.8
+on linux_amd64
+Initializing plugins and modules...
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # fakewebservices_database.prod_db will be created
+  + resource "fakewebservices_database" "prod_db" {
+      + id   = (known after apply)
+      + name = "Production DB"
+      + size = 256
+    }
+
+  # fakewebservices_load_balancer.primary_lb will be created
+  + resource "fakewebservices_load_balancer" "primary_lb" {
+      + id      = (known after apply)
+      + name    = "Primary Load Balancer"
+      + servers = [
+          + "Server 1",
+          + "Server 2",
+        ]
+    }
+
+  # fakewebservices_server.servers[0] will be created
+  + resource "fakewebservices_server" "servers" {
+      + id   = (known after apply)
+      + name = "Server 1"
+      + type = "t2.micro"
+      + vpc  = "Primary VPC"
+    }
+
+  # fakewebservices_server.servers[1] will be created
+  + resource "fakewebservices_server" "servers" {
+      + id   = (known after apply)
+      + name = "Server 2"
+      + type = "t2.micro"
+      + vpc  = "Primary VPC"
+    }
+
+  # fakewebservices_vpc.primary_vpc will be created
+  + resource "fakewebservices_vpc" "primary_vpc" {
+      + cidr_block = "0.0.0.0/1"
+      + id         = (known after apply)
+      + name       = "Primary VPC"
+    }
+
+Plan: 5 to add, 0 to change, 0 to destroy.
+
+
+------------------------------------------------------------------------
+
+Cost estimation:
+
+Resources: 0 of 5 estimated
+           $0.0/mo +$0.0
+
+------------------------------------------------------------------------
+
+fakewebservices_database.prod_db: Creating...
+fakewebservices_database.prod_db: Creation complete after 0s [id=fakedb-EMff8nEMN97369zp]
+fakewebservices_vpc.primary_vpc: Creation complete after 1s [id=fakevpc-fhB5FQGiFxYLYiYd]
+fakewebservices_server.servers[1]: Creating...
+fakewebservices_server.servers[0]: Creating...
+fakewebservices_server.servers[0]: Creation complete after 0s [id=fakeserver-HAu23Yb9seVWfP35]
+fakewebservices_server.servers[1]: Creation complete after 0s [id=fakeserver-NbtZHThm1ak5ECsk]
+fakewebservices_load_balancer.primary_lb: Creating...
+fakewebservices_load_balancer.primary_lb: Creation complete after 0s [id=fakelb-NUyRriMgnZs4tBjd]
+
+Apply complete! Resources: 5 added, 0 changed, 0 destroyed.
+
+
+...
+
+========================================================================
+
+You did it! You just provisioned infrastructure with Terraform Cloud!
+
+The organization we created here has a 30-day free trial of the Team &
+Governance tier features. After the trial ends, you'll be moved to the Free tier.
+
+You now have:
+
+  * Workspaces for organizing your infrastructure. Terraform Cloud manages
+    infrastructure collections with workspaces instead of directories. You
+    can view your workspace here:
+    https://app.terraform.io/app/example-org-d9b657/workspaces/getting-started
+  * Remote state management, with the ability to share outputs across
+    workspaces. We've set up state management for you in your current
+    workspace, and you can reference state from other workspaces using
+    the 'terraform_remote_state' data source.
+  * Much more!
+
+To see the mock infrastructure you just provisioned and continue exploring
+Terraform Cloud, visit:
+https://app.terraform.io/fake-web-services
+
+infracloud@saravanan-gnanaguru:~/github/terraform_repo/tfc-getting-started$ vi tfc-getting-started.log
+
+[No write since last change]
+
+Press ENTER or type command to continue
+
