@@ -1,5 +1,5 @@
 ---
-name: Custom issue template
+name: Other isses and Readme changes
 about: Describe this issue template's purpose here.
 title: ''
 labels: ''
