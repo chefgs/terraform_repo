@@ -1,9 +1,9 @@
 # Terraform Sample for Major Cloud Providers
 
 ## Important Notice
-Read [Contribution Guidelines](./CODE_OF_CONDUCT.md) before contributing to this reposity 
+Read [Contribution Guidelines](./CODE_OF_CONDUCT.md) before contributing to this repository
 
-Read [Code Of Conduct guidelines](./CONTRIBUTING.md) before contributing to this reposity
+Read GitHub [Code Of Conduct guidelines](./CONTRIBUTING.md) before contributing to this repository
 
 Feel free to pick up any of the open [Issues](https://github.com/chefgs/terraform_repo/issues) or create new issue using the [template](https://github.com/chefgs/terraform_repo/issues/new/choose)
 
