@@ -1,4 +1,21 @@
 # CONTRIBUTORS Guide
+
+## How to get started?
+
+The easiest way to start is to look at existing issues and see if there’s something there that you’d like to work on. You can filter issues with the label “[Good first issue](https://github.com/chefgs/terraform_repo/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)” which are relatively self sufficient issues and great for first time contributors.
+
+Once you decide on an issue, please comment on it so that all of us know that you’re on it.
+
+If you’re looking to add a new feature, [raise a new issue](https://github.com/chefgs/terraform_repo/issues/new) and start a discussion with the community. Engage with the maintainers of the project and work your way through.
+
+You'll need to perform the following tasks in order to submit your changes:
+
+- Fork the `terraform_repo` repository.
+- Create a branch for your changes. 
+  - In case if you're picking up an issue, thenname your branch corresponds to an `issue_id`
+- Add commits to that branch.
+- Open a [PR](https://github.com/chefgs/terraform_repo/compare) and choose your `branch_name` to share your contribution.
+
 ## HERE’S WHAT YOU NEED TO KNOW TO PARTICIPATE AND COMPLETE HACKTOBERFEST:
 - Register anytime between September 26 and October 31
 
