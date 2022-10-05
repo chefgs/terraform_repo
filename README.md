@@ -1,5 +1,10 @@
-# terraform_repo
+# Terraform Sample for Major Cloud Providers
+
 ## Source repo for Terrform source codes.
+
+Read [Contribution Guidelines](./CODE_OF_CONDUCT.md) before contributing to this reposity 
+
+Read [Code Of Conduct guidelines](./CONTRIBUTING.md) before contributing to this reposity
 
 Refer the README in corresponding sources for the details. 
 
