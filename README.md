@@ -1,7 +1,9 @@
 ## Terraform Code Repo for Major Cloud Providers and Cuatom Provider Guide
 
-- This open source repository has the Teraform Resource Creation code for Major Cloud Providers
-- Also has sample code for *How to develop Terraform Custom Provider*
+- Idea for this open source repository is to collate the Teraform Resource Creation code for Major Cloud Providers
+- Also it has sample code for *How to develop Terraform Custom Provider*
+- Feel free to explore the repo content, and add :star: or fork if you like the content
+- Repo is open for contributions and if you want to contribute please read the **important notice** for contribution guidelines
 
 ## Important Notice
 Read [Contribution Guidelines](./CODE_OF_CONDUCT.md) before contributing to this repository!
