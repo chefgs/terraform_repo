@@ -12,7 +12,7 @@
 
 - Feel free to pick up any of the open [Issues](https://github.com/chefgs/terraform_repo/issues) or create new issue using the [template](https://github.com/chefgs/terraform_repo/issues/new/choose)!
 
-- This repo also has GitHub action [Terraform workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation.yml) to check the tf resource code is valid and works fine. Please utilise it for checking the terraform code you're creating. All you've to do is,
+- This repo also has GitHub action [Terraform AWS workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation.yml) to check the Terraform AWS resource code is valid and works fine. Please utilise it for checking the terraform code you're creating. All you've to do is,
   - Open Workflow in "Actions" Tab
   - Click on `Run Workflow`
   - Choose you `branch_name` and Enter your `tf file path` on which you want to run the workflow
