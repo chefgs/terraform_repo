@@ -8,10 +8,6 @@ on:
         required: false
         default: 'aws_samples/create_ec2'
         type: string
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   tf_code_check:
