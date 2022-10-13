@@ -39,12 +39,12 @@ jobs:
         terraform plan
         
         echo "** Running Terraform Apply**"
-        terraform apply 
+        terraform apply -auto-approve
       #working-directory: ${{ inputs.tfpath }}
       working-directory: 'aws_samples/create_ec2'
     - name: Terraform Destroy
       run: |
         echo "** Running Terraform Destroy**"
-        terraform destroy
+        terraform destroy -auto-approve
       #working-directory: ${{ inputs.tfpath }} 
       working-directory: 'aws_samples/create_ec2'
