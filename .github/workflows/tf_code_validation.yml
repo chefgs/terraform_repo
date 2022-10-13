@@ -6,8 +6,12 @@ on:
     inputs:
       tfpath:
         description: 'TF File Path'     
-        required: true
+        required: false
         default: 'aws_samples/create_ec2'
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   tf_code_check:
