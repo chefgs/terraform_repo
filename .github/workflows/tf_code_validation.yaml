@@ -45,9 +45,9 @@ jobs:
         
         echo "** Running Terraform Apply**"
         terraform apply 
-      working-directory: ${{ inputs.tf_file_path }}
+      working-directory: ../${{ inputs.tf_file_path }}
     - name: Terraform Destroy
       run: |
         echo "** Running Terraform Destroy**"
         terraform destroy
-      working-directory: ${{ inputs.tf_file_path }} 
+      working-directory: ../${{ inputs.tf_file_path }} 
