@@ -1,12 +1,17 @@
 name: Terraform Code Validation Checks
 
 on:
+  workflow_dispatch:
+    inputs:
+      tfpath:
+        description: 'TF File Path'     
+        required: false
+        default: 'aws_samples/create_ec2'
+        type: string
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
-
 
 jobs:
   tf_code_check:
@@ -40,11 +45,11 @@ jobs:
         
         echo "** Running Terraform Apply**"
         terraform apply -auto-approve
-      #working-directory: ${{ inputs.tfpath }}
-      working-directory: 'aws_samples/create_ec2'
+      working-directory: ${{ inputs.tfpath }}
+      #working-directory: 'aws_samples/create_ec2'
     - name: Terraform Destroy
       run: |
         echo "** Running Terraform Destroy**"
         terraform destroy -auto-approve
-      #working-directory: ${{ inputs.tfpath }} 
-      working-directory: 'aws_samples/create_ec2'
+      working-directory: ${{ inputs.tfpath }} 
+      #working-directory: 'aws_samples/create_ec2'
