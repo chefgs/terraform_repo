@@ -1,4 +1,4 @@
-name: Terraform Code Validation Checks
+name: Terraform Workflow
 
 on:
   workflow_dispatch:
@@ -8,6 +8,8 @@ on:
         required: false
         default: 'aws_samples/create_ec2'
         type: string
+  pull_request: 
+  push:
 
 jobs:
   tf_code_check:
