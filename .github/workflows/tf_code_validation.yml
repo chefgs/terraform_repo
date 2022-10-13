@@ -1,0 +1,57 @@
+name: Terraform Workflow
+
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      tfpath:
+        description: 'TF File Path'     
+        required: false
+        default: 'aws_samples/create_ec2'
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  tf_code_check:
+    name: Terraform Validation and Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2.5.0
+    
+
+    - name: Configure AWS Credentials Action For GitHub Actions
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2 
+    - name: Setup Terraform CLI
+      uses: hashicorp/setup-terraform@v2.0.2
+
+    - name: Terraform init, plan and apply
+      run: |
+        echo `pwd`
+        echo "tfpath ${{ github.event.inputs.tfpath }}"
+        echo "** Running Terraform Init**"
+        terraform init
+        
+        echo "** Running Terraform Validate**"
+        terraform validate
+        
+        echo "** Running Terraform Plan**"
+        terraform plan
+        
+#        echo "** Running Terraform Apply**"
+#        terraform apply -auto-approve
+      working-directory: ${{ github.event.inputs.tfpath }}
+      #working-directory: 'aws_samples/create_ec2'
+    - name: Terraform Destroy
+      run: |
+        echo "** Running Terraform Destroy**"
+        terraform plan -destroy
+#        terraform destroy -auto-approve
+      working-directory: ${{ github.event.inputs.tfpath }} 
+      #working-directory: 'aws_samples/create_ec2'
