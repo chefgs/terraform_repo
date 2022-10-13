@@ -5,12 +5,13 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch:
+  workflow_call:
     inputs:
-      tf_file_path:
+      tfpath:
         description: 'TF File Path'     
         required: false
         default: 'aws_samples/create_ec2'
+        type: string
 
 
 jobs:
@@ -45,9 +46,9 @@ jobs:
         
         echo "** Running Terraform Apply**"
         terraform apply 
-      working-directory: ../${{ inputs.tf_file_path }}
+      working-directory: ${{ inputs.tfpath }}
     - name: Terraform Destroy
       run: |
         echo "** Running Terraform Destroy**"
         terraform destroy
-      working-directory: ../${{ inputs.tf_file_path }} 
+      working-directory: ${{ inputs.tfpath }} 
