@@ -1,19 +1,13 @@
 name: Terraform Workflow
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
+    # Inputs the workflow accepts.
     inputs:
       tfpath:
         description: 'TF File Path'     
         required: true
         default: 'aws_samples/create_ec2'
-        type: string
 
 jobs:
   tf_code_check:
