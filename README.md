@@ -6,9 +6,9 @@
 - Repo is open for contributions and if you want to contribute please read the **important notice** for contribution guidelines
 
 ## Important Notice
-Read [Contribution Guidelines](./CODE_OF_CONDUCT.md) before contributing to this repository!
+Read [Contribution Guidelines](./CONTRIBUTING.md) before contributing to this repository!
 
-Read GitHub [Code Of Conduct guidelines](./CONTRIBUTING.md) before contributing to this repository!
+Read GitHub [Code Of Conduct guidelines](./CODE_OF_CONDUCT.md)before contributing to this repository!
 
 Feel free to pick up any of the open [Issues](https://github.com/chefgs/terraform_repo/issues) or create new issue using the [template](https://github.com/chefgs/terraform_repo/issues/new/choose)!
 
