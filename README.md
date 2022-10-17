@@ -1,11 +1,17 @@
 ## Terraform Code Repo for Major Cloud Providers and Custom Provider Guide
 
+- [x] [![AWS Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml)
+- [ ] Azure Workflow - ToDo
+- [ ] GCP Workflow - ToDo
+
+
+## Information about this project
 - Idea for this open source repository is to collate the Terraform Resource Creation code for Major Cloud Providers
 - Also it has sample code for *How to develop Terraform Custom Provider*
 - Feel free to explore the repo content, and add :star: or fork if you like the content
 - Repo is open for contributions and if you want to contribute please read the **important notice** for contribution guidelines
 
-## Important Notice
+## Read before you start contributing to this repo
 - Read [Contribution Guidelines](./CONTRIBUTING.md) before contributing to this repository!
 
 - Read GitHub [Code Of Conduct guidelines](./CODE_OF_CONDUCT.md)before contributing to this repository!
