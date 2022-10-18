@@ -14,17 +14,12 @@ variable "region" {
 
 variable "name" {
   type = string
-  default = "maxamVC"
+  default = "terraform"
 }
 
 variable "image" {
   type = string
   default = "ubuntu-18-04-x64"
-}
-
-variable "node_count" {
-  type = string
-  default = "3"
 }
 
 variable "size" {
