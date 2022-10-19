@@ -3,6 +3,7 @@
 - [x] [![AWS Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml)
 - [ ] Azure Workflow - ToDo
 - [ ] GCP Workflow - ToDo
+- [ ] DigitalOcean Workflow - ToDo
 
 
 ## Information about this project
