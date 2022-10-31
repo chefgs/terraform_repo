@@ -1,9 +1,9 @@
-infracloud@saravanan-gnanaguru:~/github/terraform_repo$ terraform login
+$ ~/github/terraform_repo$ terraform login
 Terraform will request an API token for app.terraform.io using your browser.
 
 If login is successful, Terraform will store the token in plain text in
 the following file for use by subsequent commands:
-    /home/infracloud/.terraform.d/credentials.tfrc.json
+    $USER_HOME/.terraform.d/credentials.tfrc.json
 
 Do you want to proceed?
   Only 'yes' will be accepted to confirm.
@@ -25,7 +25,7 @@ Generate a token using your browser, and copy-paste it into this prompt.
 
 Terraform will store the token in plain text in the following file
 for use by subsequent commands:
-    /home/infracloud/.terraform.d/credentials.tfrc.json
+    $USER_HOME/.terraform.d/credentials.tfrc.json
 
 Token for app.terraform.io:
   Enter a value: Opening in existing browser session.
@@ -62,7 +62,7 @@ Retrieved token for user gsaravanan-tf
    $ scripts/setup.sh
 
 
-infracloud@saravanan-gnanaguru:~/github/terraform_repo$ git clone https://github.com/hashicorp/tfc-getting-started.git
+$:~/github/terraform_repo$ git clone https://github.com/hashicorp/tfc-getting-started.git
 Cloning into 'tfc-getting-started'...
 remote: Enumerating objects: 167, done.
 remote: Counting objects: 100% (43/43), done.
@@ -70,8 +70,8 @@ remote: Compressing objects: 100% (16/16), done.
 remote: Total 167 (delta 31), reused 27 (delta 27), pack-reused 124
 Receiving objects: 100% (167/167), 38.55 KiB | 196.00 KiB/s, done.
 Resolving deltas: 100% (77/77), done.
-infracloud@saravanan-gnanaguru:~/github/terraform_repo$ cd tfc-getting-started/
-infracloud@saravanan-gnanaguru:~/github/terraform_repo/tfc-getting-started$ bash scripts/setup.sh 
+$:~/github/terraform_repo$ cd tfc-getting-started/
+$:~/github/terraform_repo/tfc-getting-started$ bash scripts/setup.sh 
 
 
 --------------------------------------------------------------------------
@@ -346,7 +346,7 @@ To see the mock infrastructure you just provisioned and continue exploring
 Terraform Cloud, visit:
 https://app.terraform.io/fake-web-services
 
-infracloud@saravanan-gnanaguru:~/github/terraform_repo/tfc-getting-started$ vi tfc-getting-started.log
+$:~/github/terraform_repo/tfc-getting-started$ vi tfc-getting-started.log
 
 [No write since last change]
 
