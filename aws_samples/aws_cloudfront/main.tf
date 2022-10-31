@@ -38,13 +38,13 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
 
-  enabled = true
+  enabled             = true
   is_ipv6_enabled     = true
   comment             = "Some comment"
   default_root_object = "index.html"
 
   logging_config {
-    bucket = "${aws_s3_bucket.tf_sample_log_s3.bucket}.s3.amazonaws.com"
+    bucket          = "${aws_s3_bucket.tf_sample_log_s3.bucket}.s3.amazonaws.com"
     include_cookies = false
     prefix          = "myprefix"
   }

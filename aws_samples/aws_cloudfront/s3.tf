@@ -1,8 +1,8 @@
 resource "random_string" "random_val" {
-  length           = 4
-  special          = false
+  length  = 4
+  special = false
   #override_special = ".-"
-  upper            = false
+  upper = false
 }
 
 locals {
