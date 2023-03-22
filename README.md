@@ -25,6 +25,13 @@
   - Choose you `branch_name` and Enter your `tf file path` on which you want to run the workflow
   - Check if the workflow is passing or not. Fix the issue in case of failure.
 
+### Good to Have: Create documentation to list down resources/modules/providers/output
+- Please install []`terraform-docs`](https://github.com/terraform-docs/terraform-docs/#what-is-terraform-docs) CLI utility to generate documentation for Terraform Code.
+- After installing the utility, please run the below command to create markdown document
+```
+terraform-docs markdown table --output-file TF_README.md --output-mode inject <your-terraform-code-directory>
+```
+
 ### Note: 
 I've renamed the default branch from `master` to `main`. So If you've cloned my repo locally, then please follow the steps mentioned in [this document](https://dev.to/chefgs/git-101-rename-default-branch-from-master-to-main-5bf4#steps-to-rename-the-other-users-local-repo) to rename your local repo from `master` to `main`
 
