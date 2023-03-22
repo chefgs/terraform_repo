@@ -11,21 +11,30 @@ locals {
 
 resource "aws_s3_bucket" "s3_static_hosting" {
   bucket = local.static_bucket_name
-  acl    = "public-read"
+  force_destroy = true
 
-  website {
-    index_document = "index.html"
-    error_document = "error.html"
+  tags = {
+    Name    = "Website bucket"
+    Purpose = "AWS CDN Static Hosting Bucket"
+  }
+}
+resource "aws_s3_bucket_website_configuration" "s3_static_hosting_website" {
+  bucket = aws_s3_bucket.s3_static_hosting.id
 
-    routing_rules = <<EOF
-[{
-    "Condition": {
-        "KeyPrefixEquals": "docs/"
-    },
-    "Redirect": {
-        "ReplaceKeyPrefixWith": "documents/"
+  index_document {
+    suffix = "index.html"
+  }
+
+  error_document {
+    key = "error.html"
+  }
+
+  routing_rule {
+    condition {
+      key_prefix_equals = "docs/"
     }
-}]
-EOF
+    redirect {
+      replace_key_prefix_with = "documents/"
+    }
   }
 }

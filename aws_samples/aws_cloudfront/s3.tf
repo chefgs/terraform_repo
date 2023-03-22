@@ -12,6 +12,7 @@ locals {
 resource "aws_s3_bucket" "tf_sample_s3" {
   bucket         = local.bucket_name
   hosted_zone_id = aws_route53_zone.tf_sample_r53.id
+  force_destroy = true
 
   tags = {
     Name    = "My bucket"

@@ -31,6 +31,7 @@ No modules.
 | [aws_s3_bucket.s3_static_hosting](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 | [aws_s3_bucket.tf_sample_log_s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 | [aws_s3_bucket.tf_sample_s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
+| [aws_s3_bucket_website_configuration.s3_static_hosting_website](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_website_configuration) | resource |
 | [aws_vpc.tf_sample_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
 | [aws_waf_ipset.ipset](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/waf_ipset) | resource |
 | [aws_waf_rule.wafrule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/waf_rule) | resource |
@@ -50,6 +51,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_cdn_domain_name"></a> [cdn\_domain\_name](#output\_cdn\_domain\_name) | n/a |
 | <a name="output_cdn_r53_hosted_zone_id"></a> [cdn\_r53\_hosted\_zone\_id](#output\_cdn\_r53\_hosted\_zone\_id) | n/a |
 | <a name="output_cdn_s3_domain_name"></a> [cdn\_s3\_domain\_name](#output\_cdn\_s3\_domain\_name) | n/a |
 <!-- END_TF_DOCS -->
