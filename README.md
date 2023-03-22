@@ -31,6 +31,10 @@
 ```
 terraform-docs markdown table --output-file TF_README.md --output-mode inject <your-terraform-code-directory>
 ```
+- Please use below command for generating docs recursively for all the Terraform code modules
+```
+~/go/bin/terraform-docs markdown table --output-file TF_README.md --recursive --recursive-path "<terraform-code-module-path>" --output-mode inject .
+```
 
 ### Note: 
 I've renamed the default branch from `master` to `main`. So If you've cloned my repo locally, then please follow the steps mentioned in [this document](https://dev.to/chefgs/git-101-rename-default-branch-from-master-to-main-5bf4#steps-to-rename-the-other-users-local-repo) to rename your local repo from `master` to `main`
