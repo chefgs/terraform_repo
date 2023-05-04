@@ -26,7 +26,7 @@
   - Check if the workflow is passing or not. Fix the issue in case of failure.
 
 ### Good to Have: Create documentation to list down resources/modules/providers/output
-- Please install []`terraform-docs`](https://github.com/terraform-docs/terraform-docs/#what-is-terraform-docs) CLI utility to generate documentation for Terraform Code.
+- Please install [`terraform-docs`](https://github.com/terraform-docs/terraform-docs/#what-is-terraform-docs) CLI utility to generate documentation for Terraform Code.
 - After installing the utility, please run the below command to create markdown document
 ```
 terraform-docs markdown table --output-file TF_README.md --output-mode inject <your-terraform-code-directory>
