@@ -79,9 +79,8 @@ module "eks" {
   subnet_ids               = module.vpc.private_subnets
   control_plane_subnet_ids = module.vpc.intra_subnets
 
-  # Set the below as false for while creating EKS managed node group. It will be set to True for Self managed node group
-  manage_aws_auth_configmap = false
-  create_aws_auth_configmap = false
+  # Set the below as true while creating EKS managed node group.
+  manage_aws_auth_configmap = true
 
   eks_managed_node_group_defaults = {
     ami_type       = "AL2_x86_64"
