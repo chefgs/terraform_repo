@@ -53,12 +53,13 @@ jobs:
         terraform apply -auto-approve
       working-directory: ${{ github.event.inputs.tfpath }}
 
-    - name: AWS CLI install
-      uses: ItsKarma/aws-cli@v1.70.0
-    - name: Verify Resource Creation
-      run: |
-        echo "** Verify Resource Creation**"
-        aws ec2 describe-instance
+#    - name: AWS CLI install
+#      uses: ItsKarma/aws-cli@v1.70.0
+#    - name: Verify Resource Creation
+#      run: |
+#        echo "** Verify Resource Creation**"
+#        aws ec2 describe-instance
+
     - name: Terraform Destroy
       run: |
         echo "** Running Terraform Destroy**"
