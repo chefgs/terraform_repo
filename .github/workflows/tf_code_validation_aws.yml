@@ -20,19 +20,20 @@ jobs:
 
     if:  ${{ inputs.tfpath }} 
     steps:
-    - uses: actions/checkout@v2.5.0
-    
+    - name: Checkout tf code in runner environment
+      uses: actions/checkout@v3.5.2
 
     - name: Configure AWS Credentials Action For GitHub Actions
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-west-2 
+        aws-region: us-west-2
+
     - name: Setup Terraform CLI
       uses: hashicorp/setup-terraform@v2.0.2
 
-    - name: Terraform init, plan and apply
+    - name: Terraform init and validate
       run: |
         echo `pwd`
         echo "tfpath ${{ github.event.inputs.tfpath }}"
@@ -41,16 +42,25 @@ jobs:
         
         echo "** Running Terraform Validate**"
         terraform validate
-        
+    - name: Terraform plan and apply
+      run: |
+        echo `pwd`
+        echo "tfpath ${{ github.event.inputs.tfpath }}"        
         echo "** Running Terraform Plan**"
         terraform plan
         
-#        echo "** Running Terraform Apply**"
-#        terraform apply -auto-approve
+        echo "** Running Terraform Apply**"
+        terraform apply -auto-approve
       working-directory: ${{ github.event.inputs.tfpath }}
+
+    - name: AWS CLI install
+      uses: ItsKarma/aws-cli@v1.70.0
+    - name: Verify Resource Creation
+      run: |
+        echo "** Verify Resource Creation**"
+        aws ec2 describe-instance
     - name: Terraform Destroy
       run: |
         echo "** Running Terraform Destroy**"
-        terraform plan -destroy
-#        terraform destroy -auto-approve
+        terraform destroy -auto-approve
       working-directory: ${{ github.event.inputs.tfpath }}
