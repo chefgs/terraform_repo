@@ -21,7 +21,7 @@ jobs:
     if:  ${{ inputs.tfpath }} 
     steps:
     - name: Checkout tf code in runner environment
-      uses: actions/checkout@v2.5.0
+      uses: actions/checkout@v3.5.2
 
     - name: Configure AWS Credentials Action For GitHub Actions
       uses: aws-actions/configure-aws-credentials@v1
@@ -42,6 +42,7 @@ jobs:
         
         echo "** Running Terraform Validate**"
         terraform validate
+      working-directory: ${{ github.event.inputs.tfpath }}
     - name: Terraform plan and apply
       run: |
         echo `pwd`
