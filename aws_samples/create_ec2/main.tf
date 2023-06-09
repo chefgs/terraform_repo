@@ -42,11 +42,11 @@ resource "aws_instance" "app_server" {
 }
 
 output "instance_id" {
-  description = "ID of the EC2 instance"
-  value       = aws_instance.app_server.id
+  description = "ID of the EC2 instance(s)"
+  value       = aws_instance.app_server.*.id
 }
 
 output "instance_state" {
-  description = "State of the EC2 instance"
-  value       = aws_instance.app_server.instance_state
+  description = "State of the EC2 instance(s)"
+  value       = aws_instance.app_server.*.instance_state
 }
