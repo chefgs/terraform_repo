@@ -62,7 +62,7 @@ jobs:
     - name: Verify Kubernetes Deployment
       run: |
         echo "** kubectl get deployment **"
-        kubectl get deployment -n ns-created-by-tf
+        kubectl get deployment -n k8s-ns-by-tf
   
     - name: Terraform Destroy
       run: |
