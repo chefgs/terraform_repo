@@ -1,6 +1,7 @@
 ## Terraform Code Repo for Major Cloud Providers and Custom Provider Guide
 
 - [x] [![AWS Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml)
+- [x] [![Kubernetes Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_k8s.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_k8s.yml)
 - [ ] Azure Workflow - ToDo
 - [ ] GCP Workflow - ToDo
 - [ ] DigitalOcean Workflow - ToDo
