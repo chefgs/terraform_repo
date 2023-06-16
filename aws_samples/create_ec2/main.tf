@@ -6,7 +6,7 @@ default = "us-west-2"
 }
 
 variable "instance_count_needed" {
-  default = "true"
+  default = "false"
 }
 
 variable "instance_count" {
