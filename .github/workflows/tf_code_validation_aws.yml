@@ -1,6 +1,7 @@
 name: Terraform AWS Workflow
 
 on:
+  workflow_call:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
