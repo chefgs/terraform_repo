@@ -1,0 +1,62 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+# It is reusable workflow that can be called in other workflows
+
+name: AWS Infra Creation Using in TF Cloud 
+
+on:
+  workflow_call:
+    secrets:
+        TF_API_TOKEN:
+            required: true
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  tfcode_path: tfcloud_samples/amazon_ec2
+
+jobs: 
+  aws_tfc_job:
+    name: Create AWS Infra Using TFC
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout tf code in runner environment
+      uses: actions/checkout@v3.5.2
+
+    # Configure Terraform cloud API token, since we are using Remote backend option of Terraform cloud in AWS code
+    - name: Setup Terraform CLI
+      uses: hashicorp/setup-terraform@v2.0.2
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # Add the AWS Creds as ENV variable in TF Cloud workspace, since the tf run happens in TF Cloud environment
+
+    # Call rest of the Terraform commands
+    - name: Terraform init and validate
+      run: |
+        echo `pwd`
+        echo "** Running Terraform Init**"
+        terraform init
+          
+        echo "** Running Terraform Validate**"
+        terraform validate
+      working-directory: ${{ env.tfcode_path }}
+    - name: Terraform plan and apply
+      run: |
+        echo `pwd`   
+        echo "** Running Terraform Plan**"
+        terraform plan
+          
+        echo "** Running Terraform Apply**"
+        terraform apply -auto-approve
+      working-directory: ${{ env.tfcode_path }}
+  
+    - name: Terraform Destroy
+      run: |
+        echo "** Running Terraform Destroy**"
+        terraform destroy -auto-approve
+      working-directory: ${{ env.tfcode_path }}
