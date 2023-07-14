@@ -14,6 +14,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  tfcode_path: tfcloud_samples/amazon_ec2
+
 jobs: 
   aws_tfc_job:
     name: Create AWS Infra Using TFC
@@ -41,7 +44,7 @@ jobs:
           
         echo "** Running Terraform Validate**"
         terraform validate
-      working-directory: aws_samples/create_ec2
+      working-directory: "$tfcode_path"
     - name: Terraform plan and apply
       run: |
         echo `pwd`   
@@ -50,10 +53,10 @@ jobs:
           
         echo "** Running Terraform Apply**"
         terraform apply -auto-approve
-      working-directory: aws_samples/create_ec2
+      working-directory: "$tfcode_path"
   
     - name: Terraform Destroy
       run: |
         echo "** Running Terraform Destroy**"
         terraform destroy -auto-approve
-      working-directory: aws_samples/create_ec2
+      working-directory: "$tfcode_path"
