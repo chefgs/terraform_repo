@@ -10,7 +10,7 @@ on:
         TF_API_TOKEN:
             required: true
   push:
-    branches: [ "*" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
