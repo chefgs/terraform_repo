@@ -56,7 +56,7 @@ module "ec2_instances" {
   source = "git@github.com:chefgs/terraform_repo.git"
   # source = "../../aws_samples/aws_web_tier"
 
-  region = "us-west-2"
+  # region = "us-west-2"
 }
 
 # Output Block
