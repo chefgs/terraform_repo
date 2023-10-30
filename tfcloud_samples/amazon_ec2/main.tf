@@ -53,8 +53,8 @@ resource "aws_instance" "app_server" {
 }
 
 module "ec2_instances" {
-  source = "git@github.com:chefgs/terraform_repo.git"
-  # source = "../../aws_samples/aws_web_tier"
+  # source = "git@github.com:chefgs/terraform_repo.git"
+  source = "../modules/aws_two_tier"
 
   # region = "us-west-2"
 }
