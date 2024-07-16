@@ -13,6 +13,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 env:
   tfcode_path: tfcloud_samples/amazon_ec2
@@ -35,7 +36,7 @@ jobs:
 
     # Add the AWS Creds as ENV variable in TF Cloud workspace, since the tf run happens in TF Cloud environment
 
-    # Call rest of the Terraform commands
+    # Invoke the Terraform commands
     - name: Terraform init and validate
       run: |
         echo `pwd`
@@ -45,18 +46,44 @@ jobs:
         echo "** Running Terraform Validate**"
         terraform validate
       working-directory: ${{ env.tfcode_path }}
-    - name: Terraform plan and apply
+
+    - name: Terraform Plan
       run: |
-        echo `pwd`   
         echo "** Running Terraform Plan**"
-        terraform plan
-          
-        echo "** Running Terraform Apply**"
-        terraform apply -auto-approve
+        terraform plan -out=tfplan
       working-directory: ${{ env.tfcode_path }}
   
-    - name: Terraform Destroy
-      run: |
-        echo "** Running Terraform Destroy**"
-        terraform destroy -auto-approve
-      working-directory: ${{ env.tfcode_path }}
+    - name: Upload Terraform Plan
+      uses: actions/upload-artifact@v2
+      with:
+        name: terraform-plan
+        path: ${{ env.tfcode_path }}/tfplan
+
+  # Once the user verifies the Terraform Plan, the user can run the Terraform Apply and Destroy commands
+  apply_terraform_plan:
+      needs: aws_tfc_job
+      if: github.event_name == 'workflow_dispatch'
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v3.5.2
+      - name: Setup Terraform CLI
+        uses: hashicorp/setup-terraform@v2.0.2
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      - name: Download Terraform Plan
+        uses: actions/download-artifact@v2
+        with:
+          name: terraform-plan
+          path: ${{ env.tfcode_path }}
+      - name: Terraform Apply
+        run: |
+          echo "** Running Terraform Apply**"
+          terraform apply -auto-approve tfplan
+        working-directory: ${{ env.tfcode_path }}
+  
+      - name: Terraform Destroy
+        run: |
+          echo "** Running Terraform Destroy**"
+          terraform destroy -auto-approve
+        working-directory: ${{ env.tfcode_path }}
