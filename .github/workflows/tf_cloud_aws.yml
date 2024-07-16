@@ -50,13 +50,8 @@ jobs:
     - name: Terraform Plan
       run: |
         echo "** Running Terraform Plan**"
-        terraform plan -out=tfplan
-      working-directory: ${{ env.tfcode_path }}
-  
-    - name: Show Terraform Plan
-      run: |
-        echo "** Showing Terraform Plan**"
-        terraform show -json "tfplan" | jq > tfplan.json
+        # terraform plan -out=tfplan
+        terraform plan
       working-directory: ${{ env.tfcode_path }}
 
     - name: Upload Terraform Plan
