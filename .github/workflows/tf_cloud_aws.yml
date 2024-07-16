@@ -53,6 +53,12 @@ jobs:
         terraform plan -out=tfplan
       working-directory: ${{ env.tfcode_path }}
   
+    - name: Show Terraform Plan
+      run: |
+        echo "** Showing Terraform Plan**"
+        terraform show -json "tfplan" | jq > tfplan.json
+      working-directory: ${{ env.tfcode_path }}
+
     - name: Upload Terraform Plan
       uses: actions/upload-artifact@v2
       with:
