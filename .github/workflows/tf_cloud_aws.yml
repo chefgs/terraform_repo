@@ -53,12 +53,6 @@ jobs:
         terraform plan
       working-directory: ${{ env.tfcode_path }}
 
-    - name: Upload Terraform Plan
-      uses: actions/upload-artifact@v2
-      with:
-        name: terraform-plan
-        path: ${{ env.tfcode_path }}/tfplan
-
   # Once the user verifies the Terraform Plan, the user can run the Terraform Apply and Destroy commands
   apply_terraform_plan:
       needs: aws_tfc_job
@@ -71,11 +65,6 @@ jobs:
         uses: hashicorp/setup-terraform@v2.0.2
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-      - name: Download Terraform Plan
-        uses: actions/download-artifact@v2
-        with:
-          name: terraform-plan
-          path: ${{ env.tfcode_path }}
       - name: Terraform Apply
         run: |
           echo "** Running Terraform Apply**"
