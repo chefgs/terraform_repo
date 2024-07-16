@@ -68,7 +68,7 @@ jobs:
       - name: Terraform Apply
         run: |
           echo "** Running Terraform Apply**"
-          terraform apply -auto-approve tfplan
+          terraform apply -auto-approve
         working-directory: ${{ env.tfcode_path }}
   
       - name: Terraform Destroy
