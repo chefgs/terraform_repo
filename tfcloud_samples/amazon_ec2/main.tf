@@ -27,12 +27,6 @@ terraform {
       name = "example-workspace"
     }
   }
-  cloud {
-    organization = "gsaravanan-tf"
-    workspaces {
-      name = "example-workspace"
-    }
-  }
 }
 
 # Provider block declares the provider on which the infra will be created
