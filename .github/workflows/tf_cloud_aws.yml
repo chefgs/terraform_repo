@@ -18,6 +18,7 @@ env:
   tfcode_path: tfcloud_samples/amazon_ec2
   tfc_organisation: gsaravanan-tf
   tfc_hostname: app.terraform.io
+  tfc_workspace: example-workspace
 
 jobs: 
   aws_tfc_job:
@@ -60,7 +61,7 @@ jobs:
       uses: hashicorp/tfc-workflows-github/actions/create-run@v1.3.0
       id: run
       with:
-        workspace: "my-workspace"
+        workspace: ${{ env.tfc_workspace }}
         plan_only: true
         message: "Plan Run from GitHub Actions"
         ## Can specify hostname,token,organization as direct inputs
