@@ -17,6 +17,7 @@ on:
 env:
   tfcode_path: tfcloud_samples/amazon_ec2
   tfc_organisation: gsaravanan-tf
+  tfc_hostname: app.terraform.io
 
 jobs: 
   aws_tfc_job:
@@ -59,6 +60,7 @@ jobs:
       uses: hashicorp/tfc-workflows-github/actions/plan-output@v1.3.0
       id: plan-output
       with:
+        hostname: ${{ env.tfc_hostname }}
         token: ${{ secrets.TF_API_TOKEN }}
         organization: ${{ env.tfc_organisation }}
         plan: ${{ steps.tfplan.outputs.plan_id }}
