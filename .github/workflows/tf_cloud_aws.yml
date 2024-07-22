@@ -47,10 +47,10 @@ jobs:
       working-directory: ${{ env.tfcode_path }}
 
     - name: Terraform Plan
-      id: plan
+      id: tfplan
       run: |
         echo "** Running Terraform Plan**"
-        terraform plan -out=tfplan
+        terraform plan
         # echo "::set-output name=plan_id::tfplan"
       working-directory: ${{ env.tfcode_path }}
 
@@ -58,7 +58,7 @@ jobs:
       uses: hashicorp/tfc-workflows-github/actions/plan-output@v1.3.0
       id: plan-output
       with:
-        plan: ${{ steps.plan.outputs.plan_id }}
+        plan: ${{ steps.tfplan.outputs.plan_id }}
     
     - name: Reference Plan Output
       run: |
