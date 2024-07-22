@@ -48,13 +48,25 @@ jobs:
         terraform validate
       working-directory: ${{ env.tfcode_path }}
 
+    # - name: Terraform Plan
+    #   id: tfplan
+    #   run: |
+    #     echo "** Running Terraform Plan**"
+    #     terraform plan
+    #     # echo "::set-output name=plan_id::tfplan"
+    #   working-directory: ${{ env.tfcode_path }}
+
     - name: Terraform Plan
-      id: tfplan
-      run: |
-        echo "** Running Terraform Plan**"
-        terraform plan
-        # echo "::set-output name=plan_id::tfplan"
-      working-directory: ${{ env.tfcode_path }}
+      uses: hashicorp/tfc-workflows-github/actions/create-run@v1.3.0
+      id: run
+      with:
+        workspace: "my-workspace"
+        plan_only: true
+        message: "Plan Run from GitHub Actions"
+        ## Can specify hostname,token,organization as direct inputs
+        hostname: ${{ env.tfc_hostname }}
+        token: ${{ secrets.TF_API_TOKEN }}
+        organization: ${{ env.tfc_organisation }}
 
     - name: Terraform Plan Output
       uses: hashicorp/tfc-workflows-github/actions/plan-output@v1.3.0
@@ -63,7 +75,7 @@ jobs:
         hostname: ${{ env.tfc_hostname }}
         token: ${{ secrets.TF_API_TOKEN }}
         organization: ${{ env.tfc_organisation }}
-        plan: ${{ steps.tfplan.outputs.plan_id }}
+        plan: ${{ steps.run.outputs.plan_id }}
     
     - name: Reference Plan Output
       run: |
