@@ -141,6 +141,239 @@ chmod +x package_terraform.sh
 This script will create a ZIP file containing all our Terraform configuration files. we can then use this ZIP file in our CI/CD pipeline, share it with our team, or keep it for versioning purposes.
 
 ### Notes:
+
 - Ensure we do not include any sensitive information (e.g., `terraform.tfstate`, `*.tfvars` with sensitive defaults) in the ZIP file. Use environment variables or CI/CD pipeline secrets to handle sensitive data.
 - Adjust the `PROJECT_DIR` and `BUILD_DIR` variables in the script according to our project's directory structure.
 - This example uses ZIP for packaging, but we can use other formats (e.g., tar) depending on our needs or environment.
+
+## Terraform GitHub Actions Best Practice FAQs
+
+### Q : How to configure backend in tfc workspace for different environments?
+
+To configure the backend for a Terraform Cloud (TFC) workspace, you typically use the Terraform configuration files to specify the backend details. Terraform Cloud acts as the backend, and you need to configure your Terraform files to use the `remote` backend, pointing to your TFC workspace. Here's how you can do it step-by-step:
+
+#### Step 1: Define the Terraform Backend
+
+In your Terraform configuration (`main.tf` or another `.tf` file), define the `backend` block to use Terraform Cloud. You'll specify the organization name and the workspace name. Replace `your_organization` and `your_workspace` with your actual Terraform Cloud organization and workspace names.
+
+```hcl
+terraform {
+  backend "remote" {
+    organization = "your_organization"
+
+    workspaces {
+      name = "your_workspace"
+    }
+  }
+}
+```
+
+#### Step 2: Initialize Terraform
+
+Run `terraform init` to initialize the Terraform configuration. This command will set up the Terraform Cloud backend, among other things. Make sure you have Terraform CLI installed and you are logged into Terraform Cloud via the CLI.
+
+```bash
+terraform init
+```
+
+#### Step 3: Authenticate with Terraform Cloud
+
+Ensure you're authenticated with Terraform Cloud. If you're using the Terraform CLI, you can log in to Terraform Cloud using the following command:
+
+```bash
+terraform login
+```
+
+This command generates a token and stores it locally, allowing Terraform commands to interact with your Terraform Cloud workspace.
+
+#### Step 4: Configure Workspace Variables in Terraform Cloud
+
+Terraform Cloud workspaces support setting variables that can be used within your Terraform configuration. You can set these variables in the TFC UI under your workspace settings:
+
+- **Terraform Variables**: Used for variables within your Terraform configuration.
+- **Environment Variables**: Used for setting environment variables that Terraform or provider plugins will use.
+
+#### Step 5: Plan and Apply
+
+With the backend configured, you can now use Terraform as usual to plan and apply your configurations. Terraform Cloud will automatically store your state and run plans and applies according to the settings in your workspace.
+
+```bash
+terraform plan
+terraform apply
+```
+
+#### Additional Tips
+
+- **Workspaces for Different Environments**: Consider using separate workspaces for different environments (e.g., production, staging). This approach isolates state and variables for each environment.
+- **Version Control Integration**: Terraform Cloud can integrate with your VCS (e.g., GitHub, GitLab). This allows for automatic triggering of Terraform plans and applies based on code changes.
+- **Review Terraform Cloud Documentation**: Terraform Cloud offers many features like remote operations, team access controls, and more. Review the [official documentation](https://www.terraform.io/cloud-docs) for detailed guidance on leveraging these features.
+
+By following these steps, you can configure and use a Terraform Cloud workspace as the backend for your Terraform configurations, leveraging TFC's capabilities for state management, collaboration, and automation.
+
+
+### Q: how do I change the backend if I am running this GitHub Actions workflow for nonprod versus prod?
+
+To change the Terraform backend configuration based on whether you are running a GitHub Actions workflow for a non-production or production environment, you can use environment variables and conditional logic within your workflow. This approach allows you to dynamically set backend configurations based on the context of the workflow run.
+
+Here's a step-by-step guide on how to achieve this:
+
+#### 1. **Define Environment Variables**: 
+
+Use GitHub Actions secrets to store environment-specific backend configurations. For example, you might have `TF_BACKEND_CONFIG_NONPROD` and `TF_BACKEND_CONFIG_PROD` as secrets containing the backend configuration details for non-production and production environments, respectively.
+
+#### 2. **Modify the Workflow to Use Conditional Logic**: 
+
+In your workflow, use conditional logic to set the backend configuration based on the trigger or inputs to the workflow. You can use the `workflow_dispatch` event to manually trigger workflows and include an input that specifies the environment.
+
+#### 3. **Use a Script to Configure the Backend**: 
+
+Before running Terraform commands, use a script step to dynamically generate the backend configuration file based on the specified environment.
+
+Here's an example GitHub Actions workflow that demonstrates this approach:
+
+```yaml
+name: Terraform Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment (prod or nonprod)'
+        required: true
+        default: 'nonprod'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+
+    - name: Configure Backend
+      run: |
+        if [ "${{ github.event.inputs.environment }}" = "prod" ]; then
+          echo "${{ secrets.TF_BACKEND_CONFIG_PROD }}" > backend.tfvars
+        else
+          echo "${{ secrets.TF_BACKEND_CONFIG_NONPROD }}" > backend.tfvars
+        fi
+
+    - name: Terraform Init
+      run: terraform init -backend-config=backend.tfvars
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+```
+
+In this example:
+
+- The workflow is manually triggered with an `environment` input to specify the target environment (`prod` or `nonprod`).
+- The "Configure Backend" step dynamically creates a `backend.tfvars` file with the backend configuration based on the specified environment. This configuration is pulled from the GitHub Actions secrets.
+- Terraform commands use the generated `backend.tfvars` for initializing and applying configurations.
+
+**Important**: Ensure that your backend configurations stored in GitHub Secrets are secure and have limited access. This approach allows you to maintain different backend configurations for different environments without hardcoding sensitive information in your workflow files.
+
+
+### Q : How to use workflow dispatch on specific branch
+
+To use the `workflow_dispatch` event to trigger a GitHub Actions workflow on a specific branch, you specify the branch or branches you want the workflow to run on under the `jobs.<job_id>.runs-on` field for job execution environment, and use the `ref` input under `workflow_dispatch` to specify the branch you want to trigger the workflow on. However, it's important to note that the `workflow_dispatch` event itself does not restrict which branch the workflow is triggered on; instead, it allows you to manually trigger the workflow from GitHub's UI or via the GitHub API. The branch restriction is applied at the job level within the workflow.
+
+Here's how you can set up a workflow with `workflow_dispatch` that is intended to run on a specific branch when manually triggered:
+
+```yaml
+name: Manual Workflow Dispatch Example
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_branch:
+        description: 'Branch to run the workflow on'
+        required: true
+        default: 'main' # Default branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.inputs.target_branch }}
+    - name: Run a script
+      run: |
+        echo "Workflow running on branch ${{ github.event.inputs.target_branch }}"
+```
+
+In this example, when you trigger the workflow manually, you can specify the branch you want to run the workflow on by setting the `target_branch` input. The workflow will check out the repository at the specified branch using the `actions/checkout@v2` action with the `ref` input set to the branch name provided by the user.
+
+This approach provides flexibility in specifying the branch at the time of triggering the workflow. Remember, the actual execution of jobs and steps is not restricted by the branch unless you explicitly configure it to be so, as shown in the example.
+
+### Q : What is the best practice for running terraform using "on" keyword. Which branch needs to be triggered automatically, and which branch needs manual trigger
+
+When using Terraform in a CI/CD pipeline with GitHub Actions, best practices for triggering workflows with the `on` keyword depend on your development workflow, branching strategy, and how you manage your infrastructure changes. Here's a general approach that aligns with common practices:
+
+### Main or Production Branch (Automated Trigger)
+
+- **Branch**: Typically, `main` or `production`.
+
+- **Trigger**: Automated triggers are used for this branch to apply changes to production infrastructure or a staging environment that mirrors production closely. This ensures that changes are automatically deployed once they are fully tested and merged into the main branch.
+
+- **Workflow Event**: `push` or `pull_request` for continuous integration, ensuring that changes are tested before they are merged.
+
+```yaml
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+```
+
+### Development or Feature Branches (Manual Trigger)
+
+- **Branch**: Development, feature, or any non-production branches.
+
+- **Trigger**: Manual triggers are useful here to allow developers or operations teams to plan and apply Terraform changes in a controlled manner, ensuring that changes can be reviewed and applied when necessary without automatically affecting live infrastructure.
+
+- **Workflow Event**: `workflow_dispatch` allows for manual execution, providing flexibility to run Terraform plans and applies on demand.
+
+```yaml
+on:
+  workflow_dispatch:
+    branches:
+      - develop
+      - feature/**
+```
+
+### Combining Both Approaches
+In practice, you might combine both automated and manual triggers in your GitHub Actions workflow to accommodate different stages of your development and deployment pipeline.
+
+```yaml
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    branches:
+      - develop
+      - feature/**
+```
+
+### Best Practices Summary:
+
+- **Automate Testing and Deployment to Main/Production**: Automate as much of the testing and deployment process as possible for your main or production branch to streamline your workflow and reduce human error.
+
+- **Use Manual Triggers for Development and Features**: Utilize manual triggers for development and feature branches to provide control over when and how changes are applied, allowing for detailed review and planning.
+
+- **Branch Protection Rules**: Implement branch protection rules for your main or production branch to require pull request reviews, status checks, and more before merging.
+
+- **Terraform State Management**: Ensure your Terraform state is securely managed and backed up. Consider using Terraform Cloud or a similar service for state management, especially when working in a team environment.
+
+- **Review and Approval Process**: Incorporate a review and approval process for infrastructure changes, especially for those affecting production environments.
+
+Adapting these practices to fit your team's workflow and the specifics of your infrastructure will help maintain a balance between agility and stability in your infrastructure management process.
