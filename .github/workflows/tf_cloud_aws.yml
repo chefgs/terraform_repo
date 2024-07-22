@@ -47,11 +47,26 @@ jobs:
       working-directory: ${{ env.tfcode_path }}
 
     - name: Terraform Plan
+      id: plan
       run: |
         echo "** Running Terraform Plan**"
-        # terraform plan -out=tfplan
-        terraform plan
+        terraform plan -out=tfplan
+        # echo "::set-output name=plan_id::tfplan"
       working-directory: ${{ env.tfcode_path }}
+
+    - name: Terraform Plan Output
+      uses: hashicorp/tfc-workflows-github/actions/plan-output@v1.3.0
+      id: plan-output
+      with:
+        plan: ${{ steps.plan.outputs.plan_id }}
+    
+    - name: Reference Plan Output
+      run: |
+        echo "Plan status: ${{ steps.plan-output.outputs.plan_status }}"
+        echo "Resources to Add: ${{ steps.plan-output.outputs.add }}"
+        echo "Resources to Change: ${{ steps.plan-output.outputs.change }}"
+        echo "Resources to Destroy: ${{ steps.plan-output.outputs.destroy }}"
+    
 
   # Once the user verifies the Terraform Plan, the user can run the Terraform Apply and Destroy commands
   apply_terraform_plan:
