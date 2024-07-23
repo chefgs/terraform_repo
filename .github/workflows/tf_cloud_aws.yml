@@ -4,7 +4,6 @@
 name: AWS Infra Creation Using in TF Cloud 
 
 on:
-  workflow_dispatch:
   workflow_call:
     secrets:
         TF_API_TOKEN:
@@ -13,11 +12,12 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 env:
   tfcode_path: tfcloud_samples/amazon_ec2
-  tfc_organisation: gsaravanan-tf
   tfc_hostname: app.terraform.io
+  tfc_organisation: gsaravanan-tf
   tfc_workspace: example-workspace
 
 jobs: 
