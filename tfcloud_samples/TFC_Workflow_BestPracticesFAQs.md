@@ -1,4 +1,9 @@
-# Best Practices to handle production and non-production Terraform automation using GitHub Actions workflows
+Best Practices and FAQs
+=======================
+
+As we explore the Terraform Cloud automation using GitHub Actions workflow, here are some most frequently asked questions and best practices.
+
+# Best Practices to Handle Production and Non-Production Terraform automation using GitHub Actions Workflows
 
 To handle production and non-production Terraform automation using GitHub Actions workflows efficiently and securely, we can adopt a strategy that incorporates environment-specific configurations, manual approvals for production, and automated flows for non-production. Here's a step-by-step strategy:
 
