@@ -2,25 +2,25 @@
 
 To handle production and non-production Terraform automation using GitHub Actions workflows efficiently and securely, we can adopt a strategy that incorporates environment-specific configurations, manual approvals for production, and automated flows for non-production. Here's a step-by-step strategy:
 
-1. Environment Configuration
+## 1. Environment Configuration
 
 - Use GitHub Environments: Define GitHub environments for production and non-production. Each environment can have its own set of secrets and protection rules.
 - Environment-specific Secrets: Store environment-specific secrets (e.g., TF_API_TOKEN, AWS credentials) in GitHub Secrets at the environment level.
 
-2. Workflow Structure
+## 2. Workflow Structure
 
 - Split our workflow into reusable parts using jobs and workflow_call events, allowing for code reuse across different environments and scenarios.
 
-3. Terraform Workspaces
+## 3. Terraform Workspaces
 
 - Utilize Terraform workspaces to manage state files separately for each environment. This isolates state and makes it easier to manage changes across environments.
 
-4. Manual Approvals for Production
+## 4. Manual Approvals for Production
 
 - Manual Trigger for Production: Use the workflow_dispatch event or manual approvals in GitHub environments for production deployments. This ensures that changes are reviewed before being applied.
 - Automated Flows for Non-Production: Allow automated execution for non-production environments to speed up development cycles.
 
-5. Environment-specific Workflow Runs
+## 5. Environment-specific Workflow Runs
 
 - Conditional Steps: Use conditions in steps or jobs to differentiate between production and non-production actions. For example, use `if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'` for production-specific steps.
 - Separate Workflows or Jobs: Consider having separate workflows or jobs for production and non-production, especially if the processes differ significantly.
@@ -28,10 +28,10 @@ To handle production and non-production Terraform automation using GitHub Action
 ```yaml
 environments:
   production:
- protection_rules:
+   protection_rules:
    required_reviewers:
-  - username1
-  - username2
+    - username1
+    - username2
 
 jobs:
   plan:
@@ -52,16 +52,16 @@ jobs:
     # Add other steps as necessary
 ```
 
-6. Code Review and Pull Requests
+## 6. Code Review and Pull Requests
 
 - Pull Request Reviews: Require pull request reviews for changes to Terraform files, ensuring that changes are vetted before being merged into the main branch.
 - Branch Protection Rules: Implement branch protection rules for the main branch to prevent direct pushes and ensure that changes go through a pull request.
 
-7. Infrastructure as Code (IaC) Scanning
+## 7. Infrastructure as Code (IaC) Scanning
 
 - Integrate IaC Scanning: Use tools like tfsec, checkov, or terrascan in our workflow to automatically scan Terraform code for best practices and security vulnerabilities.
 
-## Branch naming suggestions
+## 8. Branch naming suggestions
 
 For managing production and non-production environments in a Git workflow, it's crucial to have a clear and consistent naming convention for branches. Here are some recommended branch names:
 
@@ -80,7 +80,7 @@ For non-production environments, wecan use a combination of branch names that re
 - **`release/version`**: Release branches are used to prepare for a new production release. They allow for last-minute dotting of i's and crossing of t's. They are named after the version of the release (e.g., `release/1.0.0`).
 - **`staging` or `qa`**: These branches can be used as pre-production branches where final testing is performed before merging into `main`. They represent the staging or QA environment.
 
-### Branch Naming Tips
+### Branch Naming Summary
 
 - **Consistency**: Stick to a naming convention that is understood by all team members.
 - **Clarity**: The branch name should make it clear what is contained in the branch.
@@ -88,11 +88,9 @@ For non-production environments, wecan use a combination of branch names that re
 
 By following these conventions, wecan maintain a clear and efficient workflow for managing production and non-production code, making it easier for team members to understand the purpose of each branch at a glance.
 
----
-
 ## Conclusion
 
-This strategy ensures that our Terraform automation for production and non-production environments is secure, efficient, and follows best practices. It leverages GitHub's built-in features for environment management, manual approvals, and secret handling, alongside Terraform's capabilities for workspace and state management.
+This above explained strategy ensures that our Terraform automation for production and non-production environments is secure, efficient, and follows best practices. It leverages GitHub's built-in features for environment management, manual approvals, and secret handling, alongside Terraform's capabilities for workspace and state management.
 
 ---
 
