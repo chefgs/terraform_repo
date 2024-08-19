@@ -5,3 +5,8 @@ variable "key_name" {
   default = "your-pem-key-name"
 }
 
+variable "user_data" {
+  description = "filename of userdata file"
+  type = string
+  default = "userdata.sh"
+}

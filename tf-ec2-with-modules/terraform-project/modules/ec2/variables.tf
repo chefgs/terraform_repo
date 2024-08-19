@@ -22,3 +22,8 @@ variable "key_name" {
   description = "value of the key pair"
   type = string
 }
+
+variable "user_data" {
+  description = "filename of userdata file"
+  type = string
+}

@@ -43,4 +43,5 @@ module "ec2" {
   subnet_id         = module.subnet.subnet_id
   security_group_id = module.security_group.security_group_id
   key_name = var.key_name
+  user_data = file("${var.user_data}")
 }
