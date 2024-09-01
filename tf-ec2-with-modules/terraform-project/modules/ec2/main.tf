@@ -1,5 +1,5 @@
 resource "aws_instance" "main" {
-  ami           = var.ami
+  ami           = data.aws_ami.ubuntu_linux.id
   instance_type = var.instance_type
   subnet_id     = var.subnet_id
   security_groups = [var.security_group_id]

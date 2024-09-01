@@ -19,26 +19,9 @@ module "security_group" {
   vpc_id = module.vpc.vpc_id
 }
 
-
-data "aws_ami" "example" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["amazon"]
-}
-
 module "ec2" {
   source            = "./modules/ec2"
-  ami               = data.aws_ami.example.id
+  ami               =  data.aws_ami.ubuntu_linux.id
   instance_type     = "t2.micro"
   subnet_id         = module.subnet.subnet_id
   security_group_id = module.security_group.security_group_id
