@@ -12,7 +12,7 @@ echo "export PATH=\$JAVA_HOME/bin:\$PATH" | sudo tee -a /etc/profile
 source /etc/profile
 
 # Enable the Jenkins repository
-wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
+wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo apt-key add -
 sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
 
 # Update the package index again
