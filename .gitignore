@@ -7,3 +7,12 @@ tfplan*
 
 # Terraform lock file override. We need to add this file to maintain the provider dependencies
 !.terraform.lock.hcl
+
+.DS_Store
+*.swp
+*.bak
+*.tmp
+*.log
+*.out
+*.pid
+*.pid.lock
