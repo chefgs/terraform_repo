@@ -1,0 +1,60 @@
+name: Terraform Kubernetes Workflow New
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      tfpath:
+        description: 'TF Code Path'
+        required: false
+        default: 'kubernetes'
+      action:
+        description: 'Choose Terraform action (plan/apply/destroy)'
+        required: false
+        default: 'plan'
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    env:
+      TFPATH: ${{ github.event.inputs.tfpath || 'kubernetes' }}
+      ACTION: ${{ github.event.inputs.action || 'plan' }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2.5.0
+
+      - name: Setup Minikube
+        uses: medyagh/setup-minikube@v0.0.13
+
+      - name: Setup kubectl
+        uses: Azure/setup-kubectl@v3
+
+      - name: Setup Terraform CLI
+        uses: hashicorp/setup-terraform@v2.0.2
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ${{ env.TFPATH }}
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ${{ env.TFPATH }}
+
+      - name: Terraform Plan/Apply/Destroy
+        run: |
+          if [ "${{ env.ACTION }}" == "plan" ]; then
+            terraform plan
+          elif [ "${{ env.ACTION }}" == "apply" ]; then
+            terraform apply -auto-approve
+          elif [ "${{ env.ACTION }}" == "destroy" ]; then
+            terraform destroy -auto-approve
+          fi
+        working-directory: ${{ env.TFPATH }}
+
+      - name: Verify Kubernetes Deployment
+        if: env.ACTION == 'apply'
+        run: kubectl get deployment -n k8s-ns-by-tf
