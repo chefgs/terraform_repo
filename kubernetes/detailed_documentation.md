@@ -10,6 +10,7 @@
 - [File-by-File Code Overview](#file-by-file-code-overview)
 - [Modules and Resources](#modules-and-resources)
 - [How to Run the Terraform Code](#how-to-run-the-terraform-code)
+- [GitHub Actions CI/CD Workflow](#github-actions-cicd-workflow)
 - [Kubernetes Provider: Configuration & Kubeconfig YAML](#kubernetes-provider-configuration--kubeconfig-yaml)
 - [Kubernetes Provider vs. Cloud-Managed Kubernetes (EKS, AKS, GKE)](#kubernetes-provider-vs-cloud-managed-kubernetes-eks-aks-gke)
 - [Detailed Code Walkthrough](#detailed-code-walkthrough)
@@ -204,6 +205,22 @@ No external modules are used here, but you can refactor into modules for reuse.
    ```sh
    terraform destroy
    ```
+
+---
+
+## GitHub Actions CI/CD Workflow
+
+This repository includes a GitHub Actions workflow that automates the deployment of Terraform-managed Kubernetes resources. This CI/CD pipeline ensures consistent and reliable infrastructure deployments.
+
+### Workflow Features
+
+- **Automated Testing**: Runs on pull requests and pushes to main branch
+- **Manual Triggers**: Can be triggered manually with customizable parameters
+- **Environment Setup**: Automatically configures Minikube, kubectl, and Terraform
+- **Terraform Operations**: Supports plan, apply, and destroy operations
+- **Verification**: Confirms successful deployment with kubectl commands
+
+For detailed information on the workflow, including trigger events, inputs, job structure, and usage examples, see the [Workflow Documentation](workflow_documentation.md).
 
 ---
 
