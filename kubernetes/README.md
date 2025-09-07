@@ -1,31 +1,236 @@
-# Terraform Kubernetes Configuration Explained
 
-This document provides a comprehensive explanation of the Terraform configuration for deploying a Kubernetes application. It breaks down each section of the code to help understand how resources are created and configured.
+# Comprehensive Terraform Kubernetes Directory Documentation
 
 ## Table of Contents
 
-- [Provider Configuration](#provider-configuration)
-- [Variables](#variables)
-- [Namespace Resource](#namespace-resource)
-- [Resource Quota](#resource-quota)
-- [Limit Range](#limit-range)
-- [Deployment Resource](#deployment-resource)
-- [Deployment Specification](#deployment-specification)
-- [Pod Template](#pod-template)
-- [Container Specification](#container-specification)
-- [Resource Limits](#resource-limits-for-container)
-- [Health Checks](#health-checks)
-- [Security Context](#security-context)
-- [Volume Mounts](#volume-mounts)
-- [Volumes Definition](#volumes-definition)
-- [Service Resource](#service-resource)
-- [Outputs](#outputs)
-- [Terraform Variables Files (tfvars)](#terraform-variables-files-tfvars)
-- [Summary](#summary)
+- [What is Infrastructure as Code (IaC)?](#what-is-infrastructure-as-code-iac)
+- [Why Terraform for IaC?](#why-terraform-for-iac)
+- [Introduction to Terraform](#introduction-to-terraform)
+- [Code Structure Overview](#code-structure-overview)
+- [File-by-File Code Overview](#file-by-file-code-overview)
+- [Modules and Resources](#modules-and-resources)
+- [How to Run the Terraform Code](#how-to-run-the-terraform-code)
+- [GitHub Actions CI/CD Workflow](#github-actions-cicd-workflow)
+- [Kubernetes Provider: Configuration & Kubeconfig YAML](#kubernetes-provider-configuration--kubeconfig-yaml)
+- [Kubernetes Provider vs. Cloud-Managed Kubernetes (EKS, AKS, GKE)](#kubernetes-provider-vs-cloud-managed-kubernetes-eks-aks-gke)
+- [Detailed Code Walkthrough](#detailed-code-walkthrough)
+  - [providers.tf](#providerstf)
+  - [variables.tf](#variablestf)
+  - [k8s.tf](#k8stf)
+  - [outputs.tf](#outputstf)
+- [Outputs and Usage](#outputs-and-usage)
+- [References](#references)
 
-## Provider Configuration
+---
 
-```terraform
+## What is Infrastructure as Code (IaC)?
+
+**Infrastructure as Code (IaC)** is a foundational DevOps practice where infrastructure is provisioned and managed through code rather than manual processes. With IaC, you describe and automate the configuration of servers, networks, Kubernetes clusters, and more using machine-readable files. This approach allows for version control, collaboration, rapid scaling, and repeatability.
+
+### Key Principles
+
+- **Declarative or Imperative:** Most modern IaC tools, including Terraform, are declarative—you describe the desired infrastructure state.
+- **Idempotency:** Running the code repeatedly always yields the same infrastructure state.
+- **Versioning:** Use of source/version control (like Git) to track all infrastructure changes.
+- **Automation:** Eliminates repetitive manual work and reduces configuration drift.
+
+### Benefits
+
+- **Consistency** and **repeatability** across environments (dev, test, prod)
+- **Auditability** and **traceability** of changes
+- **Faster** deployments and recovery
+- **Improved collaboration** among teams
+
+---
+
+## Why Terraform for IaC?
+
+Terraform is a leading open-source IaC tool that supports provisioning and managing infrastructure across various cloud providers and platforms, including Kubernetes. Here’s why Terraform is a top choice:
+
+- **Provider Ecosystem:** Manages resources from AWS, Azure, GCP, Kubernetes, and many others.
+- **Declarative Syntax (HCL):** Simple, readable way to describe infrastructure.
+- **Execution Plan:** Shows what will change before making changes.
+- **State Management:** Tracks the current state of infrastructure for safe, incremental updates.
+- **Modularization:** Supports reusable modules for DRY and consistent code.
+- **Community & Extensibility:** Huge ecosystem of modules, providers, and extensions.
+
+---
+
+## Introduction to Terraform
+
+Terraform, developed by HashiCorp, uses the HashiCorp Configuration Language (HCL) to define and provision infrastructure. The standard workflow consists of:
+
+1. **Writing configuration files** to describe your infrastructure requirements.
+2. **Initializing** (`terraform init`) to download providers and prepare the environment.
+3. **Planning** (`terraform plan`) to preview the proposed infrastructure changes.
+4. **Applying** (`terraform apply`) to execute changes and manage resources.
+5. **Storing state** to track and reconcile actual vs. desired infrastructure.
+
+### **Key Concepts:**
+
+- **Providers:** Plugins for interacting with APIs (e.g., Kubernetes, AWS).
+- **Resources:** Objects managed by Terraform (e.g., Kubernetes Deployment).
+- **Modules:** Groups of resources packaged for reuse.
+- **Variables/Outputs:** Parameterize and expose important values.
+- **State:** Local or remote file tracking deployed infrastructure.
+
+---
+
+## Code Structure Overview
+
+This directory contains Terraform code for deploying Kubernetes resources using the Kubernetes provider:
+
+```bash
+kubernetes/
+├── .terraform.lock.hcl   # Provider lock file (auto-generated)
+├── cmds.out              # Example CLI commands or logs (optional)
+├── k8s.tf                # Main resource definitions
+├── outputs.tf            # Outputs after apply
+├── providers.tf          # Provider configuration
+├── variables.tf          # Input variables (parameters)
+├── README.md             # (Optional) Human-readable documentation
+```
+
+Read the full code documentation of [Kubernetes implementaion here](./k8s_tf_implementation.md)
+
+---
+
+## File-by-File Code Overview
+
+### 1. `providers.tf`
+
+- **Purpose:** Configures the required Terraform providers, especially the Kubernetes provider.
+- **Contents:**
+  - Specifies provider source and version.
+  - Configures the Kubernetes provider with `config_path` and `config_context` to use the correct kubeconfig and context.
+
+### 2. `variables.tf`
+
+- **Purpose:** Declares all input variables for the Kubernetes resources.
+- **Contents:**
+  - Variables for namespace, deployment, labels, replica counts, container image, resource requests/limits, environment, and owner.
+  - Each variable includes a description, type, and default value.
+
+### 3. `k8s.tf`
+
+- **Purpose:** Main file for resource definitions.
+- **Contents:**
+  - **Namespace:** Creates and labels a namespace.
+  - **Resource Quota:** Limits total resource usage (CPU, memory, pods).
+  - **Limit Range:** Sets default/request resource limits for containers.
+  - **Deployment:** Deploys a containerized app with security context, probes, and resource settings.
+  - **Service:** Exposes the deployment as a ClusterIP service.
+
+### 4. `outputs.tf`
+
+- **Purpose:** Defines outputs to display after `terraform apply`.
+- **Contents:**
+  - Outputs for namespace name/UID, deployment details, service info (name, cluster IP, ports), resource quotas, pod security, and kubeconfig context.
+
+### 5. `.terraform.lock.hcl`
+
+- **Purpose:** Auto-generated lockfile for provider version pinning.
+- **Contents:**
+  - Not hand-edited. Ensures reproducible provider versions.
+
+### 6. `cmds.out`
+
+- **Purpose:** (Optional) Stores sample CLI commands and outputs.
+- **Contents:**
+  - Not required, but useful for knowledge sharing and troubleshooting.
+
+### 7. `README.md`
+
+- **Purpose:** (Optional) Human-readable documentation.
+- **Contents:**
+  - Project overview, usage, contribution guidelines, etc.
+
+---
+
+## Modules and Resources
+
+### **Modules:**  
+
+No external modules are used here, but you can refactor into modules for reuse.
+
+### **Resources:**
+
+- `kubernetes_namespace`
+- `kubernetes_resource_quota`
+- `kubernetes_limit_range`
+- `kubernetes_deployment`
+- `kubernetes_service`
+
+---
+
+## How to Run the Terraform Code
+
+### Prerequisites
+
+- **Terraform CLI:** [Install Terraform](https://www.terraform.io/downloads)
+- **Kubernetes Cluster:** (Minikube, EKS, AKS, GKE, or any kubeconfig-accessible cluster)
+- **kubectl:** To verify/apply changes.
+- **Kubeconfig:** With access to target cluster.
+
+### Steps
+
+1. **Clone the repo and change directory:**
+
+   ```sh
+   git clone https://github.com/chefgs/terraform_repo.git
+   cd terraform_repo/kubernetes
+   ```
+
+2. **Initialize Terraform:**
+
+   ```sh
+   terraform init
+   ```
+
+3. **(Optional) Customize variables:**  
+   Edit `variables.tf`, use `terraform.tfvars`, or pass with `-var` on the CLI.
+
+4. **Plan the deployment:**
+
+   ```sh
+   terraform plan
+   ```
+
+5. **Apply the configuration:**
+
+   ```sh
+   terraform apply
+   ```
+
+6. **(Optional) Destroy resources:**
+
+   ```sh
+   terraform destroy
+   ```
+
+---
+
+## GitHub Actions CI/CD Workflow
+
+This repository includes a GitHub Actions workflow that automates the deployment of Terraform-managed Kubernetes resources. This CI/CD pipeline ensures consistent and reliable infrastructure deployments.
+
+### Workflow Features
+
+- **Automated Testing**: Runs on pull requests and pushes to main branch
+- **Manual Triggers**: Can be triggered manually with customizable parameters
+- **Environment Setup**: Automatically configures Minikube, kubectl, and Terraform
+- **Terraform Operations**: Supports plan, apply, and destroy operations
+- **Verification**: Confirms successful deployment with kubectl commands
+
+For detailed information on the workflow, including trigger events, inputs, job structure, and usage examples, see the [Workflow Documentation](workflow_documentation.md).
+
+---
+
+## Kubernetes Provider: Configuration & Kubeconfig YAML
+
+### Provider Configuration (`providers.tf`)
+
+```hcl
 terraform {
   required_providers {
     kubernetes = {
@@ -41,646 +246,129 @@ provider "kubernetes" {
 }
 ```
 
-**Explanation:**
+- **config_path:** Path to your kubeconfig file.
+- **config_context:** Cluster context name.
 
-- The `terraform` block specifies the required providers and their versions
-- `hashicorp/kubernetes` is the official Kubernetes provider maintained by HashiCorp
-- Version `2.38.0` pins the provider to a specific version for reproducibility
-- The `provider` block configures how Terraform connects to Kubernetes
-- `config_path` points to the kubeconfig file (default location on most systems)
-- `config_context` specifies which cluster context to use (e.g., minikube, EKS, GKE, AKS)
+### Example Kubeconfig YAML
 
-## Variables
-
-```terraform
-variable "namespace" {
-  description = "The namespace to deploy resources to"
-  type        = string
-  default     = "k8s-ns-by-tf"
-}
-
-variable "environment" {
-  description = "Environment name for labeling and tagging"
-  type        = string
-  default     = "dev"
-}
-
-variable "owner" {
-  description = "Owner of the resources for annotation"
-  type        = string
-  default     = "chefgs"
-}
-
-variable "deployment_name" {
-  description = "Name of the deployment"
-  type        = string
-  default     = "tf-k8s-deploy"
-}
-
-variable "app_label" {
-  description = "Value of the app label"
-  type        = string
-  default     = "nginx"
-}
+```yaml
+apiVersion: v1
+kind: Config
+clusters:
+- name: minikube
+  cluster:
+    server: https://127.0.0.1:32768
+    certificate-authority: /Users/you/.minikube/ca.crt
+contexts:
+- name: minikube
+  context:
+    cluster: minikube
+    user: minikube
+current-context: minikube
+users:
+- name: minikube
+  user:
+    client-certificate: /Users/you/.minikube/client.crt
+    client-key: /Users/you/.minikube/client.key
 ```
 
-**Explanation:**
+**Docs:** [Kubernetes Provider](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs)
 
-- Variables allow for parameterizing the configuration
-- Each variable has a description, type, and optional default value
-- These can be overridden via command line, environment variables, or variable files
-- Using variables makes the configuration more flexible and reusable
-- Variables used throughout the configuration are defined centrally for easier management
+---
 
-## Namespace Resource
+## Kubernetes Provider vs. Cloud-Managed Kubernetes (EKS, AKS, GKE)
 
-```terraform
-resource "kubernetes_namespace" "example" {
-  metadata {
-    name = var.namespace
-    labels = {
-      environment = var.environment
-    }
-    annotations = {
-      owner = var.owner
-    }
-  }
-}
-```
+| Feature             | Kubernetes Provider | EKS/AKS/GKE Providers |
+|---------------------|--------------------|-----------------------|
+| Purpose             | In-cluster resources (Deployment, Service) | Cluster infrastructure (nodes, network) |
+| Cluster Provision   | ❌ (Needs existing cluster) | ✅ (Creates clusters) |
+| Resource Creation   | ✅ (Pods, Services, etc.) | ❌ (Limited to infra) |
+| Kubeconfig Required | ✅                  | Not always            |
+| Platform Scope      | Any K8s cluster    | Cloud-specific        |
 
-**Explanation:**
+**Workflow Example:**
 
-- Creates a Kubernetes namespace (isolated cluster environment)
-- Sets the namespace name from the `namespace` variable (default: "k8s-ns-by-tf")
-- Adds an environment label for organization (default: "dev")
-- Adds an owner annotation for tracking ownership (default: "chefgs")
+1. Use AWS/Azure/GCP provider and EKS/AKS/GKE resource to create a cluster.
+2. Export kubeconfig for the new cluster.
+3. Use Kubernetes provider with this kubeconfig to manage resources inside the cluster.
 
-## Resource Quota
+---
 
-```terraform
-resource "kubernetes_resource_quota" "example" {
-  metadata {
-    name      = "rq-example"
-    namespace = kubernetes_namespace.example.metadata[0].name
-  }
-  spec {
-    hard = {
-      "pods"           = 10
-      "requests.cpu"   = "2"
-      "requests.memory"= "2Gi"
-      "limits.cpu"     = "4"
-      "limits.memory"  = "4Gi"
-    }
-  }
-}
-```
+## Detailed Code Walkthrough
 
-**Explanation:**
+### providers.tf
 
-- Creates resource limits for the namespace to prevent overuse
-- References the namespace created above using `kubernetes_namespace.example.metadata[0].name`
-- Sets hard limits for the namespace:
-  - Maximum 10 pods
-  - CPU request limit of 2 cores total
-  - Memory request limit of 2 GB total
-  - CPU limit ceiling of 4 cores total
-  - Memory limit ceiling of 4 GB total
+- **Purpose:** Specifies required providers and configures the Kubernetes provider.
+- **Details:** Locks version, uses kubeconfig path and context for authentication.
 
-## Limit Range
+### variables.tf
 
-```terraform
-resource "kubernetes_limit_range" "example" {
-  metadata {
-    name      = "lr-example"
-    namespace = kubernetes_namespace.example.metadata[0].name
-  }
-  spec {
-    limit {
-      type = "Container"
-      default = {
-        cpu    = var.resource_limits_cpu
-        memory = var.resource_limits_memory
-      }
-      default_request = {
-        cpu    = var.resource_requests_cpu
-        memory = var.resource_requests_memory
-      }
-    }
-  }
-}
-```
+- **Purpose:** All input variables for parameterizing resources.
+- **Sample Variables:**
+  - `namespace`, `deployment_name`, `app_label`, `replica_count`, `container_image`, `container_name`
+  - Resource requests/limits for CPU/memory
+  - `environment`, `owner`
+- **Usage:** Override with CLI flags or a `terraform.tfvars` file.
 
-**Explanation:**
+### k8s.tf
 
-- Creates default resource constraints for containers in the namespace
-- Sets default limits if not specified in a pod (ceiling):
-  - CPU: 500m (half a core)
-  - Memory: 512Mi
-- Sets default requests if not specified (guaranteed resources):
-  - CPU: 250m (quarter of a core)
-  - Memory: 50Mi
+1. **Namespace**
 
-## Deployment Resource
-
-```terraform
-resource "kubernetes_deployment" "example" {
-  metadata {
-    name      = var.deployment_name
-    namespace = kubernetes_namespace.example.metadata[0].name
-    labels = {
-      app         = var.app_label
-      environment = var.environment
-    }
-    annotations = {
-      owner = var.owner
-    }
-  }
-  
-  # Add lifecycle block to handle recreation without errors
-  lifecycle {
-    create_before_destroy = true
-  }
-```
-
-**Explanation:**
-
-- Creates a Kubernetes deployment (manages Pod replicas)
-- Sets the deployment name to "terraform-example" (from variable)
-- Places it in our created namespace
-- Adds labels for filtering and organization
-- Includes a lifecycle block that ensures a new deployment is created before destroying the old one, helping with zero-downtime updates
-
-## Deployment Specification
-
-```terraform
-  spec {
-    replicas = var.replica_count
-
-    selector {
-      match_labels = {
-        app = var.app_label
-      }
-    }
-```
-
-**Explanation:**
-
-- Sets the number of pod replicas to 2 (from variable)
-- The selector defines which pods the deployment manages (those with the app=MyExampleApp label)
-
-## Pod Template
-
-```terraform
-    template {
+    ```hcl
+    resource "kubernetes_namespace" "example" {
       metadata {
-        labels = {
-          app         = var.app_label
-          environment = var.environment
-        }
-        annotations = {
-          owner = var.owner
-        }
+        name = var.namespace
+        labels = { environment = var.environment }
+        annotations = { owner = var.owner }
       }
-```
-
-**Explanation:**
-
-- Defines the template for pods created by this deployment
-- Adds the same labels and annotations to each pod
-
-## Container Specification
-
-```terraform
-      spec {
-        container {
-          image = var.container_image
-          name  = var.container_name
-          
-          port {
-            container_port = 8080
-          }
-```
-
-**Explanation:**
-
-- Specifies container details for each pod
-- Uses the nginxinc/nginx-unprivileged:1.25-alpine image (from variable)
-- Names the container "example"
-- Explicitly defines that the container listens on port 8080
-
-## Resource Limits for Container
-
-```terraform
-          resources {
-            limits = {
-              cpu    = var.resource_limits_cpu
-              memory = var.resource_limits_memory
-            }
-            requests = {
-              cpu    = var.resource_requests_cpu
-              memory = var.resource_requests_memory
-            }
-          }
-```
-
-**Explanation:**
-
-- Sets resource constraints for the container:
-  - Maximum CPU: 500m (half a core)
-  - Maximum memory: 512Mi
-  - Guaranteed CPU: 250m (quarter of a core)
-  - Guaranteed memory: 50Mi
-
-## Health Checks
-
-```terraform
-          liveness_probe {
-            http_get {
-              path = "/"
-              port = 8080
-            }
-            initial_delay_seconds = 10
-            period_seconds        = 10
-          }
-
-          readiness_probe {
-            http_get {
-              path = "/"
-              port = 8080
-            }
-            initial_delay_seconds = 5
-            period_seconds        = 5
-          }
-```
-
-**Explanation:**
-
-- **Liveness probe**: Checks if the container is running properly
-  - Makes an HTTP GET request to path "/" on port 8080
-  - Waits 10 seconds before first check
-  - Repeats check every 10 seconds
-  - If it fails, Kubernetes restarts the container
-
-- **Readiness probe**: Checks if the container is ready to receive traffic
-  - Makes an HTTP GET request to path "/" on port 8080
-  - Waits 5 seconds before first check
-  - Repeats check every 5 seconds
-  - If it fails, Kubernetes removes the pod from service endpoints
-
-## Security Context
-
-```terraform
-          security_context {
-            run_as_non_root           = true
-            read_only_root_filesystem = true
-          }
-```
-
-**Explanation:**
-
-- Enhances container security:
-  - Forces container to run as a non-root user
-  - Makes the root filesystem read-only (improves security)
-
-## Volume Mounts
-
-```terraform
-          volume_mount {
-            name       = "tmp"
-            mount_path = "/tmp"
-          }
-          
-          volume_mount {
-            name       = "var-cache-nginx"
-            mount_path = "/var/cache/nginx"
-          }
-          
-          volume_mount {
-            name       = "var-run"
-            mount_path = "/var/run"
-          }
-        }
-```
-
-**Explanation:**
-
-- Defines writable areas for the container even with a read-only root filesystem:
-  - `/tmp`: For temporary files
-  - `/var/cache/nginx`: For nginx cache
-  - `/var/run`: For runtime files
-
-## Volumes Definition
-
-```terraform
-        volume {
-          name = "tmp"
-          empty_dir {}
-        }
-        
-        volume {
-          name = "var-cache-nginx"
-          empty_dir {}
-        }
-        
-        volume {
-          name = "var-run"
-          empty_dir {}
-        }
-      }
-```
-
-**Explanation:**
-
-- Creates the actual volume resources:
-  - All three use the `empty_dir` type (ephemeral storage that exists for the pod's lifetime)
-  - When the pod is deleted, these volumes are also deleted
-  - Each volume matches a mount in the container section
-
-## Service Resource
-
-```terraform
-resource "kubernetes_service" "example" {
-  metadata {
-    name      = "${var.deployment_name}-svc"
-    namespace = kubernetes_namespace.example.metadata[0].name
-    labels = {
-      app = var.app_label
     }
-  }
+    ```
 
-  spec {
-    selector = {
-      app = var.app_label
-    }
-    port {
-      port        = 80
-      target_port = 8080
-      protocol    = "TCP"
-    }
-    type = "ClusterIP"
-  }
-}
-```
+2. **Resource Quota & Limit Range**
+    - Enforces namespace-wide resource caps and per-container defaults.
 
-**Explanation:**
+3. **Deployment**
+    - Deploys an app with labels, resource settings, security context, health checks, and volumes.
 
-- Creates a Kubernetes service to expose pods
-- Names it "terraform-example-svc"
-- The selector targets pods with the app=MyExampleApp label
-- Port mapping:
-  - External port: 80 (service exposes on port 80)
-  - Target port: 8080 (routes traffic to port 8080 on the pods)
-- Type "ClusterIP" means the service is only accessible within the cluster
+4. **Service**
+    - Exposes the deployment as a ClusterIP service on port 80.
 
-## Outputs
+### outputs.tf
 
-```terraform
-output "namespace_name" {
-  description = "The name of the created namespace"
-  value       = kubernetes_namespace.example.metadata[0].name
-}
-
-output "namespace_uid" {
-  description = "The UID of the created namespace"
-  value       = kubernetes_namespace.example.metadata[0].uid
-}
-
-output "deployment_name" {
-  description = "The name of the deployment"
-  value       = kubernetes_deployment.example.metadata[0].name
-}
-
-output "service_name" {
-  description = "The name of the service"
-  value       = kubernetes_service.example.metadata[0].name
-}
-
-output "service_cluster_ip" {
-  description = "The cluster IP of the service"
-  value       = kubernetes_service.example.spec[0].cluster_ip
-}
-
-output "service_endpoint" {
-  description = "The service endpoint (cluster_ip:port)"
-  value       = "${kubernetes_service.example.spec[0].cluster_ip}:${kubernetes_service.example.spec[0].port[0].port}"
-}
-```
-
-**Explanation:**
-
-- Outputs provide valuable information after Terraform applies the configuration
-- They can be used by other Terraform configurations, CI/CD pipelines, or displayed to users
-- Defined outputs include:
-  - Namespace name and UID for reference
-  - Deployment name for easier management
-  - Service details including the cluster IP and endpoint for connectivity
-- Outputs can be viewed after applying with `terraform output` command
-- They can be referenced in other modules using the format `module.module_name.output_name`
-
-## Terraform Variables Files (tfvars)
-
-Terraform variable files (commonly named with `.tfvars` extension) allow you to set multiple variable values in a single file. This is especially useful when you have many variables or need different configurations for different environments.
-
-### Sample terraform.tfvars
-
-```terraform
-# terraform.tfvars example
-namespace         = "production-ns"
-environment       = "prod"
-owner             = "ops-team"
-deployment_name   = "production-app"
-app_label         = "backend-api"
-replica_count     = 5
-container_image   = "myapp:1.2.3"
-resource_limits_cpu    = "1000m"
-resource_limits_memory = "1Gi"
-resource_requests_cpu  = "500m"
-resource_requests_memory = "512Mi"
-```
-
-### Using Variable Files
-
-There are several ways to use variable files:
-
-1. **Automatic loading**:
-   - Files named exactly `terraform.tfvars` or `*.auto.tfvars` are automatically loaded
-
-2. **Explicit loading**:
-   - Use the `-var-file` flag with terraform commands:
-   
-   ```bash
-   terraform apply -var-file="prod.tfvars"
-   ```
-
-3. **Environment-specific files**:
-   - Create multiple files for different environments:
-     - `dev.tfvars`
-     - `staging.tfvars`
-     - `prod.tfvars`
-
-**Benefits of Using tfvars Files:**
-
-- **Environment separation**: Different configurations for dev, test, and production
-- **Secret management**: Keep sensitive values out of version control
-- **Collaboration**: Team members can use consistent configurations
-- **Reusability**: Same Terraform code works with different variable sets
-- **Documentation**: Self-documenting way to show which variables are used
-
-**Best Practices:**
-
-- Keep sensitive values in encrypted or gitignored tfvars files
-- Document required variables in README or in variable descriptions
-- Use consistent variable naming conventions
-- Consider using Terraform workspaces with environment-specific tfvars files
-
-## Summary
-
-This Terraform configuration:
-
-1. Creates an isolated namespace with resource limitations
-2. Deploys a nginx web server (unprivileged version) with 2 replicas
-3. Adds proper health checks, security contexts, and writable volumes
-4. Exposes the web server via a service
-
-The configuration follows Kubernetes best practices by:
-
-- Using non-root containers
-- Implementing read-only root filesystems
-- Setting resource limits
-- Adding health checks
-- Using proper labels and annotations
-- Providing a lifecycle block for smooth updates
+- **Purpose:** Outputs after apply.
+- **Examples:**
+  - `namespace_name`, `deployment_name`, `service_name`
+  - `service_cluster_ip`, `service_endpoint`
+  - `pod_security_settings`, `resource_quota_hard`
 
 ---
 
+## Outputs and Usage
 
-## **Creating Kubernetes Clusters: YAML vs Terraform**
+After `terraform apply`, outputs such as:
 
-Comparison for creating Kubernetes YAML vs Terraform for creating a Kubernetes cluster
+- Namespace and deployment names and UIDs
+- Service name, cluster IP, and port
+- Resource quota and container image info
+- Pod security settings
 
-## **1️⃣ Kubernetes YAML Method**
+**Verify with kubectl:**
 
-### **Approach**
-
-* Write raw YAML manifests (`apiVersion`, `kind`, `metadata`, `spec`) to define cluster resources (Deployments, Services, ConfigMaps, etc.).
-* Apply using `kubectl apply -f`.
-
-### **Steps**
-
-1. Install `kubectl` and configure kubeconfig.
-2. Create YAML for cluster components (usually requires a cluster already provisioned by cloud CLI or managed service).
-
-   ```yaml
-   apiVersion: v1
-   kind: Service
-   metadata:
-     name: my-service
-   spec:
-     selector:
-       app: my-app
-     ports:
-       - protocol: TCP
-         port: 80
-         targetPort: 9376
-   ```
-3. Run `kubectl apply -f service.yaml`.
-
-### **Pros**
-
-* Direct control over Kubernetes-native resources.
-* Well-documented, widely adopted, good for learning K8s.
-* Works with Helm for templating and reusability.
-
-### **Cons**
-
-* Cannot provision underlying infra (VPC, nodes, load balancers).
-* State is not managed — config drift if changes applied manually.
-* Harder to reuse across environments (dev, staging, prod).
-* Needs GitOps tools (ArgoCD/Flux) to achieve declarative management at scale.
+```sh
+kubectl get ns
+kubectl get deployment -n <namespace>
+kubectl get svc -n <namespace>
+kubectl describe deployment -n <namespace>
+kubectl get pods -n <namespace>
+```
 
 ---
 
-## **2️⃣ Terraform Method**
+## References
 
-### **Approach**
-
-* Use Terraform to provision both **cloud infra** (EKS, GKE, AKS, networking, storage) and Kubernetes resources.
-* Supports both **Terraform-native Kubernetes resources** and **embedding YAML**.
-
-### **Steps**
-
-1. Write Terraform configuration for cluster creation:
-
-   ```hcl
-   resource "aws_eks_cluster" "example" {
-     name     = "my-eks-cluster"
-     role_arn = aws_iam_role.eks.arn
-     vpc_config {
-       subnet_ids = aws_subnet.public[*].id
-     }
-   }
-   ```
-2. Provision workloads using either:
-
-   * **Terraform-native resources**:
-
-     ```hcl
-     resource "kubernetes_deployment" "nginx" {
-       metadata {
-         name = "nginx"
-       }
-       spec {
-         replicas = 2
-         selector { match_labels = { app = "nginx" } }
-         template {
-           metadata { labels = { app = "nginx" } }
-           spec {
-             container {
-               name  = "nginx"
-               image = "nginx:1.14.2"
-             }
-           }
-         }
-       }
-     }
-     ```
-   * **YAML inside Terraform**:
-
-     ```hcl
-     resource "kubernetes_manifest" "nginx" {
-       manifest = yamldecode(file("${path.module}/nginx-deployment.yaml"))
-     }
-     ```
-3. Run:
-
-   * `terraform init`
-   * `terraform plan`
-   * `terraform apply`
-
-### **Pros**
-
-* End-to-end automation: cluster + networking + storage + workloads.
-* State management → prevents drift.
-* Works across multi-cloud/hybrid environments.
-* Modules → reusable and consistent across teams.
-* CI/CD integration is straightforward.
-
-### **Cons**
-
-* Learning curve (HCL, providers, backend state).
-* Some K8s features may lag in Terraform provider.
-* Extra abstraction compared to direct YAML.
-
----
-
-## **3️⃣ Key Takeaways**
-
-* **Kubernetes YAML** → good for defining and applying workloads inside a cluster you already have.
-* **Terraform** → ideal for provisioning **both the cluster itself and the workloads**, with automation, state management, and consistency.
-
-✅ **Recommendation:**
-
-* Use **Terraform-native resources** if your team is already Terraform-first.
-* Use **YAML inside Terraform** if your team prefers YAML but still wants Terraform’s state and automation.
-* Combine Terraform (infra + cluster) + YAML/Helm (apps) in GitOps workflows for best of both worlds.
-
+- [Terraform Official Docs](https://www.terraform.io/docs/)
+- [Kubernetes Provider](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs)
+- [Kubernetes Official Docs](https://kubernetes.io/)
+- [Provisioning EKS with Terraform](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_cluster)
+- [Provisioning AKS with Terraform](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster)
+- [Provisioning GKE with Terraform](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster)
