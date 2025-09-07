@@ -1,5 +1,15 @@
 ## Terraform Code Repo for Major Cloud Providers and Custom Provider Guide
 
+**Table of Contents:**
+
+- [Project Status](#project-status)
+- [Information About This Project](#information-about-this-project)
+- [Contributing Guidelines](#read-before-you-start-contributing-to-this-repo)
+- [Documentation](#good-to-have-create-documentation-to-list-down-resourcesmodulesproviders-output)
+- [License](#license)
+
+## Project Status
+
 - [x] [![AWS Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml)
 - [x] [![Kubernetes Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_k8s.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_k8s.yml)
 - [ ] Azure Workflow - ToDo
