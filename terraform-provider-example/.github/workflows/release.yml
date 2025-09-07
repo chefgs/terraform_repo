@@ -1,0 +1,37 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.17'
+
+      - name: Install dependencies
+        run: go mod tidy
+
+      - name: Build the provider
+        run: go build -o terraform-provider-example
+
+      - name: Run tests
+        run: go test ./...
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          files: terraform-provider-example
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
