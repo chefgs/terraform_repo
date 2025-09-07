@@ -4,6 +4,8 @@ This document provides a comprehensive explanation of the Terraform configuratio
 
 ## Table of Contents
 
+- [Provider Configuration](#provider-configuration)
+- [Variables](#variables)
 - [Namespace Resource](#namespace-resource)
 - [Resource Quota](#resource-quota)
 - [Limit Range](#limit-range)
@@ -17,7 +19,78 @@ This document provides a comprehensive explanation of the Terraform configuratio
 - [Volume Mounts](#volume-mounts)
 - [Volumes Definition](#volumes-definition)
 - [Service Resource](#service-resource)
+- [Outputs](#outputs)
+- [Terraform Variables Files (tfvars)](#terraform-variables-files-tfvars)
 - [Summary](#summary)
+
+## Provider Configuration
+
+```terraform
+terraform {
+  required_providers {
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.38.0"
+    }
+  }
+}
+
+provider "kubernetes" {
+  config_path    = "~/.kube/config"
+  config_context = "minikube"
+}
+```
+
+**Explanation:**
+
+- The `terraform` block specifies the required providers and their versions
+- `hashicorp/kubernetes` is the official Kubernetes provider maintained by HashiCorp
+- Version `2.38.0` pins the provider to a specific version for reproducibility
+- The `provider` block configures how Terraform connects to Kubernetes
+- `config_path` points to the kubeconfig file (default location on most systems)
+- `config_context` specifies which cluster context to use (e.g., minikube, EKS, GKE, AKS)
+
+## Variables
+
+```terraform
+variable "namespace" {
+  description = "The namespace to deploy resources to"
+  type        = string
+  default     = "k8s-ns-by-tf"
+}
+
+variable "environment" {
+  description = "Environment name for labeling and tagging"
+  type        = string
+  default     = "dev"
+}
+
+variable "owner" {
+  description = "Owner of the resources for annotation"
+  type        = string
+  default     = "chefgs"
+}
+
+variable "deployment_name" {
+  description = "Name of the deployment"
+  type        = string
+  default     = "tf-k8s-deploy"
+}
+
+variable "app_label" {
+  description = "Value of the app label"
+  type        = string
+  default     = "nginx"
+}
+```
+
+**Explanation:**
+
+- Variables allow for parameterizing the configuration
+- Each variable has a description, type, and optional default value
+- These can be overridden via command line, environment variables, or variable files
+- Using variables makes the configuration more flexible and reusable
+- Variables used throughout the configuration are defined centrally for easier management
 
 ## Namespace Resource
 
@@ -358,6 +431,107 @@ resource "kubernetes_service" "example" {
   - External port: 80 (service exposes on port 80)
   - Target port: 8080 (routes traffic to port 8080 on the pods)
 - Type "ClusterIP" means the service is only accessible within the cluster
+
+## Outputs
+
+```terraform
+output "namespace_name" {
+  description = "The name of the created namespace"
+  value       = kubernetes_namespace.example.metadata[0].name
+}
+
+output "namespace_uid" {
+  description = "The UID of the created namespace"
+  value       = kubernetes_namespace.example.metadata[0].uid
+}
+
+output "deployment_name" {
+  description = "The name of the deployment"
+  value       = kubernetes_deployment.example.metadata[0].name
+}
+
+output "service_name" {
+  description = "The name of the service"
+  value       = kubernetes_service.example.metadata[0].name
+}
+
+output "service_cluster_ip" {
+  description = "The cluster IP of the service"
+  value       = kubernetes_service.example.spec[0].cluster_ip
+}
+
+output "service_endpoint" {
+  description = "The service endpoint (cluster_ip:port)"
+  value       = "${kubernetes_service.example.spec[0].cluster_ip}:${kubernetes_service.example.spec[0].port[0].port}"
+}
+```
+
+**Explanation:**
+
+- Outputs provide valuable information after Terraform applies the configuration
+- They can be used by other Terraform configurations, CI/CD pipelines, or displayed to users
+- Defined outputs include:
+  - Namespace name and UID for reference
+  - Deployment name for easier management
+  - Service details including the cluster IP and endpoint for connectivity
+- Outputs can be viewed after applying with `terraform output` command
+- They can be referenced in other modules using the format `module.module_name.output_name`
+
+## Terraform Variables Files (tfvars)
+
+Terraform variable files (commonly named with `.tfvars` extension) allow you to set multiple variable values in a single file. This is especially useful when you have many variables or need different configurations for different environments.
+
+### Sample terraform.tfvars
+
+```terraform
+# terraform.tfvars example
+namespace         = "production-ns"
+environment       = "prod"
+owner             = "ops-team"
+deployment_name   = "production-app"
+app_label         = "backend-api"
+replica_count     = 5
+container_image   = "myapp:1.2.3"
+resource_limits_cpu    = "1000m"
+resource_limits_memory = "1Gi"
+resource_requests_cpu  = "500m"
+resource_requests_memory = "512Mi"
+```
+
+### Using Variable Files
+
+There are several ways to use variable files:
+
+1. **Automatic loading**:
+   - Files named exactly `terraform.tfvars` or `*.auto.tfvars` are automatically loaded
+
+2. **Explicit loading**:
+   - Use the `-var-file` flag with terraform commands:
+   
+   ```bash
+   terraform apply -var-file="prod.tfvars"
+   ```
+
+3. **Environment-specific files**:
+   - Create multiple files for different environments:
+     - `dev.tfvars`
+     - `staging.tfvars`
+     - `prod.tfvars`
+
+**Benefits of Using tfvars Files:**
+
+- **Environment separation**: Different configurations for dev, test, and production
+- **Secret management**: Keep sensitive values out of version control
+- **Collaboration**: Team members can use consistent configurations
+- **Reusability**: Same Terraform code works with different variable sets
+- **Documentation**: Self-documenting way to show which variables are used
+
+**Best Practices:**
+
+- Keep sensitive values in encrypted or gitignored tfvars files
+- Document required variables in README or in variable descriptions
+- Use consistent variable naming conventions
+- Consider using Terraform workspaces with environment-specific tfvars files
 
 ## Summary
 
