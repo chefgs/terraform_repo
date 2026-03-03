@@ -2,9 +2,8 @@
 package main
 
 import (
-        "strings"
+        "fmt"
         "net/http"
-        "log"
         "github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
 
@@ -30,10 +29,9 @@ func resourceServerCreate(d *schema.ResourceData, m interface{}) error {
         d.SetId(uuid_count)
 
         // https://www.uuidtools.com/api/generate/v1/count/uuid_count
-        body := strings.NewReader(uuid_count)
-        resp, err := http.Get("https://www.uuidtools.com/api/generate/v1/count/10")
+        resp, err := http.Get("https://www.uuidtools.com/api/generate/v1/count/" + uuid_count)
         if err != nil {
-                log.Fatal(err)
+                return fmt.Errorf("error fetching UUIDs: %w", err)
         }
         defer resp.Body.Close()
 

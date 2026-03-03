@@ -10,14 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 )
 
-func Provider() *schema.Provider {
-	return &schema.Provider{
-		ResourcesMap: map[string]*schema.Resource{
-			"example_server": resourceServer(),
-		},
-	}
-}
-
 // Ensure the implementation satisfies the expected interfaces
 var (
 	_ provider.Provider = &uuidgenProvider{}
