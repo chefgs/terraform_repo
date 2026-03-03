@@ -64,6 +64,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "sample_s3_lifecycle" {
   }
 }
 
+# Note: Logging to itself in this sample. In production, use a dedicated logging bucket.
 resource "aws_s3_bucket_logging" "sample_s3_logging" {
   bucket        = aws_s3_bucket.sample_s3.id
   target_bucket = aws_s3_bucket.sample_s3.id

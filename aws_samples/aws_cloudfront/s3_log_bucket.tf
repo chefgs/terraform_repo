@@ -61,8 +61,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "tf_sample_log_s3_lifecycle" {
   }
 }
 
+# Note: The log bucket logs to itself. In production, use a dedicated centralized logging account/bucket.
 resource "aws_s3_bucket_logging" "tf_sample_log_s3_logging" {
   bucket        = aws_s3_bucket.tf_sample_log_s3.id
   target_bucket = aws_s3_bucket.tf_sample_log_s3.id
-  target_prefix = "log/"
+  target_prefix = "self-log/"
 }
