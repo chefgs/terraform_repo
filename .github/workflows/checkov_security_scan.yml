@@ -1,0 +1,52 @@
+# Checkov Security Scan for Terraform Code
+# Scans all Terraform configurations in the repository for security and
+# compliance misconfigurations and generates a report with issues.
+
+name: Checkov Terraform Security Scan
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  checkov_scan:
+    name: Checkov Security Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write  # Required to upload SARIF results to GitHub Code Scanning
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.5.2
+
+      - name: Install Checkov
+        run: pip install checkov==3.2.506
+
+      - name: Create reports directory
+        run: mkdir -p reports
+
+      - name: Run Checkov Terraform Security Scan
+        run: |
+          checkov -d . --framework terraform \
+            --output cli --output sarif \
+            --output-file-path console,reports/results.sarif \
+            --soft-fail
+
+      - name: Upload SARIF report to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()  # Upload even if Checkov finds issues
+        with:
+          sarif_file: reports/results.sarif
+          category: checkov-terraform
+
+      - name: Upload Checkov report as workflow artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: checkov-security-report
+          path: reports/results.sarif
+          retention-days: 30
