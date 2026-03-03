@@ -23,6 +23,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3.5.2
 
+      - name: Create reports directory
+        run: mkdir -p reports
+
       - name: Run Checkov Terraform Security Scan
         id: checkov
         uses: bridgecrewio/checkov-action@v12
