@@ -1,0 +1,41 @@
+title: "Terraform Code Repository"
+description: "Open source Terraform code examples for major cloud providers including AWS, Azure, GCP, DigitalOcean, Oracle Cloud, and Kubernetes — with GitHub Actions CI/CD workflows and custom provider guides."
+url: "https://chefgs.github.io"
+baseurl: "/terraform_repo"
+
+remote_theme: pages-themes/cayman@v0.2.0
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+
+author:
+  name: "Saravanan Gnanaguru"
+  url: "https://www.linkedin.com/in/saravanan-gnanaguru-1941a919/"
+
+show_downloads: true
+github:
+  repository_url: "https://github.com/chefgs/terraform_repo"
+
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+
+navigation:
+  - title: Home
+    url: /
+  - title: AWS Samples
+    url: /aws-samples/
+  - title: Kubernetes
+    url: /kubernetes/
+  - title: Cloud Providers
+    url: /cloud-providers/
+  - title: GitHub Actions
+    url: /github-actions/
+  - title: Custom Providers
+    url: /custom-provider/
+  - title: Terraform Cloud
+    url: /terraform-cloud/
