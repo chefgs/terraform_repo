@@ -23,21 +23,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3.5.2
 
+      - name: Install Checkov
+        run: pip install checkov==3.2.506
+
       - name: Create reports directory
         run: mkdir -p reports
 
       - name: Run Checkov Terraform Security Scan
-        id: checkov
-        uses: bridgecrewio/checkov-action@v12
-        with:
-          directory: .
-          framework: terraform
-          # Generate SARIF report for GitHub Code Scanning integration
-          output_format: sarif
-          output_file_path: reports/
-          # Also produce a CLI summary for the workflow log
-          quiet: false
-          soft_fail: true  # Don't fail the workflow; report issues only
+        run: |
+          checkov -d . --framework terraform \
+            --output cli --output sarif \
+            --output-file-path console,reports/results.sarif \
+            --soft-fail
 
       - name: Upload SARIF report to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
