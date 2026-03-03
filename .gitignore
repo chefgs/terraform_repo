@@ -16,3 +16,7 @@ tfplan*
 *.out
 *.pid
 *.pid.lock
+
+# Go build artifacts
+tf_custom_provider
+terraform-provider-example
