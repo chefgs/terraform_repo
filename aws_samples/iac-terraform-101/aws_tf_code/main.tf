@@ -23,7 +23,7 @@ resource "aws_internet_gateway" "igw" {
 resource "aws_subnet" "public_subnet" {
   vpc_id            = aws_vpc.app_vpc.id
   cidr_block        = var.public_subnet_cidr
-  map_public_ip_on_launch = false
+  map_public_ip_on_launch = true
   availability_zone = "us-west-2a"
 
   tags = {

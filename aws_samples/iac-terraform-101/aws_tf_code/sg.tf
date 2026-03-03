@@ -20,11 +20,27 @@ resource "aws_security_group" "sg" {
   }
 
   egress {
-    description      = "Allow all outbound traffic"
+    description      = "Allow HTTPS outbound traffic"
     from_port        = 443
     to_port          = 443
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  egress {
+    description      = "Allow DNS UDP outbound traffic"
+    from_port        = 53
+    to_port          = 53
+    protocol         = "udp"
+    cidr_blocks      = [var.vpc_cidr]
+  }
+
+  egress {
+    description      = "Allow DNS TCP outbound traffic"
+    from_port        = 53
+    to_port          = 53
+    protocol         = "tcp"
+    cidr_blocks      = [var.vpc_cidr]
   }
 
   tags = {

@@ -34,5 +34,6 @@ variable "creds_file" {
 variable "disk_encryption_key" {
   description = "Customer-Supplied Encryption Key for boot disk"
   type        = string
-  default     = ""
+  sensitive   = true
+  default     = null
 }

@@ -80,7 +80,7 @@ resource "aws_elasticsearch_domain" "es" {
 
   encrypt_at_rest {
     enabled    = true
-    kms_key_id = var.kms_key_arn
+    kms_key_id = var.kms_key_arn != "" ? var.kms_key_arn : null
   }
 
   node_to_node_encryption {
@@ -101,21 +101,30 @@ resource "aws_elasticsearch_domain" "es" {
     }
   }
 
-  vpc_options {
-    subnet_ids         = var.subnet_ids
-    security_group_ids = var.security_group_ids
+  dynamic "vpc_options" {
+    for_each = length(var.subnet_ids) > 0 && length(var.security_group_ids) > 0 ? [1] : []
+    content {
+      subnet_ids         = var.subnet_ids
+      security_group_ids = var.security_group_ids
+    }
   }
 
-  log_publishing_options {
-    cloudwatch_log_group_arn = var.cloudwatch_log_group_arn
-    log_type                 = "AUDIT_LOGS"
-    enabled                  = true
+  dynamic "log_publishing_options" {
+    for_each = var.cloudwatch_log_group_arn != "" ? [1] : []
+    content {
+      cloudwatch_log_group_arn = var.cloudwatch_log_group_arn
+      log_type                 = "AUDIT_LOGS"
+      enabled                  = true
+    }
   }
 
-  log_publishing_options {
-    cloudwatch_log_group_arn = var.cloudwatch_log_group_arn
-    log_type                 = "INDEX_SLOW_LOGS"
-    enabled                  = true
+  dynamic "log_publishing_options" {
+    for_each = var.cloudwatch_log_group_arn != "" ? [1] : []
+    content {
+      cloudwatch_log_group_arn = var.cloudwatch_log_group_arn
+      log_type                 = "INDEX_SLOW_LOGS"
+      enabled                  = true
+    }
   }
 
   advanced_options = {

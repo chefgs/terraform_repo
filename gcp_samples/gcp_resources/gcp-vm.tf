@@ -42,7 +42,7 @@ resource "google_compute_instance" "default" {
   metadata = {
     vm = "tf"
     metadata_script_changed  = var.metadata_script_changed
-    block-project-ssh-keys   = true
+    block-project-ssh-keys   = "true"
   }
 
   metadata_startup_script = file(var.metadata_script)

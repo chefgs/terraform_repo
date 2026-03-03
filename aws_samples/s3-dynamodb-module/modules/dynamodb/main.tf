@@ -17,7 +17,7 @@ resource "aws_dynamodb_table" "terraform_state_lock_table" {
 
   server_side_encryption {
     enabled     = true
-    kms_key_arn = var.kms_key_arn
+    kms_key_arn = var.kms_key_arn != "" ? var.kms_key_arn : null
   }
 
   tags = {

@@ -34,6 +34,22 @@ resource "aws_security_group" "main" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  egress {
+    description = "Allow DNS UDP outbound traffic"
+    from_port   = 53
+    to_port     = 53
+    protocol    = "udp"
+    cidr_blocks = var.allowed_cidr_blocks
+  }
+
+  egress {
+    description = "Allow DNS TCP outbound traffic"
+    from_port   = 53
+    to_port     = 53
+    protocol    = "tcp"
+    cidr_blocks = var.allowed_cidr_blocks
+  }
+
   tags = {
     Name = "allow_ssh"
   }

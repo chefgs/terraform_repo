@@ -34,8 +34,6 @@ jobs:
         run: |
           echo "Checking Terraform code formatting..."
           terraform fmt -check -recursive -diff .
-        # Use continue-on-error so fmt issues are reported but don't block validate/checkov
-        continue-on-error: true
 
   # ─────────────────────────────────────────────────────────────────────────
   # Job 2: terraform validate on each changed TF directory (no creds needed)
@@ -101,10 +99,9 @@ jobs:
         with:
           directory: .
           framework: terraform
-          # Soft-fail so results are always reported as annotations even if
-          # some lower-severity checks still fail
-          soft_fail: true
-          output_format: cli
+          soft_fail: false
+          output_format: sarif
+          output_file_path: results.sarif
           # Skip checks that are intentional / not applicable to this repo
           # CKV_TF_1: module commit hashes (external registry modules in examples)
           # CKV2_AWS_41: IAM role on every EC2 (demo instances don't always need one)
@@ -115,5 +112,3 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: results.sarif
-        # Uploading SARIF is optional — don't fail if the file wasn't produced
-        continue-on-error: true
