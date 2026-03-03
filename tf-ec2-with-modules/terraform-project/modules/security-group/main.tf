@@ -1,5 +1,6 @@
 resource "aws_security_group" "main" {
-  vpc_id = var.vpc_id
+  vpc_id      = var.vpc_id
+  description = "Security group for EC2 instance - allow Jenkins, HTTP, and SSH traffic"
 
   ingress {
     description = "Allow Jenkins traffic"

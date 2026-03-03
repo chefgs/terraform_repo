@@ -31,3 +31,8 @@ variable "metadata_script_changed" {
 variable "creds_file" {
   default = ".keys/account.json"
 }
+variable "disk_encryption_key" {
+  description = "Customer-Supplied Encryption Key for boot disk"
+  type        = string
+  default     = ""
+}

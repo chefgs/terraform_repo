@@ -3,46 +3,105 @@ variable "domain" {
   default = "gs-demo-es"
 }
 
-# AWS access key
-variable "access_key" {
-default = "A************Q"
-}
-
-# AWS secret key
-variable "secret" {
-default = "u************s"
-}
-
 # AWS account id
 variable "aws_account_id" {
-default = "123456789876"
+  default = "123456789876"
 }
 
 # Region of the ES
 variable "region" {
-default = "us-west-2"
+  default = "us-west-2"
+}
+
+# KMS Key ARN for Elasticsearch encryption
+variable "kms_key_arn" {
+  description = "KMS Key ARN for Elasticsearch encryption at rest"
+  type        = string
+  default     = ""
+}
+
+# VPC subnet IDs for Elasticsearch
+variable "subnet_ids" {
+  description = "Subnet IDs for Elasticsearch VPC config"
+  type        = list(string)
+  default     = []
+}
+
+# VPC security group IDs for Elasticsearch
+variable "security_group_ids" {
+  description = "Security group IDs for Elasticsearch VPC config"
+  type        = list(string)
+  default     = []
+}
+
+# CloudWatch log group ARN for Elasticsearch logs
+variable "cloudwatch_log_group_arn" {
+  description = "CloudWatch log group ARN for Elasticsearch logs"
+  type        = string
+  default     = ""
 }
 
 # AWS account config
 provider "aws" {
-  access_key = "${var.access_key}"
-  secret_key = "${var.secret}"
-  region     = "${var.region}"
+  region = var.region
 }
 
 # Terraform AWS ES Resource definition section
 resource "aws_elasticsearch_domain" "es" {
-  domain_name           = "${var.domain}"
-  elasticsearch_version = "6.2"
+  domain_name           = var.domain
+  elasticsearch_version = "7.10"
 
   cluster_config {
-    instance_type = "t2.small.elasticsearch"
-	instance_count = "1"
+    instance_type  = "t3.small.elasticsearch"
+    instance_count = 3
+    dedicated_master_enabled = true
+    dedicated_master_type    = "t3.small.elasticsearch"
+    dedicated_master_count   = 3
   }
 
   ebs_options {
-    ebs_enabled = "true"
-    volume_size = "10"
+    ebs_enabled = true
+    volume_size = 10
+  }
+
+  encrypt_at_rest {
+    enabled    = true
+    kms_key_id = var.kms_key_arn
+  }
+
+  node_to_node_encryption {
+    enabled = true
+  }
+
+  domain_endpoint_options {
+    enforce_https       = true
+    tls_security_policy = "Policy-Min-TLS-1-2-2019-07"
+  }
+
+  advanced_security_options {
+    enabled                        = true
+    internal_user_database_enabled = true
+    master_user_options {
+      master_user_name     = "admin"
+      master_user_password = "ChangeMe1234!"
+    }
+  }
+
+  vpc_options {
+    subnet_ids         = var.subnet_ids
+    security_group_ids = var.security_group_ids
+  }
+
+  log_publishing_options {
+    cloudwatch_log_group_arn = var.cloudwatch_log_group_arn
+    log_type                 = "AUDIT_LOGS"
+    enabled                  = true
+  }
+
+  log_publishing_options {
+    cloudwatch_log_group_arn = var.cloudwatch_log_group_arn
+    log_type                 = "INDEX_SLOW_LOGS"
+    enabled                  = true
   }
 
   advanced_options = {
@@ -57,13 +116,13 @@ resource "aws_elasticsearch_domain" "es" {
       "Effect": "Allow",
       "Principal": {
         "AWS": [
-          "*"
+          "arn:aws:iam::${var.aws_account_id}:root"
         ]
       },
       "Action": [
         "es:*"
       ],
-      "Resource": "arn:aws:es:us-west-2:${var.aws_account_id}:domain/${var.domain}/*"
+      "Resource": "arn:aws:es:${var.region}:${var.aws_account_id}:domain/${var.domain}/*"
     }
   ]
 }
@@ -73,7 +132,7 @@ CONFIG
     automated_snapshot_start_hour = 23
   }
 
-  tags {
+  tags = {
     Domain = "TestDomain"
   }
 }

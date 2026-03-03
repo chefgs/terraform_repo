@@ -44,6 +44,20 @@ resource "aws_s3_bucket_public_access_block" "tf_sample_s3_public_access" {
   restrict_public_buckets = true
 }
 
+resource "aws_s3_bucket_lifecycle_configuration" "tf_sample_s3_lifecycle" {
+  bucket = aws_s3_bucket.tf_sample_s3.id
+  rule {
+    id     = "expire-old-objects"
+    status = "Enabled"
+    expiration {
+      days = 365
+    }
+    noncurrent_version_expiration {
+      noncurrent_days = 90
+    }
+  }
+}
+
 resource "aws_s3_bucket_logging" "tf_sample_s3_logging" {
   bucket        = aws_s3_bucket.tf_sample_s3.id
   target_bucket = aws_s3_bucket.tf_sample_log_s3.id

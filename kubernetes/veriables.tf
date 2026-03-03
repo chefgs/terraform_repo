@@ -27,9 +27,9 @@ variable "replica_count" {
 }
 
 variable "container_image" {
-  description = "Docker image for the container"
+  description = "Docker image for the container (use image digest for immutable reference)"
   type        = string
-  default     = "nginxinc/nginx-unprivileged:1.25-alpine"
+  default     = "nginxinc/nginx-unprivileged@sha256:c8c3234f851e2a0dcee0082af773d93e7e8c2a52a59cc4c60a71eb0b4d89b553"
 }
 
 variable "container_name" {

@@ -428,9 +428,11 @@ module "vpc" {
 
 resource "aws_security_group" "additional" {
   name_prefix = "${local.name}-additional"
+  description = "Additional security group for EKS nodes"
   vpc_id      = module.vpc.vpc_id
 
   ingress {
+    description = "SSH access from private networks"
     from_port = 22
     to_port   = 22
     protocol  = "tcp"
@@ -439,6 +441,14 @@ resource "aws_security_group" "additional" {
       "172.16.0.0/12",
       "192.168.0.0/16",
     ]
+  }
+
+  egress {
+    description = "Allow HTTPS outbound traffic"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = merge(local.tags, { Name = "${local.name}-additional" })

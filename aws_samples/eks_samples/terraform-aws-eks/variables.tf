@@ -35,7 +35,7 @@ variable "cluster_version" {
 variable "cluster_enabled_log_types" {
   description = "A list of the desired control plane logs to enable. For more information, see Amazon EKS Control Plane Logging documentation (https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html)"
   type        = list(string)
-  default     = ["audit", "api", "authenticator"]
+  default     = ["audit", "api", "authenticator", "controllerManager", "scheduler"]
 }
 
 variable "cluster_additional_security_group_ids" {
@@ -71,7 +71,7 @@ variable "cluster_endpoint_public_access" {
 variable "cluster_endpoint_public_access_cidrs" {
   description = "List of CIDR blocks which can access the Amazon EKS public API server endpoint"
   type        = list(string)
-  default     = ["0.0.0.0/0"]
+  default     = []
 }
 
 variable "cluster_ip_family" {
@@ -217,9 +217,9 @@ variable "create_cloudwatch_log_group" {
 }
 
 variable "cloudwatch_log_group_retention_in_days" {
-  description = "Number of days to retain log events. Default retention - 90 days"
+  description = "Number of days to retain log events. Default retention - 365 days"
   type        = number
-  default     = 90
+  default     = 365
 }
 
 variable "cloudwatch_log_group_kms_key_id" {

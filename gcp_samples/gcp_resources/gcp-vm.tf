@@ -14,34 +14,35 @@ provider "google" {
   zone        = var.zone
 }
 
-resource "google_compute_address" "static" {
-  name = "ipv4-address"
-}
-
 resource "google_compute_instance" "default" {
   name         = var.vm_name
   machine_type = var.vm_type
 
-  tags = ["vm", "tf", "http-server", "https-server"]
+  tags = ["vm", "tf", "https-server"]
 
   boot_disk {
     initialize_params {
       image = var.vm_image
       type = var.vm_image_type
     }
+    disk_encryption_key_raw = var.disk_encryption_key
   }
 
   network_interface {
-    network = "default"
+    network    = "default"
     subnetwork = "default"
-    access_config {
-      nat_ip = google_compute_address.static.address
-    }
+  }
+
+  shielded_instance_config {
+    enable_secure_boot          = true
+    enable_vtpm                 = true
+    enable_integrity_monitoring = true
   }
 
   metadata = {
     vm = "tf"
-    metadata_script_changed = var.metadata_script_changed
+    metadata_script_changed  = var.metadata_script_changed
+    block-project-ssh-keys   = true
   }
 
   metadata_startup_script = file(var.metadata_script)

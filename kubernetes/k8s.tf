@@ -98,8 +98,9 @@ resource "kubernetes_deployment" "example" {
 
       spec {
         container {
-          image = var.container_image
-          name  = var.container_name
+          image             = var.container_image
+          name              = var.container_name
+          image_pull_policy = "Always"
           
           port {
             container_port = 8080
@@ -137,6 +138,9 @@ resource "kubernetes_deployment" "example" {
           security_context {
             run_as_non_root           = true
             read_only_root_filesystem = true
+            capabilities {
+              drop = ["NET_RAW", "ALL"]
+            }
           }
           
           volume_mount {

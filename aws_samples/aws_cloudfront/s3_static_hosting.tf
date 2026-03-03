@@ -43,6 +43,20 @@ resource "aws_s3_bucket_public_access_block" "s3_static_hosting_public_access" {
   restrict_public_buckets = true
 }
 
+resource "aws_s3_bucket_lifecycle_configuration" "s3_static_hosting_lifecycle" {
+  bucket = aws_s3_bucket.s3_static_hosting.id
+  rule {
+    id     = "expire-old-objects"
+    status = "Enabled"
+    expiration {
+      days = 365
+    }
+    noncurrent_version_expiration {
+      noncurrent_days = 90
+    }
+  }
+}
+
 resource "aws_s3_bucket_logging" "s3_static_hosting_logging" {
   bucket        = aws_s3_bucket.s3_static_hosting.id
   target_bucket = aws_s3_bucket.tf_sample_log_s3.id

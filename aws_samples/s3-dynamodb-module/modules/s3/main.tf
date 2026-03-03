@@ -39,6 +39,17 @@ resource "aws_s3_bucket_public_access_block" "terraform_state_bucket_public_acce
   restrict_public_buckets = true
 }
 
+resource "aws_s3_bucket_lifecycle_configuration" "terraform_state_bucket_lifecycle" {
+  bucket = aws_s3_bucket.terraform_state_bucket.id
+  rule {
+    id     = "expire-old-versions"
+    status = "Enabled"
+    noncurrent_version_expiration {
+      noncurrent_days = 90
+    }
+  }
+}
+
 resource "aws_s3_bucket_logging" "terraform_state_bucket_logging" {
   bucket        = aws_s3_bucket.terraform_state_bucket.id
   target_bucket = aws_s3_bucket.terraform_state_bucket.id
