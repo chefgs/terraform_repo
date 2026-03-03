@@ -30,6 +30,18 @@ resource "aws_instance" "app_server" {
   ami           = "ami-830c94e3"
   instance_type = "t2.micro"
   count = var.instance_count_needed ? var.instance_count : 1
+  monitoring    = true
+  ebs_optimized = true
+
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 1
+  }
+
+  root_block_device {
+    encrypted = true
+  }
 
   user_data = <<-EOF
   #!/bin/bash

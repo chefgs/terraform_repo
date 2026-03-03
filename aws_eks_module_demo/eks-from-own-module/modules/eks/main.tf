@@ -7,7 +7,18 @@ resource "aws_eks_cluster" "eks_cluster" {
   role_arn = var.cluster_iam_role_arn
 
   vpc_config {
-    subnet_ids = var.public_subnets
+    subnet_ids              = var.public_subnets
+    endpoint_public_access  = false
+    endpoint_private_access = true
+  }
+
+  enabled_cluster_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+
+  encryption_config {
+    resources = ["secrets"]
+    provider {
+      key_arn = var.kms_key_arn
+    }
   }
 }
 
@@ -32,6 +43,12 @@ resource "aws_launch_template" "eks_node_group" {
   instance_type = var.instance_type
 
   key_name = var.key_name
+
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 1
+  }
 
   lifecycle {
     create_before_destroy = true

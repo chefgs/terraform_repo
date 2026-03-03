@@ -41,9 +41,21 @@ provider "aws" {
 resource "aws_instance" "app_server" {
   ami           = "ami-830c94e3"
   instance_type = "t2.micro"
+  monitoring    = true
+  ebs_optimized = true
   
   # In terraform conditional statements are possible
   count = var.instance_count_needed ? var.instance_count : 1
+
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 1
+  }
+
+  root_block_device {
+    encrypted = true
+  }
 
   # We can use the provisioners like user_data to run scripts that will be executed when the instance is getting created.
   user_data = <<-EOF

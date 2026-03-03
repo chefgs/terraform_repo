@@ -11,7 +11,7 @@ resource "aws_subnet" "public_subnets" {
   vpc_id = aws_vpc.eks_vpc.id
   cidr_block = element(["10.0.10.0/24", "10.0.11.0/24"], count.index)
   availability_zone = element(data.aws_availability_zones.available.names, count.index)
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false
   tags = {
     Name = "public-subnet-${count.index}"
   }

@@ -16,6 +16,18 @@ provider "aws" {
 resource "aws_instance" "app_server" {
   ami           = "ami-0fcf52bcf5db7b003"
   instance_type = "t2.micro"
+  monitoring    = true
+  ebs_optimized = true
+
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 1
+  }
+
+  root_block_device {
+    encrypted = true
+  }
 
   tags = {
     Name = "YoutubeDemoEC2Instance"

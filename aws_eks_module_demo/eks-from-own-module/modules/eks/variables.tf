@@ -52,3 +52,8 @@ variable "key_name" {
   description = "Node group instance key"
   type = string
 }
+
+variable "kms_key_arn" {
+  description = "KMS Key ARN for EKS secrets encryption"
+  type        = string
+}

@@ -19,3 +19,33 @@ resource "aws_s3_bucket" "tf_sample_s3" {
     Purpose = "AWS CDN Sample Bucket"
   }
 }
+
+resource "aws_s3_bucket_versioning" "tf_sample_s3_versioning" {
+  bucket = aws_s3_bucket.tf_sample_s3.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "tf_sample_s3_sse" {
+  bucket = aws_s3_bucket.tf_sample_s3.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "aws:kms"
+    }
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "tf_sample_s3_public_access" {
+  bucket                  = aws_s3_bucket.tf_sample_s3.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_logging" "tf_sample_s3_logging" {
+  bucket        = aws_s3_bucket.tf_sample_s3.id
+  target_bucket = aws_s3_bucket.tf_sample_log_s3.id
+  target_prefix = "log/"
+}

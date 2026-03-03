@@ -6,7 +6,7 @@ resource "aws_security_group" "main" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Allows access from anywhere
+    cidr_blocks = var.allowed_cidr_blocks
   }
 
   ingress {
@@ -14,7 +14,7 @@ resource "aws_security_group" "main" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Allows access from anywhere
+    cidr_blocks = var.allowed_cidr_blocks
   }
 
   ingress {
@@ -22,7 +22,15 @@ resource "aws_security_group" "main" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Adjust for more security if needed
+    cidr_blocks = var.allowed_cidr_blocks
+  }
+
+  egress {
+    description = "Allow HTTPS outbound traffic"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {

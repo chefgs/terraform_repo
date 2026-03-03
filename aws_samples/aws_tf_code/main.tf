@@ -33,7 +33,7 @@ resource "aws_internet_gateway" "igw" {
 resource "aws_subnet" "public_subnet" {
   vpc_id            = aws_vpc.app_vpc.id
   cidr_block        = var.public_subnet_cidr
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false
   availability_zone = "us-west-2a"
 
   tags = {
@@ -65,6 +65,18 @@ resource "aws_instance" "web" {
   key_name = var.instance_key
   subnet_id              = aws_subnet.public_subnet.id
   security_groups = [aws_security_group.sg.id]
+  monitoring    = true
+  ebs_optimized = true
+
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 1
+  }
+
+  root_block_device {
+    encrypted = true
+  }
 
   user_data = <<-EOF
   #!/bin/bash

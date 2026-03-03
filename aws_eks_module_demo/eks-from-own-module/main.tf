@@ -26,4 +26,5 @@ module "eks" {
   cluster_iam_role_arn = module.iam.eks_cluster_role_arn
   node_group_iam_role_arn = module.iam.eks_node_group_role_arn
   key_name = var.key_name
+  kms_key_arn = var.kms_key_arn
 }

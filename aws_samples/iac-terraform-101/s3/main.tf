@@ -29,3 +29,26 @@ resource "aws_s3_bucket_versioning" "sample_s3_versioning" {
     status = "Enabled"
   }
 }
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "sample_s3_sse" {
+  bucket = aws_s3_bucket.sample_s3.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "aws:kms"
+    }
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "sample_s3_public_access" {
+  bucket                  = aws_s3_bucket.sample_s3.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_logging" "sample_s3_logging" {
+  bucket        = aws_s3_bucket.sample_s3.id
+  target_bucket = aws_s3_bucket.sample_s3.id
+  target_prefix = "log/"
+}
