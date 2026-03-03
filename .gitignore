@@ -1,6 +1,11 @@
 .terraform*
 tfplan*
 
+# Go dependency checksums generated during local builds (terraform-provider-example has its own committed go.sum)
+custom_provider/**/go.sum
+terraform-provider-hashicups-pf/go.sum
+terraform-provider-hashicups-pf/uuidgen/go.sum
+
 # Files which may contain passwords, secrets, and sensitive values
 *.tfstate*
 *.tfplan*
