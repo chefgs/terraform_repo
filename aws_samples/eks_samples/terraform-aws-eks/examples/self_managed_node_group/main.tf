@@ -19,7 +19,7 @@ data "aws_availability_zones" "available" {}
 
 locals {
   name            = "ex-${replace(basename(path.cwd), "_", "-")}"
-  cluster_version = "1.24"
+  cluster_version = "1.29"
   region          = "eu-west-1"
 
   vpc_cidr = "10.0.0.0/16"
@@ -41,7 +41,8 @@ module "eks" {
 
   cluster_name                   = local.name
   cluster_version                = local.cluster_version
-  cluster_endpoint_public_access = true
+  cluster_endpoint_public_access       = false
+  cluster_endpoint_private_access      = true
 
   cluster_addons = {
     coredns = {

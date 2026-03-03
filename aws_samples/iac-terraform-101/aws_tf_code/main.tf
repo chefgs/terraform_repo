@@ -8,6 +8,10 @@ resource "aws_vpc" "app_vpc" {
   }
 }
 
+resource "aws_default_security_group" "app_vpc_default" {
+  vpc_id = aws_vpc.app_vpc.id
+}
+
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.app_vpc.id
 

@@ -38,8 +38,10 @@ locals {
 module "eks" {
   source = "../.."
 
-  cluster_name                   = local.name
-  cluster_endpoint_public_access = true
+  cluster_name                         = local.name
+  cluster_version                      = "1.29"
+  cluster_endpoint_public_access       = false
+  cluster_endpoint_private_access      = true
 
   cluster_addons = {
     coredns = {

@@ -7,6 +7,10 @@ resource "aws_vpc" "tf_sample_vpc" {
   }
 }
 
+resource "aws_default_security_group" "tf_sample_vpc_default" {
+  vpc_id = aws_vpc.tf_sample_vpc.id
+}
+
 # Create route 53
 resource "aws_route53_zone" "tf_sample_r53" {
   name = "cdnr53.com"

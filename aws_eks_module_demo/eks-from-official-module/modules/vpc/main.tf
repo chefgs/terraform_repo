@@ -2,6 +2,10 @@ resource "aws_vpc" "eks_vpc" {
   cidr_block = var.vpc_cidr
 }
 
+resource "aws_default_security_group" "eks_vpc_default" {
+  vpc_id = aws_vpc.eks_vpc.id
+}
+
 data "aws_availability_zones" "available" {
   state = "available"
 }
