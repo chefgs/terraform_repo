@@ -139,7 +139,7 @@ resource "kubernetes_deployment" "example" {
             run_as_non_root           = true
             read_only_root_filesystem = true
             capabilities {
-              drop = ["NET_RAW", "ALL"]
+              drop = ["ALL"]
             }
           }
           

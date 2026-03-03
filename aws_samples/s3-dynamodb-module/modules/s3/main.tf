@@ -44,6 +44,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "terraform_state_bucket_lifecyc
   rule {
     id     = "expire-old-versions"
     status = "Enabled"
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
     noncurrent_version_expiration {
       noncurrent_days = 90
     }
@@ -52,6 +55,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "terraform_state_bucket_lifecyc
 
 resource "aws_s3_bucket_logging" "terraform_state_bucket_logging" {
   bucket        = aws_s3_bucket.terraform_state_bucket.id
-  target_bucket = aws_s3_bucket.terraform_state_bucket.id
+  target_bucket = var.log_bucket_id != "" ? var.log_bucket_id : aws_s3_bucket.terraform_state_bucket.id
   target_prefix = "log/"
 }

@@ -41,6 +41,20 @@ variable "cloudwatch_log_group_arn" {
   default     = ""
 }
 
+# Master user name for Elasticsearch fine-grained access control
+variable "master_user_name" {
+  description = "Master user name for Elasticsearch fine-grained access control"
+  type        = string
+  sensitive   = true
+}
+
+# Master user password for Elasticsearch fine-grained access control
+variable "master_user_password" {
+  description = "Master user password for Elasticsearch fine-grained access control"
+  type        = string
+  sensitive   = true
+}
+
 # AWS account config
 provider "aws" {
   region = var.region
@@ -82,8 +96,8 @@ resource "aws_elasticsearch_domain" "es" {
     enabled                        = true
     internal_user_database_enabled = true
     master_user_options {
-      master_user_name     = "admin"
-      master_user_password = "ChangeMe1234!"
+      master_user_name     = var.master_user_name
+      master_user_password = var.master_user_password
     }
   }
 
