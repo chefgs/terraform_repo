@@ -24,11 +24,11 @@ aws/
 
 ## Prerequisites
 
-| Tool | Version |
-|------|---------|
-| Terraform | >= 1.0.0 |
-| AWS Provider | ~> 5.0 |
-| AWS CLI | >= 2.0 |
+Tool | Version
+-----|---------
+Terraform | >= 1.0.0
+AWS Provider | ~> 5.0
+AWS CLI | >= 2.0
 
 ## AWS Authentication
 
