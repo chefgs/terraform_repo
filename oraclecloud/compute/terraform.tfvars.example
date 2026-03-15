@@ -1,0 +1,29 @@
+# terraform.tfvars.example – OCI Basic Compute
+# Copy to terraform.tfvars and fill in your values.
+
+# ── OCI Authentication ─────────────────────────────────────────────────────
+tenancy_ocid     = "ocid1.tenancy.oc1..aaaa..."
+user_ocid        = "ocid1.user.oc1..aaaa..."
+fingerprint      = "aa:bb:cc:dd:ee:ff:00:11:22:33:44:55:66:77:88:99"
+private_key_path = "~/.oci/oci_api_key.pem"
+region           = "us-ashburn-1"
+
+# ── Compartment ───────────────────────────────────────────────────────────
+compartment_ocid = "ocid1.compartment.oc1..aaaa..."
+
+# ── Project Settings ──────────────────────────────────────────────────────
+project_name = "tf-oci-demo"
+environment  = "dev"
+
+# ── Networking ────────────────────────────────────────────────────────────
+vcn_cidr_block    = "10.0.0.0/16"
+subnet_cidr_block = "10.0.1.0/24"
+
+# ── Compute ───────────────────────────────────────────────────────────────
+instance_shape     = "VM.Standard.E4.Flex"
+instance_ocpus     = 1
+instance_memory_gb = 8
+os_version         = "9"
+
+# SSH public key (paste the contents of your ~/.ssh/id_rsa.pub)
+ssh_public_key = "ssh-rsa AAAA..."

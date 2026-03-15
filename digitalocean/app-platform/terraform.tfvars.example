@@ -1,0 +1,50 @@
+# terraform.tfvars.example
+# Copy this file to terraform.tfvars and fill in your values.
+# NEVER commit terraform.tfvars to version control.
+
+# ── DigitalOcean Auth ──────────────────────────────────────────────────────
+do_token = "dop_v1_YOUR_PERSONAL_ACCESS_TOKEN"
+
+# ── Project ────────────────────────────────────────────────────────────────
+project_name = "my-webapp-project"
+environment  = "Production"
+
+# ── App Platform ───────────────────────────────────────────────────────────
+app_name           = "my-node-app"
+region             = "nyc3"
+instance_count     = 2
+instance_size_slug = "basic-xxs"
+
+# ── Git Source ─────────────────────────────────────────────────────────────
+git_repo_url = "https://github.com/your-org/your-app.git"
+git_branch   = "main"
+
+# ── Build / Run ────────────────────────────────────────────────────────────
+build_command = "npm run build"
+run_command   = "npm start"
+
+# ── Health Check ───────────────────────────────────────────────────────────
+health_check_path = "/health"
+
+# ── Environment Variables ──────────────────────────────────────────────────
+app_env_vars = [
+  {
+    key   = "NODE_ENV"
+    value = "production"
+    scope = "RUN_AND_BUILD_TIME"
+    type  = "GENERAL"
+  },
+  {
+    key   = "PORT"
+    value = "8080"
+    scope = "RUN_TIME"
+    type  = "GENERAL"
+  },
+  # Project-level git variable (stored securely in DigitalOcean):
+  # {
+  #   key   = "DATABASE_URL"
+  #   value = "$${GIT_DATABASE_URL}"    # references DO project git variable
+  #   scope = "RUN_AND_BUILD_TIME"
+  #   type  = "SECRET"
+  # }
+]

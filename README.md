@@ -1,8 +1,11 @@
-## Terraform Code Repo for Major Cloud Providers and Custom Provider Guide
+## Terraform IaC Repository – Multi-Cloud & HashiCorp Tools
+
+A senior-engineer-level collection of **Terraform Infrastructure-as-Code** examples covering major cloud providers, IaC best practices, HashiCorp toolchain, and Terraform version references.
 
 **Table of Contents:**
 
 - [Project Status](#project-status)
+- [Repository Structure](#repository-structure)
 - [Information About This Project](#information-about-this-project)
 - [Contributing Guidelines](#read-before-you-start-contributing-to-this-repo)
 - [Documentation](#good-to-have-create-documentation-to-list-down-resourcesmodulesproviders-output)
@@ -12,14 +15,56 @@
 
 - [x] [![AWS Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml)
 - [x] [![Kubernetes Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_k8s.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_k8s.yml)
+- [x] [![Checkov Security Scan](https://github.com/chefgs/terraform_repo/actions/workflows/checkov_security_scan.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/checkov_security_scan.yml)
 - [ ] Azure Workflow - ToDo
 - [ ] GCP Workflow - ToDo
 - [ ] DigitalOcean Workflow - ToDo
 
+## Repository Structure
+
+```
+terraform_repo/
+│
+├── aws/                    # ☁️  AWS Terraform examples (EC2, EKS, CloudFront, S3, etc.)
+├── azure/                  # ☁️  Azure Terraform examples (VMs, networking)
+├── gcp/                    # ☁️  GCP Terraform examples (compute, VPC)
+├── digitalocean/           # ☁️  DigitalOcean examples (Droplets, App Platform)
+├── oraclecloud/            # ☁️  Oracle Cloud examples (VCN, Compute)
+│
+├── kubernetes/             # ⎈  Kubernetes resource management via Terraform
+│
+├── hashicorp-tools/        # 🔧  HashiCorp tool stack for 2-tier AWS app
+│   ├── packer/             #    └── Golden AMI builder (web & app tier)
+│   ├── vault/              #    └── Secrets management (dynamic creds, PKI)
+│   ├── consul/             #    └── Service discovery & health checks
+│   └── boundary/           #    └── Zero-trust access control
+│
+├── custom-providers/       # 🔨  Custom Terraform provider development (Go)
+│   ├── basic/
+│   ├── sdk-v2/
+│   └── hashicups-pf/       #    └── Plugin Framework (recommended)
+│
+├── iac-best-practices/     # 📘  IaC best practices reference
+│   ├── modules/            #    └── Modular resource creation patterns
+│   ├── variables/          #    └── Variable templatization & locals
+│   ├── testing/            #    └── Terraform native tests (.tftest.hcl)
+│   └── lock-file-management/ #  └── Lock file strategy & multi-platform
+│
+├── terraform-versions/     # 📋  Version history & feature reference (v1.0–v1.9)
+│
+├── tfc-getting-started/    # 🏢  Terraform Cloud – getting started (pinned at root)
+├── tfcloud_samples/        # 🏢  Terraform Cloud workflows & best practices (pinned at root)
+│
+└── docs/                   # 📚  Documentation site (GitHub Pages / Jekyll)
+```
 
 ## Information about this project
-- Idea for this open source repository is to collate the Terraform Resource Creation code for Major Cloud Providers
-- Also it has sample code for *How to develop Terraform Custom Provider*
+- Idea for this open source repository is to collate the Terraform Resource Creation code for Major Cloud Providers, categorised by **cloud provider**, **IaC concepts**, and **HashiCorp tools**
+- Includes examples for AWS, Azure, GCP, DigitalOcean, and Oracle Cloud Infrastructure
+- Demonstrates **Terraform best practices**: modular design, variable templatization, native testing, and lock file management
+- Contains **HashiCorp full-stack** examples: Packer + Vault + Consul + Boundary for a production 2-tier AWS application
+- Provides a **Terraform version reference guide** (v1.0–v1.9) with code examples for every major release
+- Also has sample code for *How to develop Terraform Custom Provider*
 - Feel free to explore the repo content, and add :star: or fork if you like the content
 - Repo is open for contributions and if you want to contribute please read the **important notice** for contribution guidelines
 

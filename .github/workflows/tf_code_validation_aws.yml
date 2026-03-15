@@ -8,7 +8,7 @@ on:
       tfpath:
         description: 'TF File Path'     
         required: false
-        default: 'aws_samples/create_ec2'
+        default: 'aws/create-ec2'
   push:
     branches: [ main ]
   pull_request:
