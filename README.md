@@ -29,7 +29,11 @@ terraform_repo/
 ├── azure/                  # ☁️  Azure Terraform examples (VMs, networking)
 ├── gcp/                    # ☁️  GCP Terraform examples (compute, VPC)
 ├── digitalocean/           # ☁️  DigitalOcean examples (Droplets, App Platform)
+│   ├── create-vm/          #    └── Droplet (VM) creation
+│   └── app-platform/       #    └── App Platform deployment from Git repository
 ├── oraclecloud/            # ☁️  Oracle Cloud examples (VCN, Compute)
+│   ├── create-vcn/         #    └── Virtual Cloud Network creation
+│   └── compute/            #    └── Full networking stack + compute instance
 │
 ├── nvidia/                 # 🤖  NVIDIA – RAG application on GPU infrastructure
 │   ├── rag-application/    #    └── Python RAG assistant (PDF/TXT/DOCX + NVIDIA NIM)
@@ -94,6 +98,41 @@ python nvidia/rag-application/app/main.py --file my-document.pdf
 ```bash
 # Deploy the GPU infrastructure to AWS
 cd nvidia/terraform && terraform init && terraform apply
+```
+
+### ☁️ DigitalOcean Examples
+
+The [`digitalocean/`](./digitalocean/) directory contains two examples:
+
+| Directory | Description |
+|---|---|
+| [`create-vm/`](./digitalocean/create-vm/) | Create a DigitalOcean Droplet (VM) with configurable size, region, and OS image |
+| [`app-platform/`](./digitalocean/app-platform/) | Deploy an application from a Git repository using App Platform, with project-level Git variable support for secret injection |
+
+```bash
+# Deploy the App Platform example
+export TF_VAR_do_token="dop_v1_..."
+cd digitalocean/app-platform/
+cp terraform.tfvars.example terraform.tfvars
+terraform init && terraform apply
+```
+
+### ☁️ Oracle Cloud Infrastructure Examples
+
+The [`oraclecloud/`](./oraclecloud/) directory contains two examples:
+
+| Directory | Description |
+|---|---|
+| [`create-vcn/`](./oraclecloud/create-vcn/) | Create an OCI Virtual Cloud Network (VCN) with subnets and routing |
+| [`compute/`](./oraclecloud/compute/) | Full free-tier infrastructure stack — VCN, internet gateway, route table, security list, and a flexible compute instance (`VM.Standard.E4.Flex`) |
+
+```bash
+# Deploy the OCI compute example
+oci setup config          # configure OCI CLI and API key
+cd oraclecloud/compute/
+cp terraform.tfvars.example terraform.tfvars
+terraform init && terraform apply
+terraform output ssh_command   # get the ready-to-use SSH command
 ```
 
 ## Read before you start contributing to this repo

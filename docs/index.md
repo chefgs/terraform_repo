@@ -143,13 +143,44 @@ Production-grade deployment of a 2-tier application using the full HashiCorp sta
 | **Consul** | Service discovery, health checks, service mesh |
 | **Boundary** | Zero-trust SSH access with Vault-injected certificates |
 
-### ☁️ DigitalOcean – App Platform
+### ☁️ DigitalOcean – Droplets & App Platform
 
-New: Deploy applications directly from Git repositories using App Platform IaC, with project-level Git variable support for secure secret injection.
+The [`digitalocean/`](https://github.com/chefgs/terraform_repo/tree/main/digitalocean) directory provides two examples:
 
-### ☁️ Oracle Cloud – Basic Infrastructure
+| Directory | Description |
+|-----------|-------------|
+| `create-vm/` | Create a DigitalOcean Droplet (VM) with configurable size, region, and OS image |
+| `app-platform/` | Deploy an application from a Git repository using App Platform, with project-level Git variable support for secure secret injection, health checks, and environment variable management |
 
-New: Full infrastructure stack on OCI Free Tier — VCN, internet gateway, route tables, security lists, and a flexible compute instance.
+```bash
+# Droplet (VM) example
+export TF_VAR_do_token="dop_v1_..."
+cd digitalocean/create-vm/
+terraform init && terraform apply
+
+# App Platform example
+cd digitalocean/app-platform/
+cp terraform.tfvars.example terraform.tfvars
+terraform init && terraform apply
+```
+
+### ☁️ Oracle Cloud Infrastructure – VCN & Compute
+
+The [`oraclecloud/`](https://github.com/chefgs/terraform_repo/tree/main/oraclecloud) directory provides two examples targeting OCI Free Tier resources:
+
+| Directory | Description |
+|-----------|-------------|
+| `create-vcn/` | Create a Virtual Cloud Network (VCN) with subnets, internet gateway, and route tables |
+| `compute/` | Full infrastructure stack — VCN, internet gateway, route table, security list, and a flexible compute instance (`VM.Standard.E4.Flex`, 1 OCPU / 8 GB RAM, Always Free eligible) |
+
+```bash
+# OCI compute example
+oci setup config        # configure OCI CLI and API key once
+cd oraclecloud/compute/
+cp terraform.tfvars.example terraform.tfvars
+terraform init && terraform apply
+terraform output ssh_command    # ready-to-use SSH command
+```
 
 ### ☁️ [Kubernetes](./kubernetes)
 
