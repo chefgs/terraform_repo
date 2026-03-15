@@ -15,7 +15,7 @@ A senior-engineer-level collection of **Terraform Infrastructure-as-Code** examp
 
 | Provider | CI Status |
 |----------|-----------|
-| **AWS** | [![AWS Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml) |
+| **AWS** | [![Terraform AWS Validate](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml) |
 | **Azure** | [![Terraform Azure Validate](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_azure.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_azure.yml) |
 | **GCP** | [![Terraform GCP Validate](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_gcp.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_gcp.yml) |
 | **DigitalOcean** | [![Terraform DigitalOcean Validate](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_digitalocean.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_digitalocean.yml) |
