@@ -50,7 +50,7 @@ terraform_repo/
 │   ├── testing/            #    └── Terraform native tests (.tftest.hcl)
 │   └── lock-file-management/ #  └── Lock file strategy & multi-platform
 │
-├── terraform-versions/     # 📋  Version history & feature reference (v1.0–v1.9)
+├── terraform-versions/     # 📋  Version history & feature reference (v1.0–v1.14)
 │
 ├── tfc-getting-started/    # 🏢  Terraform Cloud – getting started (pinned at root)
 ├── tfcloud_samples/        # 🏢  Terraform Cloud workflows & best practices (pinned at root)
@@ -63,7 +63,7 @@ terraform_repo/
 - Includes examples for AWS, Azure, GCP, DigitalOcean, and Oracle Cloud Infrastructure
 - Demonstrates **Terraform best practices**: modular design, variable templatization, native testing, and lock file management
 - Contains **HashiCorp full-stack** examples: Packer + Vault + Consul + Boundary for a production 2-tier AWS application
-- Provides a **Terraform version reference guide** (v1.0–v1.9) with code examples for every major release
+- Provides a **Terraform version reference guide** (v1.0–v1.14, latest: v1.14.7 Mar 2026) with code examples for every major release
 - Also has sample code for *How to develop Terraform Custom Provider*
 - Feel free to explore the repo content, and add :star: or fork if you like the content
 - Repo is open for contributions and if you want to contribute please read the **important notice** for contribution guidelines

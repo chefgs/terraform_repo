@@ -6,7 +6,9 @@ nav_order: 8
 
 # Terraform Version History – Quick Reference
 
-Key features and code examples for every major Terraform release from **v1.0 to v1.9**.
+Key features and code examples for every major Terraform release from **v1.0 to v1.14**.
+
+> **Latest stable release: v1.14.7** — March 11, 2026
 
 **Path:** `terraform-versions/`
 
@@ -26,6 +28,11 @@ Key features and code examples for every major Terraform release from **v1.0 to 
 | [v1.7](https://github.com/chefgs/terraform_repo/blob/main/terraform-versions/v1.7/CHANGELOG.md) | Jan 2024 | `mock_provider`, `removed` block |
 | [v1.8](https://github.com/chefgs/terraform_repo/blob/main/terraform-versions/v1.8/CHANGELOG.md) | Apr 2024 | Provider-defined functions |
 | [v1.9](https://github.com/chefgs/terraform_repo/blob/main/terraform-versions/v1.9/CHANGELOG.md) | Jun 2024 | Cross-variable validation |
+| [v1.10](https://github.com/chefgs/terraform_repo/blob/main/terraform-versions/v1.10/CHANGELOG.md) | Nov 2024 | Ephemeral resources (experimental), `write_only` attributes |
+| [v1.11](https://github.com/chefgs/terraform_repo/blob/main/terraform-versions/v1.11/CHANGELOG.md) | Feb 2025 | Ephemeral resources GA, `provider for_each` (experimental) |
+| [v1.12](https://github.com/chefgs/terraform_repo/blob/main/terraform-versions/v1.12/CHANGELOG.md) | May 2025 | `provider for_each` GA, Stacks enhancements |
+| [v1.13](https://github.com/chefgs/terraform_repo/blob/main/terraform-versions/v1.13/CHANGELOG.md) | Sep 2025 | Enhanced module iteration, `strcontains`/`strtitle` functions |
+| [**v1.14.7**](https://github.com/chefgs/terraform_repo/blob/main/terraform-versions/v1.14/CHANGELOG.md) | **Mar 11, 2026** | Deferred changes GA, test setup/teardown, auto lock file platforms |
 
 ---
 
@@ -86,16 +93,44 @@ mock_provider "aws" {
 }
 ```
 
+### Ephemeral Resources (v1.10 experimental → v1.11 GA)
+Secrets that are never written to state:
+```hcl
+ephemeral "aws_secretsmanager_secret_version" "db_password" {
+  secret_id = "prod/database/password"
+}
+```
+
+### provider for_each (v1.11 experimental → v1.12 GA)
+Manage resources across multiple accounts/regions:
+```hcl
+provider "aws" {
+  for_each = var.regions
+  alias    = each.key
+  region   = each.key
+}
+```
+
+### Deferred Changes (v1.14 GA)
+Plan and apply in phases when values are unknown until runtime:
+```bash
+terraform apply   # first pass: creates known resources, defers unknowns
+terraform apply   # second pass: resolves deferred resources
+```
+
 ---
 
 ## Version Management
 
 ```bash
-# Install specific version with tfenv
-tfenv install 1.9.0 && tfenv use 1.9.0
+# Install latest stable version with tfenv
+tfenv install 1.14.7 && tfenv use 1.14.7
 
 # Or with asdf
-asdf install terraform 1.9.0 && asdf global terraform 1.9.0
+asdf install terraform 1.14.7 && asdf global terraform 1.14.7
+
+# Install a specific older version
+tfenv install 1.9.0 && tfenv use 1.9.0
 
 # Check current version
 terraform version
