@@ -33,7 +33,7 @@ custom-providers/
 ## Quick Start
 
 ```bash
-cd hashicups-pf/
+cd custom-providers/hashicups-pf/
 go mod download
 make build
 make test
