@@ -29,10 +29,22 @@ navigation:
     url: /
   - title: AWS Samples
     url: /aws-samples/
+  - title: Azure Samples
+    url: /azure-samples/
+  - title: GCP Samples
+    url: /gcp-samples/
   - title: Kubernetes
     url: /kubernetes/
   - title: Cloud Providers
     url: /cloud-providers/
+  - title: NVIDIA RAG App
+    url: /nvidia-rag/
+  - title: HashiCorp Tools
+    url: /hashicorp-tools/
+  - title: IaC Best Practices
+    url: /iac-best-practices/
+  - title: Terraform Versions
+    url: /terraform-versions/
   - title: GitHub Actions
     url: /github-actions/
   - title: Custom Providers

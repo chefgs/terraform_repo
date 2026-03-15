@@ -1,8 +1,11 @@
-## Terraform Code Repo for Major Cloud Providers and Custom Provider Guide
+## Terraform IaC Repository – Multi-Cloud & HashiCorp Tools
+
+A senior-engineer-level collection of **Terraform Infrastructure-as-Code** examples covering major cloud providers, IaC best practices, HashiCorp toolchain, and Terraform version references.
 
 **Table of Contents:**
 
 - [Project Status](#project-status)
+- [Repository Structure](#repository-structure)
 - [Information About This Project](#information-about-this-project)
 - [Contributing Guidelines](#read-before-you-start-contributing-to-this-repo)
 - [Documentation](#good-to-have-create-documentation-to-list-down-resourcesmodulesproviders-output)
@@ -10,18 +13,132 @@
 
 ## Project Status
 
-- [x] [![AWS Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml)
-- [x] [![Kubernetes Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_k8s.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_k8s.yml)
-- [ ] Azure Workflow - ToDo
-- [ ] GCP Workflow - ToDo
-- [ ] DigitalOcean Workflow - ToDo
+| Provider | CI Status |
+|----------|-----------|
+| **AWS** | [![AWS Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml) |
+| **Azure** | [![Terraform Azure Validate](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_azure.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_azure.yml) |
+| **GCP** | [![Terraform GCP Validate](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_gcp.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_gcp.yml) |
+| **DigitalOcean** | [![Terraform DigitalOcean Validate](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_digitalocean.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_digitalocean.yml) |
+| **Oracle Cloud** | [![Terraform Oracle Cloud Validate](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_oraclecloud.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_oraclecloud.yml) |
+| **Kubernetes** | [![Kubernetes Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_k8s.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_k8s.yml) |
+| **Security Scan** | [![Checkov Security Scan](https://github.com/chefgs/terraform_repo/actions/workflows/checkov_security_scan.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/checkov_security_scan.yml) |
 
+> All provider workflows run `terraform init` + `terraform validate` on push/PR to their respective directories, ensuring code is always syntactically valid without requiring cloud credentials.
+
+## Repository Structure
+
+```
+terraform_repo/
+│
+├── aws/                    # ☁️  AWS Terraform examples (EC2, EKS, CloudFront, S3, etc.)
+├── azure/                  # ☁️  Azure Terraform examples (VMs, networking)
+├── gcp/                    # ☁️  GCP Terraform examples (compute, VPC)
+├── digitalocean/           # ☁️  DigitalOcean examples (Droplets, App Platform)
+│   ├── create-vm/          #    └── Droplet (VM) creation
+│   └── app-platform/       #    └── App Platform deployment from Git repository
+├── oraclecloud/            # ☁️  Oracle Cloud examples (VCN, Compute)
+│   ├── create-vcn/         #    └── Virtual Cloud Network creation
+│   └── compute/            #    └── Full networking stack + compute instance
+│
+├── nvidia/                 # 🤖  NVIDIA – RAG application on GPU infrastructure
+│   ├── rag-application/    #    └── Python RAG assistant (PDF/TXT/DOCX + NVIDIA NIM)
+│   └── terraform/          #    └── AWS GPU EC2 + VPC + S3 + NVIDIA NGC provider stub
+│
+├── kubernetes/             # ⎈  Kubernetes resource management via Terraform
+│
+├── hashicorp-tools/        # 🔧  HashiCorp tool stack for 2-tier AWS app
+│   ├── packer/             #    └── Golden AMI builder (web & app tier)
+│   ├── vault/              #    └── Secrets management (dynamic creds, PKI)
+│   ├── consul/             #    └── Service discovery & health checks
+│   └── boundary/           #    └── Zero-trust access control
+│
+├── custom-providers/       # 🔨  Custom Terraform provider development (Go)
+│   ├── basic/
+│   ├── sdk-v2/
+│   └── hashicups-pf/       #    └── Plugin Framework (recommended)
+│
+├── iac-best-practices/     # 📘  IaC best practices reference
+│   ├── modules/            #    └── Modular resource creation patterns
+│   ├── variables/          #    └── Variable templatization & locals
+│   ├── testing/            #    └── Terraform native tests (.tftest.hcl)
+│   └── lock-file-management/ #  └── Lock file strategy & multi-platform
+│
+├── terraform-versions/     # 📋  Version history & feature reference (v1.0–v1.14)
+│
+├── tfc-getting-started/    # 🏢  Terraform Cloud – getting started (pinned at root)
+├── tfcloud_samples/        # 🏢  Terraform Cloud workflows & best practices (pinned at root)
+│
+└── docs/                   # 📚  Documentation site (GitHub Pages / Jekyll)
+```
 
 ## Information about this project
-- Idea for this open source repository is to collate the Terraform Resource Creation code for Major Cloud Providers
-- Also it has sample code for *How to develop Terraform Custom Provider*
+- Idea for this open source repository is to collate the Terraform Resource Creation code for Major Cloud Providers, categorised by **cloud provider**, **IaC concepts**, and **HashiCorp tools**
+- Includes examples for AWS, Azure, GCP, DigitalOcean, and Oracle Cloud Infrastructure
+- Features a **NVIDIA RAG application** example — a Python document assistant powered by NVIDIA NIM LLM endpoints, deployed on AWS GPU infrastructure with full Terraform IaC (including a stubbed NVIDIA NGC provider)
+- Demonstrates **Terraform best practices**: modular design, variable templatization, native testing, and lock file management
+- Contains **HashiCorp full-stack** examples: Packer + Vault + Consul + Boundary for a production 2-tier AWS application
+- Provides a **Terraform version reference guide** (v1.0–v1.14, latest: v1.14.7 Mar 2026) with code examples for every major release
+- Also has sample code for *How to develop Terraform Custom Provider*
 - Feel free to explore the repo content, and add :star: or fork if you like the content
 - Repo is open for contributions and if you want to contribute please read the **important notice** for contribution guidelines
+
+### 🤖 NVIDIA RAG Application Highlight
+
+The [`nvidia/`](./nvidia/) directory provides a self-contained example of deploying a **Retrieval-Augmented Generation (RAG)** document assistant on NVIDIA GPU infrastructure:
+
+| Component | Description |
+|---|---|
+| **Python RAG App** | Interactive CLI that loads PDF, TXT, or DOCX files and answers questions using NVIDIA NIM LLMs |
+| **NVIDIA NIM** | Inference microservices for LLM (`meta/llama-3.1-8b-instruct`) and embeddings (`nv-embedqa-e5-v5`) |
+| **FAISS Vector Store** | Local CPU/GPU vector index for fast similarity search |
+| **Terraform IaC** | AWS VPC + GPU EC2 instance (`g4dn.xlarge`) + S3 bucket + IAM — all managed via Terraform |
+| **NVIDIA NGC Provider** | Commented stub blocks ready to activate for NGC registry and NIM endpoint management |
+
+```bash
+# Run the RAG assistant locally
+export NVIDIA_API_KEY="nvapi-..."
+python nvidia/rag-application/app/main.py --file my-document.pdf
+```
+
+```bash
+# Deploy the GPU infrastructure to AWS
+cd nvidia/terraform && terraform init && terraform apply
+```
+
+### ☁️ DigitalOcean Examples
+
+The [`digitalocean/`](./digitalocean/) directory contains two examples:
+
+| Directory | Description |
+|---|---|
+| [`create-vm/`](./digitalocean/create-vm/) | Create a DigitalOcean Droplet (VM) with configurable size, region, and OS image |
+| [`app-platform/`](./digitalocean/app-platform/) | Deploy an application from a Git repository using App Platform, with project-level Git variable support for secret injection |
+
+```bash
+# Deploy the App Platform example
+export TF_VAR_do_token="dop_v1_..."
+cd digitalocean/app-platform/
+cp terraform.tfvars.example terraform.tfvars
+terraform init && terraform apply
+```
+
+### ☁️ Oracle Cloud Infrastructure Examples
+
+The [`oraclecloud/`](./oraclecloud/) directory contains two examples:
+
+| Directory | Description |
+|---|---|
+| [`create-vcn/`](./oraclecloud/create-vcn/) | Create an OCI Virtual Cloud Network (VCN) with subnets and routing |
+| [`compute/`](./oraclecloud/compute/) | Full free-tier infrastructure stack — VCN, internet gateway, route table, security list, and a flexible compute instance (`VM.Standard.E4.Flex`) |
+
+```bash
+# Deploy the OCI compute example
+oci setup config          # configure OCI CLI and API key
+cd oraclecloud/compute/
+cp terraform.tfvars.example terraform.tfvars
+terraform init && terraform apply
+terraform output ssh_command   # get the ready-to-use SSH command
+```
 
 ## Read before you start contributing to this repo
 - Read [Contribution Guidelines](./CONTRIBUTING.md) before contributing to this repository!

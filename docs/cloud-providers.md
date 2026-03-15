@@ -1,12 +1,16 @@
 ---
 layout: default
 title: Cloud Providers
-nav_order: 4
+nav_order: 6
 ---
 
 # Multi-Cloud Provider Samples
 
 This section covers Terraform examples for Azure, GCP, DigitalOcean, and Oracle Cloud Infrastructure.
+
+> **Azure** and **GCP** now have dedicated documentation pages:
+> - [Azure Samples →](./azure-samples)
+> - [GCP Samples →](./gcp-samples)
 
 ---
 
@@ -22,7 +26,7 @@ This section covers Terraform examples for Azure, GCP, DigitalOcean, and Oracle 
 
 ## Azure Samples
 
-**Path:** `azure_samples/`
+**Path:** `azure/`
 
 Terraform code for provisioning resources on [Microsoft Azure](https://azure.microsoft.com/) using the [AzureRM provider](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs).
 
@@ -101,7 +105,7 @@ export ARM_TENANT_ID="<tenant-id>"
 
 ## GCP Samples
 
-**Path:** `gcp_samples/`
+**Path:** `gcp/`
 
 Terraform code for [Google Cloud Platform](https://cloud.google.com/) using the [Google provider](https://registry.terraform.io/providers/hashicorp/google/latest/docs).
 
@@ -162,7 +166,7 @@ export GOOGLE_APPLICATION_CREDENTIALS="/path/to/key.json"
 
 ## DigitalOcean Samples
 
-**Path:** `digitalocean_samples/`
+**Path:** `digitalocean/`
 
 Terraform code for [DigitalOcean](https://www.digitalocean.com/) using the [DigitalOcean provider](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs).
 
@@ -170,7 +174,8 @@ Terraform code for [DigitalOcean](https://www.digitalocean.com/) using the [Digi
 
 | Directory | Description |
 |-----------|-------------|
-| `create_vm/` | DigitalOcean Droplet (VM) creation |
+| `create-vm/` | DigitalOcean Droplet (VM) creation with configurable size, region, and image |
+| `app-platform/` | App Platform deployment from a Git repository with project-level Git variable support |
 
 ### Droplet Creation Example
 
@@ -202,32 +207,68 @@ output "droplet_ip" {
 }
 ```
 
+### App Platform Deployment Example
+
+```hcl
+resource "digitalocean_app" "app" {
+  spec {
+    name   = var.app_name
+    region = var.region
+
+    service {
+      name               = "web"
+      instance_count     = 1
+      instance_size_slug = "basic-xxs"
+
+      git {
+        repo_clone_url = var.git_repo_url
+        branch         = var.git_branch
+      }
+
+      env {
+        key   = "APP_ENV"
+        value = "production"
+        scope = "RUN_AND_BUILD_TIME"
+        type  = "GENERAL"
+      }
+    }
+  }
+}
+```
+
 ### Authentication
 
 ```bash
 # Set your DigitalOcean API token
 export DIGITALOCEAN_TOKEN="your-api-token"
 
-# Or pass as a variable
-terraform apply -var="do_token=your-api-token"
+# Or pass as a Terraform variable
+export TF_VAR_do_token="dop_v1_..."
 ```
 
 ---
 
 ## Oracle Cloud Samples
 
-**Path:** `oraclecloud_samples/`
+**Path:** `oraclecloud/`
 
 Terraform code for [Oracle Cloud Infrastructure (OCI)](https://www.oracle.com/cloud/) using the [OCI provider](https://registry.terraform.io/providers/oracle/oci/latest/docs).
 
-### Key OCI Terraform Concepts
+### Available Examples
+
+| Directory | Description |
+|-----------|-------------|
+| `create-vcn/` | Virtual Cloud Network (VCN) creation with subnets and routing |
+| `compute/` | Full infrastructure stack — VCN, internet gateway, route table, security list, and a flexible compute instance |
+
+### OCI Compute Example
 
 ```hcl
 terraform {
   required_providers {
     oci = {
       source  = "oracle/oci"
-      version = "~> 5.0"
+      version = ">= 5.0.0"
     }
   }
 }
@@ -241,25 +282,43 @@ provider "oci" {
 }
 
 resource "oci_core_instance" "example" {
-  availability_domain = var.availability_domain
-  compartment_id      = var.compartment_id
-  display_name        = "example-instance"
-  shape               = "VM.Standard.E4.Flex"
+  availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
+  compartment_id      = var.compartment_ocid
+  display_name        = "tf-oci-demo-instance"
+  shape               = "VM.Standard.E4.Flex"   # Always Free eligible
 
   shape_config {
     ocpus         = 1
-    memory_in_gbs = 16
+    memory_in_gbs = 8
   }
 
   source_details {
     source_type = "image"
-    source_id   = var.os_image_id
+    source_id   = data.oci_core_images.oracle_linux.images[0].id
   }
 
   create_vnic_details {
-    subnet_id = var.subnet_id
+    subnet_id = oci_core_subnet.public_subnet.id
   }
 }
+
+output "ssh_command" {
+  value = "ssh opc@${oci_core_instance.example.public_ip}"
+}
+```
+
+### OCI API Key Setup
+
+```bash
+# 1. Install OCI CLI
+pip install oci-cli
+
+# 2. Configure credentials
+oci setup config
+# Follow prompts to set tenancy OCID, user OCID, region, and key pair
+
+# 3. Upload public key in OCI Console:
+#    Identity → Users → Your User → API Keys → Add API Key
 ```
 
 ---
@@ -310,10 +369,10 @@ resource "oci_core_instance" "example" {
 git clone https://github.com/chefgs/terraform_repo.git
 
 # Navigate to a cloud provider example
-cd terraform_repo/azure_samples/create_vm
-# or: cd terraform_repo/gcp_samples/gcp_resources
-# or: cd terraform_repo/digitalocean_samples/create_vm
-# or: cd terraform_repo/oraclecloud_samples
+cd terraform_repo/azure/create_vm
+# or: cd terraform_repo/gcp/gcp_resources
+# or: cd terraform_repo/digitalocean/create-vm
+# or: cd terraform_repo/oraclecloud/compute
 
 # Set up cloud credentials (provider-specific, see sections above)
 

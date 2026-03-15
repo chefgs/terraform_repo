@@ -1,0 +1,39 @@
+name: Terraform Azure Validate
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'azure/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'azure/**'
+  workflow_dispatch:
+    inputs:
+      tfpath:
+        description: 'TF Code Path'
+        required: false
+        default: 'azure/create-vm'
+
+jobs:
+  terraform_validate:
+    name: Terraform Validate – Azure
+    runs-on: ubuntu-latest
+    env:
+      TFPATH: ${{ github.event.inputs.tfpath || 'azure/create-vm' }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3.5.2
+
+      - name: Setup Terraform CLI
+        uses: hashicorp/setup-terraform@v2.0.2
+
+      - name: Terraform Init
+        run: terraform init -backend=false
+        working-directory: ${{ env.TFPATH }}
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ${{ env.TFPATH }}
