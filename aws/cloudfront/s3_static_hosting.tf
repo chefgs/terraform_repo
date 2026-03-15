@@ -18,6 +18,13 @@ resource "aws_s3_bucket" "s3_static_hosting" {
     Purpose = "AWS CDN Static Hosting Bucket"
   }
 }
+
+resource "aws_s3_bucket_versioning" "s3_static_hosting_versioning" {
+  bucket = aws_s3_bucket.s3_static_hosting.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
 resource "aws_s3_bucket_website_configuration" "s3_static_hosting_website" {
   bucket = aws_s3_bucket.s3_static_hosting.id
 

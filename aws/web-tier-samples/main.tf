@@ -59,12 +59,34 @@ resource "aws_route_table_association" "public_rt_asso" {
   route_table_id = aws_route_table.public_rt.id
 }
 
+resource "aws_iam_role" "ec2_role" {
+  name = "ec2-web-tier-samples-instance-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_instance_profile" "ec2_profile" {
+  name = "ec2-web-tier-samples-instance-profile"
+  role = aws_iam_role.ec2_role.name
+}
+
 resource "aws_instance" "web" {
-  ami           = "ami-0d70546e43a941d70" 
-  instance_type = var.instance_type
-  key_name = var.instance_key
-  subnet_id              = aws_subnet.public_subnet.id
-  security_groups = [aws_security_group.sg.id]
+  ami                  = "ami-0d70546e43a941d70" 
+  instance_type        = var.instance_type
+  key_name             = var.instance_key
+  subnet_id            = aws_subnet.public_subnet.id
+  security_groups      = [aws_security_group.sg.id]
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
   user_data = <<-EOF
   #!/bin/bash

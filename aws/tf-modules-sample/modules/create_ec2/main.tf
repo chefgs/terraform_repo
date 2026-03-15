@@ -26,10 +26,32 @@ provider "aws" {
   region  = var.region
 }
 
+resource "aws_iam_role" "ec2_role" {
+  name = "ec2-tf-modules-sample-instance-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_instance_profile" "ec2_profile" {
+  name = "ec2-tf-modules-sample-instance-profile"
+  role = aws_iam_role.ec2_role.name
+}
+
 resource "aws_instance" "app_server" {
-  ami           = "ami-830c94e3"
-  instance_type = "t2.micro"
-  count = var.instance_count_needed ? var.instance_count : 1
+  ami                  = "ami-830c94e3"
+  instance_type        = "t2.micro"
+  count                = var.instance_count_needed ? var.instance_count : 1
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
   user_data = <<-EOF
   #!/bin/bash

@@ -19,3 +19,10 @@ resource "aws_s3_bucket" "tf_sample_log_s3" {
     Purpose = "AWS CDN Sample Bucket"
   }
 }
+
+resource "aws_s3_bucket_versioning" "tf_sample_log_s3_versioning" {
+  bucket = aws_s3_bucket.tf_sample_log_s3.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}

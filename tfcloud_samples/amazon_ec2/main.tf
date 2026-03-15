@@ -36,13 +36,35 @@ provider "aws" {
   region  = var.region
 }
 
+resource "aws_iam_role" "ec2_role" {
+  name = "ec2-tfc-amazon-instance-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_instance_profile" "ec2_profile" {
+  name = "ec2-tfc-amazon-instance-profile"
+  role = aws_iam_role.ec2_role.name
+}
+
 # Resource Block
 # In this section, we will add the resources that we will be adding and managing in Cloud infra
 # 
 resource "aws_instance" "app_server" {
   # x86 AMIs with hvm Ubuntu 22.04 -> ami-03f65b8614a860c29, 20.04 -> ami-0c65adc9a5c1b5d7c. Amz Linux ami-07dfed28fcf95241c
-  ami           = "ami-03f65b8614a860c29"
-  instance_type = "t2.micro"
+  ami                  = "ami-03f65b8614a860c29"
+  instance_type        = "t2.micro"
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
   # We can use the provisioners like user_data to run scripts that will be executed when the instance is getting created.
   user_data = "./install_docker.sh > /tmp/install_docker.log"
