@@ -22,7 +22,7 @@ This section covers Terraform examples for Azure, GCP, DigitalOcean, and Oracle 
 
 ## Azure Samples
 
-**Path:** `azure_samples/`
+**Path:** `azure/`
 
 Terraform code for provisioning resources on [Microsoft Azure](https://azure.microsoft.com/) using the [AzureRM provider](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs).
 
@@ -101,7 +101,7 @@ export ARM_TENANT_ID="<tenant-id>"
 
 ## GCP Samples
 
-**Path:** `gcp_samples/`
+**Path:** `gcp/`
 
 Terraform code for [Google Cloud Platform](https://cloud.google.com/) using the [Google provider](https://registry.terraform.io/providers/hashicorp/google/latest/docs).
 
@@ -162,7 +162,7 @@ export GOOGLE_APPLICATION_CREDENTIALS="/path/to/key.json"
 
 ## DigitalOcean Samples
 
-**Path:** `digitalocean_samples/`
+**Path:** `digitalocean/`
 
 Terraform code for [DigitalOcean](https://www.digitalocean.com/) using the [DigitalOcean provider](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs).
 
@@ -216,7 +216,7 @@ terraform apply -var="do_token=your-api-token"
 
 ## Oracle Cloud Samples
 
-**Path:** `oraclecloud_samples/`
+**Path:** `oraclecloud/`
 
 Terraform code for [Oracle Cloud Infrastructure (OCI)](https://www.oracle.com/cloud/) using the [OCI provider](https://registry.terraform.io/providers/oracle/oci/latest/docs).
 
@@ -310,9 +310,9 @@ resource "oci_core_instance" "example" {
 git clone https://github.com/chefgs/terraform_repo.git
 
 # Navigate to a cloud provider example
-cd terraform_repo/azure_samples/create_vm
-# or: cd terraform_repo/gcp_samples/gcp_resources
-# or: cd terraform_repo/digitalocean_samples/create_vm
+cd terraform_repo/azure/create_vm
+# or: cd terraform_repo/gcp/gcp_resources
+# or: cd terraform_repo/digitalocean/create_vm
 # or: cd terraform_repo/oraclecloud_samples
 
 # Set up cloud credentials (provider-specific, see sections above)

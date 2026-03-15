@@ -25,10 +25,10 @@ This section covers all AWS infrastructure provisioning examples available in th
 
 ## Overview
 
-The `aws_samples/` directory contains production-ready Terraform examples for common AWS services. Each subdirectory is a self-contained Terraform project with variables, provider configuration, and resource definitions.
+The `aws/` directory contains production-ready Terraform examples for common AWS services. Each subdirectory is a self-contained Terraform project with variables, provider configuration, and resource definitions.
 
 ```
-aws_samples/
+aws/
 ├── create_ec2/           # EC2 instance with user_data and conditional counts
 ├── eks_samples/          # EKS cluster provisioning
 ├── aws_cloudfront/       # CloudFront CDN distribution
@@ -43,7 +43,7 @@ aws_samples/
 
 ## EC2 Instances
 
-**Path:** `aws_samples/create_ec2/`
+**Path:** `aws/create-ec2/`
 
 This example demonstrates core Terraform concepts for creating AWS EC2 instances:
 
@@ -103,7 +103,7 @@ output "instance_id" {
 
 ## EKS Clusters
 
-**Path:** `aws_samples/eks_samples/` and `aws_eks_module_demo/`
+**Path:** `aws/eks_samples/` and `aws_eks_module_demo/`
 
 Terraform code for provisioning Amazon Elastic Kubernetes Service (EKS) clusters.
 
@@ -126,7 +126,7 @@ Terraform code for provisioning Amazon Elastic Kubernetes Service (EKS) clusters
 
 ## AWS Web Tier
 
-**Path:** `aws_web_tier/`
+**Path:** `aws/web-tier/`
 
 A multi-tier web architecture example including:
 
@@ -139,7 +139,7 @@ A multi-tier web architecture example including:
 
 ## CloudFront Distribution
 
-**Path:** `aws_samples/aws_cloudfront/`
+**Path:** `aws/aws_cloudfront/`
 
 Terraform code for creating an AWS CloudFront CDN distribution:
 
@@ -152,7 +152,7 @@ Terraform code for creating an AWS CloudFront CDN distribution:
 
 ## S3 and DynamoDB Modules
 
-**Path:** `aws_samples/s3-dynamodb-module/`
+**Path:** `aws/s3-dynamodb-module/`
 
 Demonstrates how to use Terraform modules for:
 
@@ -177,7 +177,7 @@ module "dynamodb_lock" {
 
 ## Reusable Module Patterns
 
-**Path:** `aws_samples/tf_modules_sample/` and `tf-ec2-with-modules/`
+**Path:** `aws/tf_modules_sample/` and `tf-ec2-with-modules/`
 
 These examples demonstrate how to structure and call reusable Terraform modules:
 
@@ -220,7 +220,7 @@ tf-ec2-with-modules/
 git clone https://github.com/chefgs/terraform_repo.git
 
 # 2. Navigate to the example
-cd terraform_repo/aws_samples/create_ec2
+cd terraform_repo/aws/create-ec2
 
 # 3. Initialize Terraform (downloads the AWS provider)
 terraform init
@@ -241,7 +241,7 @@ You can validate and apply any example using the built-in [Terraform AWS Workflo
 
 1. Go to **Actions** → **Terraform AWS Workflow**
 2. Click **Run Workflow**
-3. Enter the path to your example (e.g., `aws_samples/create_ec2`)
+3. Enter the path to your example (e.g., `aws/create-ec2`)
 4. Click **Run Workflow** to start the job
 
 ---

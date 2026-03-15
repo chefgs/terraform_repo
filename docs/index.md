@@ -56,27 +56,40 @@ Whether you are learning Terraform for the first time or looking for real-world 
 
 ```
 terraform_repo/
-├── aws_samples/              # AWS resource provisioning examples
-│   ├── create_ec2/           # EC2 instance creation
-│   ├── eks_samples/          # Amazon EKS cluster
-│   ├── aws_cloudfront/       # CloudFront distribution
-│   ├── s3-dynamodb-module/   # S3 + DynamoDB modules
-│   └── tf_modules_sample/    # Reusable module examples
-├── aws_eks_module_demo/      # EKS using official and custom modules
-├── aws_web_tier/             # AWS web tier architecture
-├── azure_samples/            # Azure VM and resource examples
-├── gcp_samples/              # Google Cloud Platform examples
-├── digitalocean_samples/     # DigitalOcean VM examples
-├── oraclecloud_samples/      # Oracle Cloud Infrastructure examples
-├── kubernetes/               # Kubernetes resources via Terraform
-├── custom_provider/          # Custom Terraform provider development
-├── terraform-provider-example/   # Provider SDK v1 example
-├── terraform-provider-hashicups-pf/  # Provider Plugin Framework example
-├── tf-ec2-with-modules/      # EC2 using Terraform modules
-├── tfc-getting-started/      # Terraform Cloud getting started
-├── tfcloud_samples/          # Terraform Cloud workspace examples
-├── youtube_tf_demo/          # Demo code from YouTube tutorials
-└── .github/workflows/        # GitHub Actions CI/CD workflows
+│
+├── aws/                    # ☁️  AWS – EC2, EKS, CloudFront, S3, Web Tier, etc.
+├── azure/                  # ☁️  Azure – VMs, networking
+├── gcp/                    # ☁️  GCP – Compute, VPC, storage
+├── digitalocean/           # ☁️  DigitalOcean – Droplets, App Platform
+│   └── app-platform/       #    └── App Platform IaC with Git variable support
+├── oraclecloud/            # ☁️  Oracle Cloud – VCN, Compute instances
+│   └── compute/            #    └── Basic IaC: VCN + subnets + compute instance
+│
+├── kubernetes/             # ⎈  Kubernetes resources via Terraform
+│
+├── hashicorp-tools/        # 🔧  HashiCorp tool stack for 2-tier AWS app
+│   ├── packer/             #    └── Golden AMI builder (web & app tier)
+│   ├── vault/              #    └── Secrets (dynamic DB creds, PKI, IAM auth)
+│   ├── consul/             #    └── Service discovery + health checks
+│   └── boundary/           #    └── Zero-trust SSH access
+│
+├── custom-providers/       # 🔨  Custom Terraform provider development (Go)
+│   ├── basic/
+│   ├── sdk-v2/
+│   └── hashicups-pf/
+│
+├── iac-best-practices/     # 📘  IaC best practices reference
+│   ├── modules/            #    └── Modular design (VPC, SG, root example)
+│   ├── variables/          #    └── Variable types, validation, locals, env tfvars
+│   ├── testing/            #    └── Native terraform test (.tftest.hcl, mock_provider)
+│   └── lock-file-management/ #  └── Lock file strategy & multi-platform
+│
+├── terraform-versions/     # 📋  Version changelog & features (v1.0–v1.9)
+│
+├── tfc-getting-started/    # 🏢  Terraform Cloud – getting started (pinned)
+├── tfcloud_samples/        # 🏢  Terraform Cloud workflows & best practices (pinned)
+│
+└── docs/                   # 📚  Documentation site (GitHub Pages / Jekyll)
 ```
 
 ---
@@ -94,6 +107,25 @@ Terraform code for provisioning AWS infrastructure:
 - **S3 + DynamoDB** — State backend and NoSQL database modules
 - **Reusable Modules** — Patterns for creating shareable infrastructure modules
 
+### 🔧 HashiCorp Tools – 2-Tier AWS App
+
+Production-grade deployment of a 2-tier application using the full HashiCorp stack:
+
+| Tool | Purpose |
+|------|---------|
+| **Packer** | Build hardened golden AMIs for web & app tiers |
+| **Vault** | Dynamic secrets, PKI certificates, IAM-based auth |
+| **Consul** | Service discovery, health checks, service mesh |
+| **Boundary** | Zero-trust SSH access with Vault-injected certificates |
+
+### ☁️ DigitalOcean – App Platform
+
+New: Deploy applications directly from Git repositories using App Platform IaC, with project-level Git variable support for secure secret injection.
+
+### ☁️ Oracle Cloud – Basic Infrastructure
+
+New: Full infrastructure stack on OCI Free Tier — VCN, internet gateway, route tables, security lists, and a flexible compute instance.
+
 ### ☁️ [Kubernetes](./kubernetes)
 
 Terraform-managed Kubernetes resources using the [Kubernetes provider](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs):
@@ -109,7 +141,20 @@ Terraform-managed Kubernetes resources using the [Kubernetes provider](https://r
 - **Azure** — Virtual machine provisioning on Microsoft Azure
 - **GCP** — Google Cloud Platform resource examples
 - **DigitalOcean** — Droplet (VM) creation on DigitalOcean
-- **Oracle Cloud** — OCI resource provisioning
+- **Oracle Cloud** — OCI VCN and Compute provisioning
+
+### 📘 IaC Best Practices
+
+Reference collection for enterprise-grade Terraform usage:
+
+- **Modules** — VPC and Security Group modules with root composition example
+- **Variables** — All variable types, validation blocks, optional attributes, locals
+- **Testing** — Native `terraform test` with `mock_provider` (Terraform 1.7+)
+- **Lock Files** — Multi-platform lock file management strategy
+
+### 📋 Terraform Version Reference
+
+Quick reference guide for every major Terraform version from **v1.0 to v1.9** with working code examples of key features.
 
 ### 🔌 [Custom Terraform Providers](./custom-provider)
 
@@ -119,7 +164,7 @@ Step-by-step guides for building your own Terraform provider:
 - Terraform Plugin SDK v2 example
 - Terraform Plugin Framework (hashicups) example
 
-### ☁️ [Terraform Cloud](./terraform-cloud)
+### 🏢 [Terraform Cloud](./terraform-cloud)
 
 Integration examples for [Terraform Cloud (TFC)](https://app.terraform.io/):
 
@@ -162,7 +207,7 @@ This repository includes automated [GitHub Actions workflows](./github-actions) 
 2. **Navigate to any example directory:**
 
    ```bash
-   cd aws_samples/create_ec2
+   cd aws/create-ec2
    ```
 
 3. **Initialize Terraform:**
