@@ -48,8 +48,8 @@ export AWS_DEFAULT_REGION="us-east-1"
 ## Getting Started
 
 ```bash
-# Navigate to any example
-cd create-ec2/
+# From the repository root, navigate to any example
+cd aws/create-ec2/
 
 # Initialize
 terraform init
