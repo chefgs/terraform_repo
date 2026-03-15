@@ -31,6 +31,10 @@ terraform_repo/
 ├── digitalocean/           # ☁️  DigitalOcean examples (Droplets, App Platform)
 ├── oraclecloud/            # ☁️  Oracle Cloud examples (VCN, Compute)
 │
+├── nvidia/                 # 🤖  NVIDIA – RAG application on GPU infrastructure
+│   ├── rag-application/    #    └── Python RAG assistant (PDF/TXT/DOCX + NVIDIA NIM)
+│   └── terraform/          #    └── AWS GPU EC2 + VPC + S3 + NVIDIA NGC provider stub
+│
 ├── kubernetes/             # ⎈  Kubernetes resource management via Terraform
 │
 ├── hashicorp-tools/        # 🔧  HashiCorp tool stack for 2-tier AWS app
@@ -61,12 +65,36 @@ terraform_repo/
 ## Information about this project
 - Idea for this open source repository is to collate the Terraform Resource Creation code for Major Cloud Providers, categorised by **cloud provider**, **IaC concepts**, and **HashiCorp tools**
 - Includes examples for AWS, Azure, GCP, DigitalOcean, and Oracle Cloud Infrastructure
+- Features a **NVIDIA RAG application** example — a Python document assistant powered by NVIDIA NIM LLM endpoints, deployed on AWS GPU infrastructure with full Terraform IaC (including a stubbed NVIDIA NGC provider)
 - Demonstrates **Terraform best practices**: modular design, variable templatization, native testing, and lock file management
 - Contains **HashiCorp full-stack** examples: Packer + Vault + Consul + Boundary for a production 2-tier AWS application
 - Provides a **Terraform version reference guide** (v1.0–v1.14, latest: v1.14.7 Mar 2026) with code examples for every major release
 - Also has sample code for *How to develop Terraform Custom Provider*
 - Feel free to explore the repo content, and add :star: or fork if you like the content
 - Repo is open for contributions and if you want to contribute please read the **important notice** for contribution guidelines
+
+### 🤖 NVIDIA RAG Application Highlight
+
+The [`nvidia/`](./nvidia/) directory provides a self-contained example of deploying a **Retrieval-Augmented Generation (RAG)** document assistant on NVIDIA GPU infrastructure:
+
+| Component | Description |
+|---|---|
+| **Python RAG App** | Interactive CLI that loads PDF, TXT, or DOCX files and answers questions using NVIDIA NIM LLMs |
+| **NVIDIA NIM** | Inference microservices for LLM (`meta/llama-3.1-8b-instruct`) and embeddings (`nv-embedqa-e5-v5`) |
+| **FAISS Vector Store** | Local CPU/GPU vector index for fast similarity search |
+| **Terraform IaC** | AWS VPC + GPU EC2 instance (`g4dn.xlarge`) + S3 bucket + IAM — all managed via Terraform |
+| **NVIDIA NGC Provider** | Commented stub blocks ready to activate for NGC registry and NIM endpoint management |
+
+```bash
+# Run the RAG assistant locally
+export NVIDIA_API_KEY="nvapi-..."
+python nvidia/rag-application/app/main.py --file my-document.pdf
+```
+
+```bash
+# Deploy the GPU infrastructure to AWS
+cd nvidia/terraform && terraform init && terraform apply
+```
 
 ## Read before you start contributing to this repo
 - Read [Contribution Guidelines](./CONTRIBUTING.md) before contributing to this repository!

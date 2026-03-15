@@ -8,9 +8,10 @@ nav_order: 1
 
 [![AWS Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml)
 [![Kubernetes Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_k8s.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_k8s.yml)
+[![Checkov Security Scan](https://github.com/chefgs/terraform_repo/actions/workflows/checkov_security_scan.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/checkov_security_scan.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> An open-source collection of Terraform infrastructure-as-code examples for major cloud providers, Kubernetes, and custom provider development — complete with GitHub Actions CI/CD workflows.
+> An open-source collection of Terraform infrastructure-as-code examples for major cloud providers, NVIDIA GPU workloads, Kubernetes, and custom provider development — complete with GitHub Actions CI/CD workflows.
 
 ---
 
@@ -65,6 +66,10 @@ terraform_repo/
 ├── oraclecloud/            # ☁️  Oracle Cloud – VCN, Compute instances
 │   └── compute/            #    └── Basic IaC: VCN + subnets + compute instance
 │
+├── nvidia/                 # 🤖  NVIDIA – RAG app on GPU infrastructure
+│   ├── rag-application/    #    └── Python RAG assistant (PDF/TXT/DOCX + NIM)
+│   └── terraform/          #    └── AWS GPU EC2 + VPC + S3 + NGC provider stub
+│
 ├── kubernetes/             # ⎈  Kubernetes resources via Terraform
 │
 ├── hashicorp-tools/        # 🔧  HashiCorp tool stack for 2-tier AWS app
@@ -84,7 +89,7 @@ terraform_repo/
 │   ├── testing/            #    └── Native terraform test (.tftest.hcl, mock_provider)
 │   └── lock-file-management/ #  └── Lock file strategy & multi-platform
 │
-├── terraform-versions/     # 📋  Version changelog & features (v1.0–v1.9)
+├── terraform-versions/     # 📋  Version changelog & features (v1.0–v1.14)
 │
 ├── tfc-getting-started/    # 🏢  Terraform Cloud – getting started (pinned)
 ├── tfcloud_samples/        # 🏢  Terraform Cloud workflows & best practices (pinned)
@@ -106,6 +111,26 @@ Terraform code for provisioning AWS infrastructure:
 - **CloudFront** — CDN distribution configuration
 - **S3 + DynamoDB** — State backend and NoSQL database modules
 - **Reusable Modules** — Patterns for creating shareable infrastructure modules
+
+### 🤖 [NVIDIA RAG Application](./nvidia-rag)
+
+Deploy a **Retrieval-Augmented Generation (RAG)** document assistant on NVIDIA GPU infrastructure:
+
+| Component | Description |
+|-----------|-------------|
+| **Python RAG App** | Interactive CLI — load PDF/TXT/DOCX, ask questions, get LLM-grounded answers |
+| **NVIDIA NIM** | Cloud inference API: `meta/llama-3.1-8b-instruct` LLM + `nv-embedqa-e5-v5` embeddings |
+| **FAISS Vector Store** | CPU/GPU similarity search index |
+| **Terraform IaC** | AWS VPC + `g4dn.xlarge` GPU EC2 + S3 + IAM + NVIDIA NGC provider stub |
+
+```bash
+# Run locally
+export NVIDIA_API_KEY="nvapi-..."
+python nvidia/rag-application/app/main.py --file my-doc.pdf
+
+# Deploy to AWS
+cd nvidia/terraform && terraform init && terraform apply
+```
 
 ### 🔧 HashiCorp Tools – 2-Tier AWS App
 
@@ -154,7 +179,7 @@ Reference collection for enterprise-grade Terraform usage:
 
 ### 📋 Terraform Version Reference
 
-Quick reference guide for every major Terraform version from **v1.0 to v1.9** with working code examples of key features.
+Quick reference guide for every major Terraform version from **v1.0 to v1.14** (latest: v1.14.7, Mar 2026) with working code examples of key features.
 
 ### 🔌 [Custom Terraform Providers](./custom-provider)
 
@@ -183,6 +208,7 @@ This repository includes automated [GitHub Actions workflows](./github-actions) 
 | [Terraform AWS Workflow](.github/workflows/tf_code_validation_aws.yml) | Push, PR, Manual | Validates and applies AWS Terraform code |
 | [Terraform Kubernetes Workflow](.github/workflows/tf_code_validation_k8s.yml) | Push, PR, Manual | Deploys Kubernetes resources via Terraform |
 | [TF Cloud AWS Workflow](.github/workflows/tf_cloud_aws.yml) | Push, PR, Manual | Runs Terraform plans via Terraform Cloud |
+| [Checkov Security Scan](.github/workflows/checkov_security_scan.yml) | Push, PR | Static security analysis for Terraform (non-blocking) |
 | [GitHub Pages](.github/workflows/pages.yml) | Push to main | Builds and deploys this documentation site |
 
 ---

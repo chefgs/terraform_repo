@@ -33,6 +33,8 @@ navigation:
     url: /kubernetes/
   - title: Cloud Providers
     url: /cloud-providers/
+  - title: NVIDIA RAG App
+    url: /nvidia-rag/
   - title: HashiCorp Tools
     url: /hashicorp-tools/
   - title: IaC Best Practices

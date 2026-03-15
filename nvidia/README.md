@@ -1,5 +1,7 @@
 # NVIDIA RAG Application – Infrastructure as Code
 
+> 📚 **Documentation:** [Full docs on GitHub Pages](https://chefgs.github.io/terraform_repo/nvidia-rag/)
+
 This directory contains a **stub / example** IaC deployment for a
 Retrieval-Augmented Generation (RAG) document assistant powered by
 **NVIDIA NIM** (inference microservices) and deployed on AWS GPU-accelerated
@@ -176,10 +178,18 @@ After `terraform apply`:
 
 | Output | Description |
 |---|---|
+| `rag_instance_id` | EC2 instance ID of the GPU host |
 | `rag_instance_public_ip` | Public IP of the GPU host |
+| `rag_instance_public_dns` | Public DNS name of the GPU instance |
+| `rag_instance_ami` | Resolved AMI ID used for the GPU instance |
 | `rag_app_url` | URL to the RAG application API |
 | `rag_docs_s3_bucket` | S3 bucket name for documents |
+| `rag_docs_s3_bucket_arn` | ARN of the S3 documents bucket |
+| `iam_instance_role_arn` | ARN of the IAM role attached to the GPU instance |
 | `ssh_command` | Ready-to-use SSH command |
+| `vpc_id` | VPC ID |
+| `public_subnet_id` | Public subnet ID |
+| `security_group_id` | Security group ID |
 
 ### Destroy
 
