@@ -23,7 +23,7 @@ resource "aws_waf_web_acl" "waf_acl" {
   metric_name = "tfWebACL"
 
   default_action {
-    type = "ALLOW"
+    type = "BLOCK"
   }
 
   rules {

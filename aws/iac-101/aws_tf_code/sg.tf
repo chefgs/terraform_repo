@@ -8,8 +8,8 @@ resource "aws_security_group" "sg" {
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
+    cidr_blocks      = [var.ssh_allowed_cidr]
+    ipv6_cidr_blocks = [var.ssh_allowed_ipv6_cidr]
   }
 
   ingress {

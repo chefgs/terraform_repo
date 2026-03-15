@@ -11,7 +11,7 @@ variable "project_name" {
 variable "vault_address" {
   description = "URL of the Vault cluster (e.g. https://vault.example.com:8200)"
   type        = string
-  default     = "http://127.0.0.1:8200"
+  default     = "https://127.0.0.1:8200"
 }
 
 variable "vault_root_token" {

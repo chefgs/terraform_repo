@@ -16,7 +16,7 @@ variable "org_name" {
 variable "boundary_addr" {
   description = "Boundary controller address (e.g. https://boundary.example.com)"
   type        = string
-  default     = "http://127.0.0.1:9200"
+  default     = "https://127.0.0.1:9200"
 }
 
 variable "boundary_auth_method_id" {
@@ -39,7 +39,7 @@ variable "boundary_password" {
 variable "vault_address" {
   description = "Vault address for Boundary credential store."
   type        = string
-  default     = "http://127.0.0.1:8200"
+  default     = "https://127.0.0.1:8200"
 }
 
 variable "vault_token" {
