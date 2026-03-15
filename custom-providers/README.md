@@ -24,8 +24,8 @@ custom-providers/
 
 ## Prerequisites
 
-| Tool | Version |
-|------|---------|
+| Tool | Version / Notes |
+|------|------------------|
 | Go | >= 1.21 |
 | Terraform | >= 1.0 |
 | goreleaser | For cross-platform builds |
