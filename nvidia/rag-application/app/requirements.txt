@@ -1,0 +1,28 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# NVIDIA RAG Document Assistant – Python dependencies
+# ──────────────────────────────────────────────────────────────────────────────
+
+# Core LangChain framework
+langchain>=0.2.0
+langchain-community>=0.2.0
+langchain-core>=0.2.0
+
+# NVIDIA NIM / AI Endpoints integration (primary LLM + embeddings provider)
+langchain-nvidia-ai-endpoints>=0.1.0
+
+# OpenAI SDK (used as fallback when NVIDIA_API_KEY is absent)
+langchain-openai>=0.1.0
+openai>=1.0.0
+
+# Document loaders
+pypdf>=4.0.0          # PDF parsing (PyPDFLoader)
+docx2txt>=0.8         # DOCX text extraction (Docx2txtLoader)
+unstructured>=0.12.0  # DOC / generic document parsing
+python-docx>=1.1.0    # DOCX support
+
+# Vector store
+faiss-cpu>=1.8.0      # FAISS CPU build; swap for faiss-gpu on GPU hosts
+
+# Utilities
+tqdm>=4.66.0          # Progress bars
+python-dotenv>=1.0.0  # Load .env files for API keys
