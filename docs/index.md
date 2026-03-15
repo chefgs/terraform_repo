@@ -194,9 +194,9 @@ Terraform-managed Kubernetes resources using the [Kubernetes provider](https://r
 
 ### ☁️ [Multi-Cloud Samples](./cloud-providers)
 
-- **Azure** — Virtual machine provisioning on Microsoft Azure
-- **GCP** — Google Cloud Platform resource examples
-- **DigitalOcean** — Droplet (VM) creation on DigitalOcean
+- **[Azure](./azure-samples)** — Virtual machine provisioning on Microsoft Azure
+- **[GCP](./gcp-samples)** — Google Cloud Platform Compute instance with static IP and startup script
+- **DigitalOcean** — Droplet (VM) creation and App Platform deployment
 - **Oracle Cloud** — OCI VCN and Compute provisioning
 
 ### 📘 IaC Best Practices
@@ -237,6 +237,10 @@ This repository includes automated [GitHub Actions workflows](./github-actions) 
 | Workflow | Trigger | Description |
 |----------|---------|-------------|
 | [Terraform AWS Workflow](.github/workflows/tf_code_validation_aws.yml) | Push, PR, Manual | Validates and applies AWS Terraform code |
+| [Terraform Azure Validate](.github/workflows/tf_validate_azure.yml) | Push/PR on `azure/**`, Manual | `terraform validate` — Azure code syntax check |
+| [Terraform GCP Validate](.github/workflows/tf_validate_gcp.yml) | Push/PR on `gcp/**`, Manual | `terraform validate` — GCP code syntax check |
+| [Terraform DigitalOcean Validate](.github/workflows/tf_validate_digitalocean.yml) | Push/PR on `digitalocean/**`, Manual | `terraform validate` — DigitalOcean code syntax check |
+| [Terraform Oracle Cloud Validate](.github/workflows/tf_validate_oraclecloud.yml) | Push/PR on `oraclecloud/**`, Manual | `terraform validate` — OCI code syntax check |
 | [Terraform Kubernetes Workflow](.github/workflows/tf_code_validation_k8s.yml) | Push, PR, Manual | Deploys Kubernetes resources via Terraform |
 | [TF Cloud AWS Workflow](.github/workflows/tf_cloud_aws.yml) | Push, PR, Manual | Runs Terraform plans via Terraform Cloud |
 | [Checkov Security Scan](.github/workflows/checkov_security_scan.yml) | Push, PR | Static security analysis for Terraform (non-blocking) |

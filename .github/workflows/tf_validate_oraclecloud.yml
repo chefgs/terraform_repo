@@ -1,0 +1,39 @@
+name: Terraform Oracle Cloud Validate
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'oraclecloud/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'oraclecloud/**'
+  workflow_dispatch:
+    inputs:
+      tfpath:
+        description: 'TF Code Path'
+        required: false
+        default: 'oraclecloud/create-vcn'
+
+jobs:
+  terraform_validate:
+    name: Terraform Validate – Oracle Cloud
+    runs-on: ubuntu-latest
+    env:
+      TFPATH: ${{ github.event.inputs.tfpath || 'oraclecloud/create-vcn' }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3.5.2
+
+      - name: Setup Terraform CLI
+        uses: hashicorp/setup-terraform@v2.0.2
+
+      - name: Terraform Init
+        run: terraform init -backend=false
+        working-directory: ${{ env.TFPATH }}
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ${{ env.TFPATH }}

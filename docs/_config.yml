@@ -29,6 +29,10 @@ navigation:
     url: /
   - title: AWS Samples
     url: /aws-samples/
+  - title: Azure Samples
+    url: /azure-samples/
+  - title: GCP Samples
+    url: /gcp-samples/
   - title: Kubernetes
     url: /kubernetes/
   - title: Cloud Providers

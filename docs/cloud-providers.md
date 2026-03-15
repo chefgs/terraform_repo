@@ -1,12 +1,16 @@
 ---
 layout: default
 title: Cloud Providers
-nav_order: 4
+nav_order: 6
 ---
 
 # Multi-Cloud Provider Samples
 
 This section covers Terraform examples for Azure, GCP, DigitalOcean, and Oracle Cloud Infrastructure.
+
+> **Azure** and **GCP** now have dedicated documentation pages:
+> - [Azure Samples →](./azure-samples)
+> - [GCP Samples →](./gcp-samples)
 
 ---
 

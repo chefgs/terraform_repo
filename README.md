@@ -13,12 +13,17 @@ A senior-engineer-level collection of **Terraform Infrastructure-as-Code** examp
 
 ## Project Status
 
-- [x] [![AWS Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml)
-- [x] [![Kubernetes Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_k8s.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_k8s.yml)
-- [x] [![Checkov Security Scan](https://github.com/chefgs/terraform_repo/actions/workflows/checkov_security_scan.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/checkov_security_scan.yml)
-- [ ] Azure Workflow - ToDo
-- [ ] GCP Workflow - ToDo
-- [ ] DigitalOcean Workflow - ToDo
+| Provider | CI Status |
+|----------|-----------|
+| **AWS** | [![AWS Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_aws.yml) |
+| **Azure** | [![Terraform Azure Validate](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_azure.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_azure.yml) |
+| **GCP** | [![Terraform GCP Validate](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_gcp.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_gcp.yml) |
+| **DigitalOcean** | [![Terraform DigitalOcean Validate](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_digitalocean.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_digitalocean.yml) |
+| **Oracle Cloud** | [![Terraform Oracle Cloud Validate](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_oraclecloud.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_validate_oraclecloud.yml) |
+| **Kubernetes** | [![Kubernetes Workflow](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_k8s.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/tf_code_validation_k8s.yml) |
+| **Security Scan** | [![Checkov Security Scan](https://github.com/chefgs/terraform_repo/actions/workflows/checkov_security_scan.yml/badge.svg)](https://github.com/chefgs/terraform_repo/actions/workflows/checkov_security_scan.yml) |
+
+> All provider workflows run `terraform init` + `terraform validate` on push/PR to their respective directories, ensuring code is always syntactically valid without requiring cloud credentials.
 
 ## Repository Structure
 
