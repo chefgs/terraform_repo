@@ -24,6 +24,7 @@ AWS Region (us-east-1)
 
 ```
 hashicorp-tools/
+├── terraform/   # Core AWS infrastructure (VPC, ALB, ASGs, RDS)
 ├── packer/      # Packer templates for AMI creation
 ├── vault/       # Vault cluster + policies for secrets management
 ├── consul/      # Consul cluster + service discovery
@@ -33,9 +34,10 @@ hashicorp-tools/
 ## Getting Started
 
 Deploy in this order:
-1. **Packer** – Build the base AMIs
-2. **Vault** – Bootstrap secrets management
-3. **Consul** – Enable service discovery
-4. **Boundary** – Configure zero-trust access
+1. **Packer** – Build the base AMIs for web and app tiers
+2. **Terraform** – Provision the core AWS infrastructure (VPC, ALB, ASGs, RDS)
+3. **Vault** – Bootstrap secrets management
+4. **Consul** – Enable service discovery
+5. **Boundary** – Configure zero-trust access
 
 See each sub-directory for detailed instructions.
