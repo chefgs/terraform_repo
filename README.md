@@ -7,6 +7,18 @@ A senior-engineer-level collection of **Terraform Infrastructure-as-Code** examp
 - [Project Status](#project-status)
 - [Repository Structure](#repository-structure)
 - [Information About This Project](#information-about-this-project)
+- [Provider Summaries](#provider-summaries)
+  - [AWS](#-aws-examples)
+  - [Azure](#-azure-examples)
+  - [GCP](#-gcp-examples)
+  - [Kubernetes](#-kubernetes-examples)
+  - [DigitalOcean](#-digitalocean-examples)
+  - [Oracle Cloud](#-oracle-cloud-infrastructure-examples)
+  - [NVIDIA RAG Application](#-nvidia-rag-application-highlight)
+  - [HashiCorp Tools](#-hashicorp-tools-examples)
+  - [Custom Providers](#-custom-terraform-providers)
+  - [IaC Best Practices](#-iac-best-practices)
+  - [Terraform Cloud](#-terraform-cloud-examples)
 - [Contributing Guidelines](#read-before-you-start-contributing-to-this-repo)
 - [Documentation](#good-to-have-create-documentation-to-list-down-resourcesmodulesproviders-output)
 - [License](#license)
@@ -82,6 +94,8 @@ terraform_repo/
 - Feel free to explore the repo content, and add :star: or fork if you like the content
 - Repo is open for contributions and if you want to contribute please read the **important notice** for contribution guidelines
 
+## Provider Summaries
+
 ### 🤖 NVIDIA RAG Application Highlight
 
 The [`nvidia/`](./nvidia/) directory provides a self-contained example of deploying a **Retrieval-Augmented Generation (RAG)** document assistant on NVIDIA GPU infrastructure:
@@ -103,6 +117,79 @@ python nvidia/rag-application/app/main.py --file my-document.pdf
 ```bash
 # Deploy the GPU infrastructure to AWS
 cd nvidia/terraform && terraform init && terraform apply
+```
+
+### ☁️ AWS Examples
+
+The [`aws/`](./aws/) directory contains a wide range of **Amazon Web Services** infrastructure examples:
+
+| Directory | Description |
+|---|---|
+| [`create-ec2/`](./aws/create-ec2/) | Simple EC2 instance creation |
+| [`web-tier/`](./aws/web-tier/) | Web tier with VPC, subnets, and security groups |
+| [`web-tier-samples/`](./aws/web-tier-samples/) | Additional web tier variations |
+| [`cloudfront/`](./aws/cloudfront/) | CloudFront CDN distribution |
+| [`s3-dynamodb/`](./aws/s3-dynamodb/) | S3 + DynamoDB remote state backend pattern |
+| [`eks-samples/`](./aws/eks-samples/) | EKS cluster (self-managed & Fargate) |
+| [`eks-module-demo/`](./aws/eks-module-demo/) | EKS using the official AWS module |
+| [`ec2-with-modules/`](./aws/ec2-with-modules/) | EC2 with reusable modules pattern |
+| [`elasticsearch/`](./aws/elasticsearch/) | Elasticsearch / OpenSearch deployment |
+| [`iac-101/`](./aws/iac-101/) | IaC fundamentals with AWS |
+
+```bash
+# Example: deploy a simple EC2 instance
+export AWS_DEFAULT_REGION="us-east-1"
+cd aws/create-ec2/
+terraform init && terraform apply
+```
+
+### ☁️ Azure Examples
+
+The [`azure/`](./azure/) directory contains **Microsoft Azure** infrastructure examples:
+
+| Directory | Description |
+|---|---|
+| [`create-vm/`](./azure/create-vm/) | Create an Azure Virtual Machine with configurable size and networking |
+
+```bash
+# Authenticate with Azure CLI
+az login
+cd azure/create-vm/
+terraform init && terraform apply
+```
+
+### ☁️ GCP Examples
+
+The [`gcp/`](./gcp/) directory contains **Google Cloud Platform** infrastructure examples:
+
+| Directory | Description |
+|---|---|
+| [`resources/`](./gcp/resources/) | GCP resource creation — VPC, compute instances, and storage |
+
+```bash
+# Authenticate with GCP
+gcloud auth application-default login
+cd gcp/resources/
+terraform init && terraform apply
+```
+
+### ⎈ Kubernetes Examples
+
+The [`kubernetes/`](./kubernetes/) directory demonstrates managing **Kubernetes resources** with Terraform using the Kubernetes provider:
+
+| File / Resource | Description |
+|---|---|
+| `kubernetes_namespace` | Create and label a Kubernetes namespace |
+| `kubernetes_resource_quota` | Enforce namespace-wide CPU, memory, and pod limits |
+| `kubernetes_limit_range` | Set default resource requests/limits for containers |
+| `kubernetes_deployment` | Deploy a containerized app with health checks and security context |
+| `kubernetes_service` | Expose the deployment as a ClusterIP service |
+
+```bash
+# Prerequisites: running cluster with kubeconfig configured (e.g., Minikube)
+cd kubernetes/
+terraform init && terraform apply
+kubectl get ns && kubectl get deployment -n <namespace>
 ```
 
 ### ☁️ DigitalOcean Examples
@@ -138,6 +225,69 @@ cd oraclecloud/compute/
 cp terraform.tfvars.example terraform.tfvars
 terraform init && terraform apply
 terraform output ssh_command   # get the ready-to-use SSH command
+```
+
+### 🔧 HashiCorp Tools Examples
+
+The [`hashicorp-tools/`](./hashicorp-tools/) directory demonstrates the **full HashiCorp stack** for a production 2-tier AWS application:
+
+| Directory | Description |
+|---|---|
+| [`terraform/`](./hashicorp-tools/terraform/) | Core AWS infrastructure — VPC, ALB, Auto Scaling Groups, and RDS PostgreSQL |
+| [`packer/`](./hashicorp-tools/packer/) | Golden AMI builder for web and app tiers |
+| [`vault/`](./hashicorp-tools/vault/) | Secrets management — dynamic credentials, PKI certificates, DB credentials |
+| [`consul/`](./hashicorp-tools/consul/) | Service discovery, health checks, and KV store |
+| [`boundary/`](./hashicorp-tools/boundary/) | Zero-trust access control to private resources |
+
+```bash
+# Deploy in order: Packer → Terraform → Vault → Consul → Boundary
+cd hashicorp-tools/packer/ && packer build web-tier.pkr.hcl
+cd ../terraform/           && terraform init && terraform apply
+```
+
+### 🔨 Custom Terraform Providers
+
+The [`custom-providers/`](./custom-providers/) directory contains examples for **developing custom Terraform providers** in Go:
+
+| Directory | Description |
+|---|---|
+| [`basic/`](./custom-providers/basic/) | Basic custom provider using the original SDK style |
+| [`sdk-v2/`](./custom-providers/sdk-v2/) | Provider using Terraform Plugin SDK v2 |
+| [`hashicups-pf/`](./custom-providers/hashicups-pf/) | HashiCups provider using the Terraform Plugin Framework (recommended) |
+| [`example-provider/`](./custom-providers/example-provider/) | Production-quality example provider with tests and documentation |
+
+```bash
+# Build and test the Plugin Framework example
+cd custom-providers/hashicups-pf/
+go mod download
+make build && make test
+```
+
+### 📘 IaC Best Practices
+
+The [`iac-best-practices/`](./iac-best-practices/) directory is a reference collection covering key Terraform engineering patterns:
+
+| Directory | Topic |
+|---|---|
+| [`modules/`](./iac-best-practices/modules/) | Modular, reusable, and composable resource creation patterns |
+| [`variables/`](./iac-best-practices/variables/) | Variable templatization — types, validation blocks, and `locals` |
+| [`testing/`](./iac-best-practices/testing/) | Terraform native tests using `.tftest.hcl` (requires Terraform v1.6+) |
+| [`lock-file-management/`](./iac-best-practices/lock-file-management/) | Lock file strategy and multi-platform provider locking |
+
+### 🏢 Terraform Cloud Examples
+
+The repository includes two Terraform Cloud directories pinned at the root:
+
+| Directory | Description |
+|---|---|
+| [`tfc-getting-started/`](./tfc-getting-started/) | Introductory example for connecting a local configuration to a Terraform Cloud workspace |
+| [`tfcloud_samples/`](./tfcloud_samples/) | Terraform Cloud workflow patterns — remote runs, variable sets, and workspace best practices |
+
+```bash
+# Authenticate with Terraform Cloud
+terraform login
+cd tfc-getting-started/
+terraform init && terraform apply
 ```
 
 ## Read before you start contributing to this repo
