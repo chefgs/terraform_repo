@@ -2,8 +2,11 @@
 
 A senior-engineer-level collection of **Terraform Infrastructure-as-Code** examples covering major cloud providers, IaC best practices, HashiCorp toolchain, and Terraform version references.
 
+> 📖 **New here? Read the [Usage Guide](./USAGE.md) to get up and running fast.**
+
 **Table of Contents:**
 
+- [Usage Guide](./USAGE.md) ← **Start here**
 - [Project Status](#project-status)
 - [Repository Structure](#repository-structure)
 - [Information About This Project](#information-about-this-project)
