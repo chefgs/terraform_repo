@@ -1,6 +1,6 @@
 module tf_custom_provider
 
-go 1.24.0
+go 1.14
 
 require github.com/hashicorp/terraform-plugin-sdk/v2 v2.11.0
 
