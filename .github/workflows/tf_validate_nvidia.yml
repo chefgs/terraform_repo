@@ -26,6 +26,8 @@ jobs:
   validate_and_test:
     name: Validate and Test NVIDIA Terraform
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
