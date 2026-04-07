@@ -1,0 +1,257 @@
+# Terraform Version Monitor
+#
+# Checks the official HashiCorp Terraform GitHub repository daily for new
+# releases.  When a new version is detected it:
+#   1. Creates (or updates) the matching terraform-versions/<minor>/ directory
+#      and CHANGELOG.md with the upstream release notes.
+#   2. Updates the "Latest stable release" badge and version table in
+#      terraform-versions/README.md.
+#   3. Opens a Pull Request so the change can be reviewed before merging.
+#
+# Idempotency guarantee
+# ---------------------
+# The version currently tracked in terraform-versions/README.md is compared
+# against the upstream latest release BEFORE any file writes occur.  If the
+# two match the workflow exits early and no PR is created.  The PR branch is
+# named after the specific release tag (e.g. chore/terraform-version-v1.15.0),
+# so re-running the workflow for the same version never opens a duplicate PR.
+
+name: Terraform Version Monitor
+
+on:
+  schedule:
+    # Runs daily at 06:00 UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  check_and_update:
+    name: Check for New Terraform Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # needed to push the update branch
+      pull-requests: write  # needed to open the PR
+
+    steps:
+      # -----------------------------------------------------------------------
+      # 1. Checkout
+      # -----------------------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v3.5.2
+        with:
+          fetch-depth: 0  # full history so branch creation works cleanly
+
+      # -----------------------------------------------------------------------
+      # 2. Fetch the latest Terraform release from GitHub
+      # -----------------------------------------------------------------------
+      - name: Get latest Terraform release
+        id: latest
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RELEASE_JSON=$(curl -sf \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/hashicorp/terraform/releases/latest)
+
+          LATEST_TAG=$(echo "$RELEASE_JSON"  | jq -r '.tag_name')
+          RELEASE_DATE=$(echo "$RELEASE_JSON" | jq -r '.published_at' | cut -dT -f1)
+          RELEASE_BODY=$(echo "$RELEASE_JSON" | jq -r '.body // ""')
+
+          echo "tag=${LATEST_TAG}"           >> "$GITHUB_OUTPUT"
+          echo "date=${RELEASE_DATE}"        >> "$GITHUB_OUTPUT"
+
+          # Store release body in a temp file to preserve multi-line content
+          printf '%s' "$RELEASE_BODY" > /tmp/release_notes.md
+
+          echo "Latest upstream release : ${LATEST_TAG} (${RELEASE_DATE})"
+
+      # -----------------------------------------------------------------------
+      # 3. Read the version currently tracked in this repository
+      # -----------------------------------------------------------------------
+      - name: Get currently tracked version
+        id: current
+        run: |
+          # Extracts the version number from a line like:
+          #   > **Latest stable release:** [v1.14.7](./v1.14/) — March 11, 2026
+          TRACKED=$(grep -oP '(?<=\*\*Latest stable release:\*\* \[v)[\d.]+' \
+                      terraform-versions/README.md || true)
+
+          if [ -z "$TRACKED" ]; then
+            echo "Could not determine tracked version from README – treating as 'none'"
+            TRACKED="0.0.0"
+          fi
+
+          echo "tag=v${TRACKED}" >> "$GITHUB_OUTPUT"
+          echo "Currently tracked version: v${TRACKED}"
+
+      # -----------------------------------------------------------------------
+      # 4. Early-exit when already up to date (idempotency check)
+      # -----------------------------------------------------------------------
+      - name: Check whether an update is needed
+        id: needs_update
+        run: |
+          LATEST="${{ steps.latest.outputs.tag }}"
+          TRACKED="${{ steps.current.outputs.tag }}"
+
+          if [ "$LATEST" = "$TRACKED" ]; then
+            echo "Already up to date at ${TRACKED}. Nothing to do."
+            echo "required=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Update required: ${TRACKED} → ${LATEST}"
+            echo "required=true"  >> "$GITHUB_OUTPUT"
+          fi
+
+      # -----------------------------------------------------------------------
+      # 5. Derive version components for later steps
+      # -----------------------------------------------------------------------
+      - name: Parse version components
+        if: steps.needs_update.outputs.required == 'true'
+        id: ver
+        run: |
+          TAG="${{ steps.latest.outputs.tag }}"   # e.g. v1.15.2
+          NUM="${TAG#v}"                            # e.g. 1.15.2
+          MAJOR=$(echo "$NUM" | cut -d. -f1)
+          MINOR=$(echo "$NUM" | cut -d. -f2)
+          PATCH=$(echo "$NUM" | cut -d. -f3)
+          MINOR_DIR="v${MAJOR}.${MINOR}"           # e.g. v1.15
+
+          echo "num=${NUM}"             >> "$GITHUB_OUTPUT"
+          echo "minor_dir=${MINOR_DIR}" >> "$GITHUB_OUTPUT"
+          echo "patch=${PATCH}"         >> "$GITHUB_OUTPUT"
+
+      # -----------------------------------------------------------------------
+      # 6. Create / update the version directory and CHANGELOG
+      # -----------------------------------------------------------------------
+      - name: Update version directory and CHANGELOG
+        if: steps.needs_update.outputs.required == 'true'
+        env:
+          LATEST_TAG: ${{ steps.latest.outputs.tag }}
+          RELEASE_DATE: ${{ steps.latest.outputs.date }}
+          VERSION_NUM: ${{ steps.ver.outputs.num }}
+          MINOR_DIR: ${{ steps.ver.outputs.minor_dir }}
+        run: |
+          CHANGELOG_PATH="terraform-versions/${MINOR_DIR}/CHANGELOG.md"
+          mkdir -p "terraform-versions/${MINOR_DIR}"
+
+          if [ ! -f "$CHANGELOG_PATH" ]; then
+            # ── New minor version ──────────────────────────────────────────
+            echo "Creating new directory terraform-versions/${MINOR_DIR}/"
+            {
+              printf '# Terraform %s – Release Notes\n\n' "${MINOR_DIR}"
+              printf '> **Latest version: %s** (released %s)\n\n' "${VERSION_NUM}" "${RELEASE_DATE}"
+              printf '## %s (%s)\n\n' "${LATEST_TAG}" "${RELEASE_DATE}"
+              cat /tmp/release_notes.md
+              printf '\n'
+            } > "$CHANGELOG_PATH"
+          else
+            # ── Existing minor version: patch release ─────────────────────
+            if grep -qF "${VERSION_NUM}" "$CHANGELOG_PATH"; then
+              echo "Version ${VERSION_NUM} already present in ${CHANGELOG_PATH}. Skipping."
+              exit 0
+            fi
+
+            echo "Prepending ${LATEST_TAG} entry to ${CHANGELOG_PATH}"
+
+            # Update the "Latest version" header line
+            sed -i "s|> \*\*Latest version:.*|> **Latest version: ${VERSION_NUM}** (released ${RELEASE_DATE})|" \
+              "$CHANGELOG_PATH"
+
+            # Prepend the new patch section after the header block (first blank
+            # line following the leading "> Latest version" line)
+            TEMP=$(mktemp)
+            awk -v tag="${LATEST_TAG}" -v date="${RELEASE_DATE}" \
+                -v notes="$(cat /tmp/release_notes.md)" \
+                '
+                /^## / && !inserted {
+                  print "## " tag " (" date ")\n"
+                  print notes "\n"
+                  inserted=1
+                }
+                { print }
+                ' "$CHANGELOG_PATH" > "$TEMP"
+            mv "$TEMP" "$CHANGELOG_PATH"
+          fi
+
+      # -----------------------------------------------------------------------
+      # 7. Update terraform-versions/README.md
+      # -----------------------------------------------------------------------
+      - name: Update terraform-versions/README.md
+        if: steps.needs_update.outputs.required == 'true'
+        env:
+          LATEST_TAG: ${{ steps.latest.outputs.tag }}
+          RELEASE_DATE: ${{ steps.latest.outputs.date }}
+          VERSION_NUM: ${{ steps.ver.outputs.num }}
+          MINOR_DIR: ${{ steps.ver.outputs.minor_dir }}
+          TRACKED_TAG: ${{ steps.current.outputs.tag }}
+        run: |
+          README="terraform-versions/README.md"
+          TRACKED_NUM="${TRACKED_TAG#v}"   # strip leading 'v'
+
+          # ── Update the "Latest stable release" badge ──────────────────────
+          # TRACKED_NUM has no 'v' prefix (e.g. 1.14.7); LATEST_TAG includes 'v'
+          # (e.g. v1.15.0), so both sides of the substitution keep 'v' inside [].
+          sed -i "s|> \*\*Latest stable release:\*\* \[v${TRACKED_NUM}\].*|> **Latest stable release:** [${LATEST_TAG}](./${MINOR_DIR}/) — ${RELEASE_DATE}|" \
+            "$README"
+
+          # ── Add a new row for a new minor version ─────────────────────────
+          # Only when the minor directory didn't exist before this run
+          if ! grep -qF "${MINOR_DIR}" "$README"; then
+            # Derive a one-line summary from the first non-empty release note line
+            SUMMARY=$(grep -m1 '^[^#>]' /tmp/release_notes.md | \
+                        sed 's/[`*_]//g' | cut -c1-80 || echo "New release")
+
+            NEW_ROW="| [**${LATEST_TAG}**](./${MINOR_DIR}/) | **${RELEASE_DATE}** | ${SUMMARY} |"
+
+            # Insert before the closing line of the version table
+            # (the first blank line after the table header)
+            TEMP=$(mktemp)
+            awk -v row="$NEW_ROW" '
+              /^\| \[v1\./ { last_table_line=NR; lines[NR]=$0; next }
+              { lines[NR]=$0 }
+              END {
+                for (i=1; i<=NR; i++) {
+                  print lines[i]
+                  if (i == last_table_line) print row
+                }
+              }
+            ' "$README" > "$TEMP"
+            mv "$TEMP" "$README"
+          else
+            # Patch release on existing minor: update the version tag in the
+            # existing table row for this minor series
+            sed -i "s|\[v${MINOR_DIR#v}[^]]*\](./${MINOR_DIR}/)|[**${LATEST_TAG}**](./${MINOR_DIR}/)|g" \
+              "$README"
+          fi
+
+      # -----------------------------------------------------------------------
+      # 8. Open a Pull Request (peter-evans/create-pull-request handles
+      #    idempotency: if a branch with this name already exists it updates
+      #    the existing PR instead of opening a duplicate)
+      # -----------------------------------------------------------------------
+      - name: Create Pull Request
+        if: steps.needs_update.outputs.required == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: "chore/terraform-version-${{ steps.latest.outputs.tag }}"
+          commit-message: "chore: track Terraform ${{ steps.latest.outputs.tag }} release"
+          title: "chore: track Terraform ${{ steps.latest.outputs.tag }} release"
+          body: |
+            ## Terraform Version Update
+
+            A new Terraform release was detected by the scheduled version monitor.
+
+            | Field | Value |
+            |-------|-------|
+            | **New version** | `${{ steps.latest.outputs.tag }}` |
+            | **Release date** | `${{ steps.latest.outputs.date }}` |
+            | **Previously tracked** | `${{ steps.current.outputs.tag }}` |
+
+            ### Changes in this PR
+            - `terraform-versions/${{ steps.ver.outputs.minor_dir }}/CHANGELOG.md` — created or updated with upstream release notes
+            - `terraform-versions/README.md` — "Latest stable release" updated; version table row added/updated
+
+            > This PR was opened automatically by the **Terraform Version Monitor** workflow.
+          labels: "automation,terraform-version"
+          delete-branch: false
