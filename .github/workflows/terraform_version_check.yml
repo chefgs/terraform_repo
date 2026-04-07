@@ -20,7 +20,7 @@ name: Terraform Version Monitor
 
 on:
   schedule:
-    # Runs every day at 06:00 UTC (Monday–Sunday)
+    # Runs daily at 06:00 UTC
     - cron: '0 6 * * *'
   workflow_dispatch:
 
@@ -189,7 +189,8 @@ jobs:
           TRACKED_NUM="${TRACKED_TAG#v}"   # strip leading 'v'
 
           # ── Update the "Latest stable release" badge ──────────────────────
-          # Matches the line regardless of the date text after the dash
+          # TRACKED_NUM has no 'v' prefix (e.g. 1.14.7); LATEST_TAG includes 'v'
+          # (e.g. v1.15.0), so both sides of the substitution keep 'v' inside [].
           sed -i "s|> \*\*Latest stable release:\*\* \[v${TRACKED_NUM}\].*|> **Latest stable release:** [${LATEST_TAG}](./${MINOR_DIR}/) — ${RELEASE_DATE}|" \
             "$README"
 
