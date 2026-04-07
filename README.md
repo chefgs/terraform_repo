@@ -19,12 +19,12 @@ A senior-engineer-level collection of **Terraform Infrastructure-as-Code** examp
 - [Repository Structure](#repository-structure)
 - [Information About This Project](#information-about-this-project)
 - [Provider Summaries](#provider-summaries)
-  - [AWS](#-aws-examples)
-  - [Azure](#-azure-examples)
-  - [GCP](#-gcp-examples)
-  - [Kubernetes](#-kubernetes-examples)
-  - [DigitalOcean](#-digitalocean-examples)
-  - [Oracle Cloud](#-oracle-cloud-infrastructure-examples)
+  - [AWS](#aws-examples)
+  - [Azure](#azure-examples)
+  - [GCP](#gcp-examples)
+  - [Kubernetes](#kubernetes-examples)
+  - [DigitalOcean](#digitalocean-examples)
+  - [Oracle Cloud](#oracle-cloud-infrastructure-examples)
   - [NVIDIA RAG Application](#-nvidia-rag-application-highlight)
   - [HashiCorp Tools](#-hashicorp-tools-examples)
   - [Custom Providers](#-custom-terraform-providers)
@@ -107,7 +107,7 @@ terraform_repo/
 
 ## Provider Summaries
 
-### 🤖 NVIDIA RAG Application Highlight
+### NVIDIA RAG Application Highlight
 
 The [`nvidia/`](./nvidia/) directory provides a self-contained example of deploying a **Retrieval-Augmented Generation (RAG)** document assistant on NVIDIA GPU infrastructure:
 
@@ -184,7 +184,7 @@ cd gcp/resources/
 terraform init && terraform apply
 ```
 
-### ⎈ Kubernetes Examples
+### Kubernetes Examples
 
 The [`kubernetes/`](./kubernetes/) directory demonstrates managing **Kubernetes resources** with Terraform using the Kubernetes provider:
 
@@ -203,7 +203,7 @@ terraform init && terraform apply
 kubectl get ns && kubectl get deployment -n <namespace>
 ```
 
-### ☁️ DigitalOcean Examples
+### DigitalOcean Examples
 
 The [`digitalocean/`](./digitalocean/) directory contains two examples:
 
@@ -220,7 +220,7 @@ cp terraform.tfvars.example terraform.tfvars
 terraform init && terraform apply
 ```
 
-### ☁️ Oracle Cloud Infrastructure Examples
+### Oracle Cloud Infrastructure Examples
 
 The [`oraclecloud/`](./oraclecloud/) directory contains two examples:
 
