@@ -1,0 +1,52 @@
+name: NVIDIA RAG – Terraform Validate & Test
+
+# Validate and unit-test the NVIDIA RAG Terraform configuration without
+# requiring any cloud credentials.  Uses:
+#   • terraform init     – download providers
+#   • terraform validate – static syntax and type checking
+#   • terraform test     – unit tests via mock_provider (Terraform 1.7+)
+#
+# No AWS credentials are needed because every test uses mock_provider to
+# simulate AWS resources locally.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "nvidia/terraform/**"
+      - ".github/workflows/tf_validate_nvidia.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "nvidia/terraform/**"
+      - ".github/workflows/tf_validate_nvidia.yml"
+  workflow_dispatch:
+
+jobs:
+  validate_and_test:
+    name: Validate and Test NVIDIA Terraform
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          # Terraform 1.7+ is required for mock_provider support in tests
+          terraform_version: "1.9.0"
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: nvidia/terraform
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: nvidia/terraform
+
+      - name: Terraform Test (unit tests with mock providers)
+        run: terraform test -verbose
+        working-directory: nvidia/terraform

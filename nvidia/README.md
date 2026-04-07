@@ -29,8 +29,13 @@ nvidia/
     ├── variables.tf                   ← all configurable parameters
     ├── main.tf                        ← VPC, EC2 GPU instance, S3, IAM, NGC stubs
     ├── outputs.tf                     ← useful post-apply values
-    └── scripts/
-        └── bootstrap.sh               ← EC2 user_data: installs deps, starts app
+    ├── scripts/
+    │   └── bootstrap.sh               ← EC2 user_data: installs deps, starts app
+    └── tests/                         ← Terraform unit tests (no cloud credentials needed)
+        ├── networking.tftest.hcl      ← VPC, subnet, IGW, route table tests
+        ├── security.tftest.hcl        ← security group ingress/egress tests
+        ├── compute.tftest.hcl         ← IAM role + EC2 instance config tests
+        └── storage.tftest.hcl         ← S3 encryption, versioning, public-access tests
 ```
 
 ---
@@ -135,7 +140,7 @@ Internet
 
 ### Prerequisites
 
-- [Terraform](https://developer.hashicorp.com/terraform/install) ≥ 1.3
+- [Terraform](https://developer.hashicorp.com/terraform/install) ≥ 1.3 (≥ 1.7 for unit tests)
 - AWS credentials configured (`aws configure` or environment variables)
 - NVIDIA NGC API key (optional – for NIM endpoints)
 
@@ -199,7 +204,107 @@ terraform destroy
 
 ---
 
-## NVIDIA NGC Provider (stub)
+## Local Testing Without Cloud Credentials
+
+Developers can validate and unit-test **the entire GPU infrastructure without
+an AWS account or any cloud credentials**.  The tests use Terraform's built-in
+[`mock_provider`](https://developer.hashicorp.com/terraform/language/tests/mocking)
+feature (requires Terraform ≥ 1.7) to simulate every AWS API response locally.
+
+### What is tested
+
+| Test file | Resources covered |
+|---|---|
+| `tests/networking.tftest.hcl` | VPC CIDR, DNS settings, public subnet, IGW, route table default route |
+| `tests/security.tftest.hcl` | SSH and RAG-API ingress rules, egress rules, custom port |
+| `tests/compute.tftest.hcl` | GPU instance type, root volume encryption, IAM role/profile, AMI resolution |
+| `tests/storage.tftest.hcl` | S3 AES-256 encryption, versioning, all four public-access-block settings |
+
+### Run all unit tests locally (no AWS credentials needed)
+
+```bash
+# 1. Install Terraform 1.7+ (or use tfenv to manage versions)
+brew install terraform          # macOS
+# or download from https://developer.hashicorp.com/terraform/install
+
+# 2. Initialise providers (downloads them but does NOT contact AWS)
+cd nvidia/terraform
+terraform init
+
+# 3. Run every unit test
+terraform test -verbose
+
+# 4. Run a single test file
+terraform test -filter=tests/networking.tftest.hcl -verbose
+terraform test -filter=tests/security.tftest.hcl  -verbose
+terraform test -filter=tests/compute.tftest.hcl   -verbose
+terraform test -filter=tests/storage.tftest.hcl   -verbose
+```
+
+Expected output (no credentials required):
+
+```
+tests/networking.tftest.hcl... in progress
+  run "vpc_cidr_and_dns"... pass
+  run "vpc_name_tag"... pass
+  run "public_subnet_config"... pass
+  run "custom_vpc_cidr"... pass
+  run "route_table_default_route"... pass
+  run "igw_name_tag"... pass
+tests/networking.tftest.hcl... tearing down
+tests/networking.tftest.hcl... pass
+
+tests/security.tftest.hcl... in progress
+  run "sg_has_ssh_and_app_ingress"... pass
+  ...
+tests/security.tftest.hcl... pass
+
+tests/compute.tftest.hcl... in progress
+  run "default_gpu_instance_type"... pass
+  ...
+tests/compute.tftest.hcl... pass
+
+tests/storage.tftest.hcl... in progress
+  run "s3_versioning_enabled"... pass
+  ...
+tests/storage.tftest.hcl... pass
+
+Success! 34 passed, 0 failed.
+```
+
+### How mock_provider works
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Developer machine / CI runner                              │
+│                                                             │
+│  terraform test                                             │
+│       │                                                     │
+│       ▼                                                     │
+│  ┌─────────────┐       mock_provider "aws"                  │
+│  │  .tftest.hcl│ ───►  • Returns fake IDs / IPs / ARNs     │
+│  │  (test file)│       • No network calls to AWS            │
+│  └─────────────┘       • No credentials needed              │
+│       │                                                     │
+│       ▼                                                     │
+│  assert { condition = ... }   ← validates configuration     │
+│  ✅ PASS / ❌ FAIL                                           │
+└─────────────────────────────────────────────────────────────┘
+```
+
+Each `.tftest.hcl` file in `tests/` declares a `mock_provider "aws"` block
+that intercepts every AWS API call and returns deterministic, pre-defined
+values.  `terraform test` then runs `command = plan` against the mocked
+provider and evaluates the `assert` blocks against the planned values.
+
+### CI – GitHub Actions
+
+The workflow `.github/workflows/tf_validate_nvidia.yml` runs automatically on
+every push or pull request that touches `nvidia/terraform/**`.  It executes
+`terraform init`, `terraform validate`, and `terraform test` on a standard
+GitHub-hosted runner — **no AWS secrets are stored or used**.
+
+---
 
 The `providers.tf` and `main.tf` files contain commented-out resource blocks
 that illustrate how the
