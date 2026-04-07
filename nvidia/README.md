@@ -269,7 +269,7 @@ tests/storage.tftest.hcl... in progress
   ...
 tests/storage.tftest.hcl... pass
 
-Success! 28 passed, 0 failed.
+Success! 34 passed, 0 failed.
 ```
 
 ### How mock_provider works
