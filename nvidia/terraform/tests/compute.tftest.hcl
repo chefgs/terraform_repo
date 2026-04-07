@@ -2,7 +2,7 @@
 # compute.tftest.hcl
 #
 # Unit tests for the NVIDIA RAG compute resources:
-#   • IAM role with EC2 trust policy
+#   • IAM role
 #   • IAM instance profile
 #   • GPU EC2 instance (instance type, root volume, tags)
 #
