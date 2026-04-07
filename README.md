@@ -1,8 +1,16 @@
-## Terraform IaC Repository – Multi-Cloud & HashiCorp Tools
+# Terraform IaC Repository – Multi-Cloud & HashiCorp Tools
 
 A senior-engineer-level collection of **Terraform Infrastructure-as-Code** examples covering major cloud providers, IaC best practices, HashiCorp toolchain, and Terraform version references.
 
 > 📖 **New here? Read the [Usage Guide](./USAGE.md) to get up and running fast.**
+
+---
+
+<p align="center">
+  <img width="1020" height="580" src="https://github.com/user-attachments/assets/62ce301a-c07a-46c5-b6d5-9f02f775cc0b" alt="Terraform Multi-Cloud Diagram" />
+</p>
+
+---
 
 **Table of Contents:**
 
@@ -122,7 +130,7 @@ python nvidia/rag-application/app/main.py --file my-document.pdf
 cd nvidia/terraform && terraform init && terraform apply
 ```
 
-### ☁️ AWS Examples
+### AWS Examples
 
 The [`aws/`](./aws/) directory contains a wide range of **Amazon Web Services** infrastructure examples:
 
@@ -146,7 +154,7 @@ cd aws/create-ec2/
 terraform init && terraform apply
 ```
 
-### ☁️ Azure Examples
+### Azure Examples
 
 The [`azure/`](./azure/) directory contains **Microsoft Azure** infrastructure examples:
 
@@ -161,7 +169,7 @@ cd azure/create-vm/
 terraform init && terraform apply
 ```
 
-### ☁️ GCP Examples
+### GCP Examples
 
 The [`gcp/`](./gcp/) directory contains **Google Cloud Platform** infrastructure examples:
 
