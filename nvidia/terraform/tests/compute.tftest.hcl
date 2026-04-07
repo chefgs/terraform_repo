@@ -24,6 +24,12 @@ mock_provider "aws" {
     }
   }
 
+  mock_data "aws_iam_policy_document" {
+    defaults = {
+      json = "{\"Version\":\"2012-10-17\",\"Statement\":[]}"
+    }
+  }
+
   mock_resource "aws_vpc" {
     defaults = {
       id  = "vpc-0mock12345678abcde"
