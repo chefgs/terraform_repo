@@ -216,7 +216,7 @@ feature (requires Terraform ≥ 1.7) to simulate every AWS API response locally.
 | Test file | Resources covered |
 |---|---|
 | `tests/networking.tftest.hcl` | VPC CIDR, DNS settings, public subnet, IGW, route table default route |
-| `tests/security.tftest.hcl` | SSH and RAG-API ingress rules, egress rules, VPC attachment, custom port |
+| `tests/security.tftest.hcl` | SSH and RAG-API ingress rules, egress rules, custom port |
 | `tests/compute.tftest.hcl` | GPU instance type, root volume encryption, IAM role/profile, AMI resolution |
 | `tests/storage.tftest.hcl` | S3 AES-256 encryption, versioning, all four public-access-block settings |
 
