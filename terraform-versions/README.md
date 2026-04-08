@@ -2,7 +2,7 @@
 
 Quick reference for major Terraform versions from v1.0+ with key features, syntax changes, and code examples.
 
-> **Latest stable release:** [v1.14.7](./v1.14/) — March 11, 2026
+> **Latest stable release:** [**v1.14.8**](./v1.14/) — 2026-03-25
 
 ## Version Timeline
 
