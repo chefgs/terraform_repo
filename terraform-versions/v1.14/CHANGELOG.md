@@ -1,6 +1,15 @@
 # Terraform v1.14 – Latest Stable Release (March 2026)
 
-> **Latest version: 1.14.7** (released March 11, 2026)
+> **Latest version: 1.14.8** (released 2026-03-25)
+
+## v1.14.8 (2026-03-25)
+
+## 1.14.8 (March 25, 2026)
+
+
+BUG FIXES:
+
+* Prevent crash in the display of relevant attributes after provider upgrades ([#38264](https://github.com/hashicorp/terraform/issues/38264))
 
 ## What's New in v1.14
 
