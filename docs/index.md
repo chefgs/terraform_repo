@@ -20,6 +20,8 @@ nav_order: 1
 - [About This Project](#about-this-project)
 - [Repository Structure](#repository-structure)
 - [Cloud Provider Samples](#cloud-provider-samples)
+- [Terraform Unit Testing Guide](#terraform-unit-testing-guide)
+- [OpenTofu vs Terraform](#opentofu-vs-terraform)
 - [GitHub Actions Workflows](#github-actions-workflows)
 - [Getting Started](#getting-started)
 - [Contributing](#contributing)
@@ -207,6 +209,18 @@ Reference collection for enterprise-grade Terraform usage:
 - **Variables** — All variable types, validation blocks, optional attributes, locals
 - **Testing** — Native `terraform test` with `mock_provider` (Terraform 1.7+)
 - **Lock Files** — Multi-platform lock file management strategy
+
+### Terraform Unit Testing Guide
+
+Detailed guide for writing and running Terraform unit tests with `.tftest.hcl` and `mock_provider`:
+
+- [How to Do Unit Testing for HashiCorp Terraform Code](./terraform-unit-testing)
+
+### OpenTofu vs Terraform
+
+Comparison reference covering licensing, governance, compatibility, and decision guidance:
+
+- [OpenTofu vs Terraform](./opentofu-vs-terraform)
 
 ### 📋 Terraform Version Reference
 
