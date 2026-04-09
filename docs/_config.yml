@@ -28,26 +28,30 @@ navigation:
   - title: Home
     url: /
   - title: AWS Samples
-    url: /aws-samples/
+    url: /aws-samples.html
   - title: Azure Samples
-    url: /azure-samples/
+    url: /azure-samples.html
   - title: GCP Samples
-    url: /gcp-samples/
+    url: /gcp-samples.html
   - title: Kubernetes
-    url: /kubernetes/
+    url: /kubernetes.html
   - title: Cloud Providers
-    url: /cloud-providers/
+    url: /cloud-providers.html
   - title: NVIDIA RAG App
-    url: /nvidia-rag/
+    url: /nvidia-rag.html
   - title: HashiCorp Tools
-    url: /hashicorp-tools/
+    url: /hashicorp-tools.html
   - title: IaC Best Practices
-    url: /iac-best-practices/
+    url: /iac-best-practices.html
+  - title: Terraform Unit Testing
+    url: /terraform-unit-testing.html
+  - title: OpenTofu vs Terraform
+    url: /opentofu-vs-terraform.html
   - title: Terraform Versions
-    url: /terraform-versions/
+    url: /terraform-versions.html
   - title: GitHub Actions
-    url: /github-actions/
+    url: /github-actions.html
   - title: Custom Providers
-    url: /custom-provider/
+    url: /custom-provider.html
   - title: Terraform Cloud
-    url: /terraform-cloud/
+    url: /terraform-cloud.html

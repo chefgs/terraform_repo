@@ -103,7 +103,7 @@ terraform_repo/
 
 ## Cloud Provider Samples
 
-### ☁️ [AWS Samples](./aws-samples)
+### ☁️ [AWS Samples](./aws-samples.html)
 
 Terraform code for provisioning AWS infrastructure:
 
@@ -114,7 +114,7 @@ Terraform code for provisioning AWS infrastructure:
 - **S3 + DynamoDB** — State backend and NoSQL database modules
 - **Reusable Modules** — Patterns for creating shareable infrastructure modules
 
-### 🤖 [NVIDIA RAG Application](./nvidia-rag)
+### 🤖 [NVIDIA RAG Application](./nvidia-rag.html)
 
 Deploy a **Retrieval-Augmented Generation (RAG)** document assistant on NVIDIA GPU infrastructure:
 
@@ -184,7 +184,7 @@ terraform init && terraform apply
 terraform output ssh_command    # ready-to-use SSH command
 ```
 
-### ☁️ [Kubernetes](./kubernetes)
+### ☁️ [Kubernetes](./kubernetes.html)
 
 Terraform-managed Kubernetes resources using the [Kubernetes provider](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs):
 
@@ -194,10 +194,10 @@ Terraform-managed Kubernetes resources using the [Kubernetes provider](https://r
 - Services (ClusterIP, NodePort)
 - Integration with Minikube, EKS, AKS, and GKE
 
-### ☁️ [Multi-Cloud Samples](./cloud-providers)
+### ☁️ [Multi-Cloud Samples](./cloud-providers.html)
 
-- **[Azure](./azure-samples)** — Virtual machine provisioning on Microsoft Azure
-- **[GCP](./gcp-samples)** — Google Cloud Platform Compute instance with static IP and startup script
+- **[Azure](./azure-samples.html)** — Virtual machine provisioning on Microsoft Azure
+- **[GCP](./gcp-samples.html)** — Google Cloud Platform Compute instance with static IP and startup script
 - **DigitalOcean** — Droplet (VM) creation and App Platform deployment
 - **Oracle Cloud** — OCI VCN and Compute provisioning
 
@@ -214,19 +214,19 @@ Reference collection for enterprise-grade Terraform usage:
 
 Detailed guide for writing and running Terraform unit tests with `.tftest.hcl` and `mock_provider`:
 
-- [How to Do Unit Testing for HashiCorp Terraform Code](./terraform-unit-testing)
+- [How to Do Unit Testing for HashiCorp Terraform Code](./terraform-unit-testing.html)
 
 ### OpenTofu vs Terraform
 
 Comparison reference covering licensing, governance, compatibility, and decision guidance:
 
-- [OpenTofu vs Terraform](./opentofu-vs-terraform)
+- [OpenTofu vs Terraform](./opentofu-vs-terraform.html)
 
 ### 📋 Terraform Version Reference
 
 Quick reference guide for every major Terraform version from **v1.0 to v1.14** (latest: v1.14.7, Mar 2026) with working code examples of key features.
 
-### 🔌 [Custom Terraform Providers](./custom-provider)
+### 🔌 [Custom Terraform Providers](./custom-provider.html)
 
 Step-by-step guides for building your own Terraform provider:
 
@@ -234,7 +234,7 @@ Step-by-step guides for building your own Terraform provider:
 - Terraform Plugin SDK v2 example
 - Terraform Plugin Framework (hashicups) example
 
-### 🏢 [Terraform Cloud](./terraform-cloud)
+### 🏢 [Terraform Cloud](./terraform-cloud.html)
 
 Integration examples for [Terraform Cloud (TFC)](https://app.terraform.io/):
 
@@ -246,19 +246,19 @@ Integration examples for [Terraform Cloud (TFC)](https://app.terraform.io/):
 
 ## GitHub Actions Workflows
 
-This repository includes automated [GitHub Actions workflows](./github-actions) for CI/CD:
+This repository includes automated [GitHub Actions workflows](./github-actions.html) for CI/CD:
 
 | Workflow | Trigger | Description |
 |----------|---------|-------------|
-| [Terraform AWS Workflow](.github/workflows/tf_code_validation_aws.yml) | Push, PR, Manual | Validates and applies AWS Terraform code |
-| [Terraform Azure Validate](.github/workflows/tf_validate_azure.yml) | Push/PR on `azure/**`, Manual | `terraform validate` — Azure code syntax check |
-| [Terraform GCP Validate](.github/workflows/tf_validate_gcp.yml) | Push/PR on `gcp/**`, Manual | `terraform validate` — GCP code syntax check |
-| [Terraform DigitalOcean Validate](.github/workflows/tf_validate_digitalocean.yml) | Push/PR on `digitalocean/**`, Manual | `terraform validate` — DigitalOcean code syntax check |
-| [Terraform Oracle Cloud Validate](.github/workflows/tf_validate_oraclecloud.yml) | Push/PR on `oraclecloud/**`, Manual | `terraform validate` — OCI code syntax check |
-| [Terraform Kubernetes Workflow](.github/workflows/tf_code_validation_k8s.yml) | Push, PR, Manual | Deploys Kubernetes resources via Terraform |
-| [TF Cloud AWS Workflow](.github/workflows/tf_cloud_aws.yml) | Push, PR, Manual | Runs Terraform plans via Terraform Cloud |
-| [Checkov Security Scan](.github/workflows/checkov_security_scan.yml) | Push, PR | Static security analysis for Terraform (non-blocking) |
-| [GitHub Pages](.github/workflows/pages.yml) | Push to main | Builds and deploys this documentation site |
+| [Terraform AWS Workflow](https://github.com/chefgs/terraform_repo/blob/main/.github/workflows/tf_code_validation_aws.yml) | Push, PR, Manual | Validates and applies AWS Terraform code |
+| [Terraform Azure Validate](https://github.com/chefgs/terraform_repo/blob/main/.github/workflows/tf_validate_azure.yml) | Push/PR on `azure/**`, Manual | `terraform validate` — Azure code syntax check |
+| [Terraform GCP Validate](https://github.com/chefgs/terraform_repo/blob/main/.github/workflows/tf_validate_gcp.yml) | Push/PR on `gcp/**`, Manual | `terraform validate` — GCP code syntax check |
+| [Terraform DigitalOcean Validate](https://github.com/chefgs/terraform_repo/blob/main/.github/workflows/tf_validate_digitalocean.yml) | Push/PR on `digitalocean/**`, Manual | `terraform validate` — DigitalOcean code syntax check |
+| [Terraform Oracle Cloud Validate](https://github.com/chefgs/terraform_repo/blob/main/.github/workflows/tf_validate_oraclecloud.yml) | Push/PR on `oraclecloud/**`, Manual | `terraform validate` — OCI code syntax check |
+| [Terraform Kubernetes Workflow](https://github.com/chefgs/terraform_repo/blob/main/.github/workflows/tf_code_validation_k8s.yml) | Push, PR, Manual | Deploys Kubernetes resources via Terraform |
+| [TF Cloud AWS Workflow](https://github.com/chefgs/terraform_repo/blob/main/.github/workflows/tf_cloud_aws.yml) | Push, PR, Manual | Runs Terraform plans via Terraform Cloud |
+| [Checkov Security Scan](https://github.com/chefgs/terraform_repo/blob/main/.github/workflows/checkov_security_scan.yml) | Push, PR | Static security analysis for Terraform (non-blocking) |
+| [GitHub Pages](https://github.com/chefgs/terraform_repo/blob/main/.github/workflows/pages.yml) | Push to main | Builds and deploys this documentation site |
 
 ---
 

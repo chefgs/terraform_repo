@@ -382,4 +382,4 @@ To add a new Terraform workflow for a different cloud provider:
 
 ---
 
-*[← Back to Cloud Providers](./cloud-providers)* | *[Next: Custom Providers →](./custom-provider)*
+*[← Back to Cloud Providers](./cloud-providers.html)* | *[Next: Custom Providers →](./custom-provider.html)*

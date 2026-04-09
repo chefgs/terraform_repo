@@ -169,7 +169,7 @@ If your tests rely on mocks only, no cloud credentials are required.
 
 ## Repository References
 
-- [IaC Best Practices Overview](./iac-best-practices)
+- [IaC Best Practices Overview](./iac-best-practices.html)
 - `iac-best-practices/testing/README.md`
 - `nvidia/terraform/tests/`
 

@@ -185,4 +185,4 @@ terraform destroy -var="gcp_project_id=<your-project-id>"
 
 ---
 
-*[← Back to Azure Samples](./azure-samples)* | *[Next: Cloud Providers →](./cloud-providers)*
+*[← Back to Azure Samples](./azure-samples.html)* | *[Next: Cloud Providers →](./cloud-providers.html)*

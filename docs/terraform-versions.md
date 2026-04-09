@@ -140,5 +140,5 @@ terraform version
 
 ## Related
 
-- [IaC Best Practices](./iac-best-practices)
-- [AWS Samples](./aws-samples)
+- [IaC Best Practices](./iac-best-practices.html)
+- [AWS Samples](./aws-samples.html)
