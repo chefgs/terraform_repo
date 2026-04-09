@@ -372,4 +372,4 @@ go test -v -run TestAccServer ./...
 
 ---
 
-*[← Back to GitHub Actions](./github-actions.md)* | *[Next: Terraform Cloud →](./terraform-cloud.md)*
+*[← Back to GitHub Actions](./github-actions.html)* | *[Next: Terraform Cloud →](./terraform-cloud.html)*

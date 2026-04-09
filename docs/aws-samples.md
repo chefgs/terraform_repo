@@ -250,4 +250,4 @@ To trigger the AWS workflow manually:
 
 ---
 
-*[← Back to Home](./)* | *[Next: Kubernetes →](./kubernetes.md)*
+*[← Back to Home](./)* | *[Next: Kubernetes →](./kubernetes.html)*

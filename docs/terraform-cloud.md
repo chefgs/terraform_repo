@@ -354,4 +354,4 @@ Connect your TFC workspace to your GitHub repository to automatically trigger pl
 
 ---
 
-*[← Back to Custom Providers](./custom-provider.md)* | *[Back to Home →](./)*
+*[← Back to Custom Providers](./custom-provider.html)* | *[Back to Home →](./)*

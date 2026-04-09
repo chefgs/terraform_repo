@@ -153,4 +153,4 @@ terraform destroy
 
 ---
 
-*[← Back to AWS Samples](./aws-samples.md)* | *[Next: GCP Samples →](./gcp-samples.md)*
+*[← Back to AWS Samples](./aws-samples.html)* | *[Next: GCP Samples →](./gcp-samples.html)*

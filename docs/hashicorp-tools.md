@@ -110,5 +110,5 @@ boundary connect ssh \
 
 ## Related
 
-- [AWS Samples](./aws-samples.md)
-- [IaC Best Practices](./iac-best-practices.md)
+- [AWS Samples](./aws-samples.html)
+- [IaC Best Practices](./iac-best-practices.html)

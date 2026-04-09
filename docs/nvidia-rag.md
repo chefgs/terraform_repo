@@ -326,4 +326,4 @@ python nvidia/rag-application/app/main.py \
 
 ---
 
-*[← Back to Cloud Providers](./cloud-providers.md)* | *[Next: Custom Providers →](./custom-provider.md)*
+*[← Back to Cloud Providers](./cloud-providers.html)* | *[Next: Custom Providers →](./custom-provider.html)*
