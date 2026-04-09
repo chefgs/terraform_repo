@@ -1,5 +1,8 @@
 name: NVIDIA RAG – Terraform Validate & Test
 
+permissions:
+  contents: read
+  
 # Validate and unit-test the NVIDIA RAG Terraform configuration without
 # requiring any cloud credentials.  Uses:
 #   • terraform init     – download providers
