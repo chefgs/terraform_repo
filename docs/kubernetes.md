@@ -310,7 +310,7 @@ The [Terraform Kubernetes Workflow](https://github.com/chefgs/terraform_repo/act
 5. Verifies the deployment with `kubectl get deployment`
 6. Runs `terraform destroy` to clean up
 
-See the [GitHub Actions page](./github-actions) for full workflow documentation.
+See the [GitHub Actions page](./github-actions.md) for full workflow documentation.
 
 ---
 
@@ -325,4 +325,4 @@ See the [GitHub Actions page](./github-actions) for full workflow documentation.
 
 ---
 
-*[← Back to AWS Samples](./aws-samples)* | *[Next: Cloud Providers →](./cloud-providers)*
+*[← Back to AWS Samples](./aws-samples.md)* | *[Next: Cloud Providers →](./cloud-providers.md)*

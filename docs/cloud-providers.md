@@ -9,8 +9,8 @@ nav_order: 6
 This section covers Terraform examples for Azure, GCP, DigitalOcean, and Oracle Cloud Infrastructure.
 
 > **Azure** and **GCP** now have dedicated documentation pages:
-> - [Azure Samples →](./azure-samples)
-> - [GCP Samples →](./gcp-samples)
+> - [Azure Samples →](./azure-samples.md)
+> - [GCP Samples →](./gcp-samples.md)
 
 ---
 
@@ -391,4 +391,4 @@ terraform destroy
 
 ---
 
-*[← Back to Kubernetes](./kubernetes)* | *[Next: GitHub Actions →](./github-actions)*
+*[← Back to Kubernetes](./kubernetes.md)* | *[Next: GitHub Actions →](./github-actions.md)*

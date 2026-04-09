@@ -125,7 +125,7 @@ terraform test -filter=../testing/vpc_unit.tftest.hcl
 
 For a full step-by-step unit testing guide, see:
 
-- [Terraform Unit Testing Guide](./terraform-unit-testing)
+- [Terraform Unit Testing Guide](./terraform-unit-testing.md)
 
 ---
 
@@ -153,5 +153,5 @@ terraform providers lock \
 
 ## Related
 
-- [Terraform Versions](./terraform-versions)
-- [AWS Samples](./aws-samples)
+- [Terraform Versions](./terraform-versions.md)
+- [AWS Samples](./aws-samples.md)
