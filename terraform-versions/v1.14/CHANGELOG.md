@@ -1,6 +1,15 @@
 # Terraform v1.14 – Latest Stable Release (March 2026)
 
-> **Latest version: 1.14.8** (released 2026-03-25)
+> **Latest version: 1.14.9** (released 2026-04-20)
+
+## v1.14.9 (2026-04-20)
+
+## 1.14.9 (April 20, 2026)
+
+
+BUG FIXES:
+
+* Fix Terraform Stacks plugin installation error ([#38406](https://github.com/hashicorp/terraform/issues/38406))
 
 ## v1.14.8 (2026-03-25)
 
