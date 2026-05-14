@@ -22,6 +22,7 @@ Quick reference for major Terraform versions from v1.0+ with key features, synta
 | [v1.11](./v1.11/) | Feb 2025 | Ephemeral resources GA, `provider for_each` (experimental) |
 | [v1.12](./v1.12/) | May 2025 | `provider for_each` GA, Stacks enhancements |
 | [v1.13](./v1.13/) | Sep 2025 | Enhanced module iteration, `strcontains`/`strtitle` functions |
+| [**v1.15.3**](./v1.15/) | **2026-05-13** | BUG FIXES: |
 | [**v1.14.7**](./v1.14/) | **Mar 11, 2026** | Deferred changes GA, test setup/teardown, auto lock file platforms |
 
 ## How to Use
