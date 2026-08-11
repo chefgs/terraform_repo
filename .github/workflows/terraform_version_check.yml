@@ -262,7 +262,7 @@ jobs:
       # 9. Enable PR auto-merge (merge happens when required checks are green)
       # -----------------------------------------------------------------------
       - name: Enable PR auto-merge
-        if: steps.needs_update.outputs.required == 'true' && steps.cpr.outputs.pull-request-number && steps.cpr.outputs.pull-request-operation != 'none'
+        if: steps.needs_update.outputs.required == 'true' && steps.cpr.outputs.pull-request-number && (steps.cpr.outputs.pull-request-operation == 'created' || steps.cpr.outputs.pull-request-operation == 'updated')
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
