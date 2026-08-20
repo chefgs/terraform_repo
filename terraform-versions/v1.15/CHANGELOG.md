@@ -1,6 +1,20 @@
 # Terraform v1.15 – Release Notes
 
-> **Latest version: 1.15.8** (released 2026-07-08)
+> **Latest version: 1.15.9** (released 2026-08-19)
+
+## v1.15.9 (2026-08-19)
+
+## 1.15.9 (August 19, 2026)
+
+
+BUG FIXES:
+
+* validate: Child module validation has been fixed and will now raise errors or warning diagnostics for invalid blocks. (`list`, `import`, `backend`, and `cloud`) ([#38994](https://github.com/hashicorp/terraform/issues/38994))
+
+
+NOTES:
+
+* Update go-slug to v0.18.3 to mitigate CVE-2026-14978, which is a Unicode normalization issue that could lead to files not being correctly excluded via `.terraformignore` from upload to a Terraform Enterprise or HCP Terraform during a run ([#39036](https://github.com/hashicorp/terraform/issues/39036))
 
 ## v1.15.8 (2026-07-08)
 
