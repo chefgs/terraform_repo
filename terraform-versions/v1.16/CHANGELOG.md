@@ -1,6 +1,15 @@
 # Terraform v1.16 – Release Notes
 
-> **Latest version: 1.16.1** (released 2026-09-02)
+> **Latest version: 1.16.2** (released 2026-09-09)
+
+## v1.16.2 (2026-09-09)
+
+## 1.16.2 (September 9, 2026)
+
+
+BUG FIXES:
+
+* Fix panic in module installation when encoutering invalid module calls ([#39129](https://github.com/hashicorp/terraform/issues/39129))
 
 ## v1.16.1 (2026-09-02)
 
