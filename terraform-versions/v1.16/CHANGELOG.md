@@ -1,6 +1,21 @@
 # Terraform v1.16 – Release Notes
 
-> **Latest version: 1.16.2** (released 2026-09-09)
+> **Latest version: 1.16.3** (released 2026-09-16)
+
+## v1.16.3 (2026-09-16)
+
+## 1.16.3 (September 16, 2026)
+
+
+BUG FIXES:
+
+* Fix handling of destroy=false around create_before_destroy instances ([#39169](https://github.com/hashicorp/terraform/issues/39169))
+
+* Fix function result comparison when there are multiple marks ([#39170](https://github.com/hashicorp/terraform/issues/39170))
+
+* Filter logic for marks could cause values with multiple marks to erroneously fail validations ([#39171](https://github.com/hashicorp/terraform/issues/39171))
+
+* Fix issue with import provider resolution ([#39185](https://github.com/hashicorp/terraform/issues/39185))
 
 ## v1.16.2 (2026-09-09)
 
