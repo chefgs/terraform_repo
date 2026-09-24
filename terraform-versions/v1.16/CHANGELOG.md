@@ -1,6 +1,17 @@
 # Terraform v1.16 – Release Notes
 
-> **Latest version: 1.16.3** (released 2026-09-16)
+> **Latest version: 1.16.4** (released 2026-09-23)
+
+## v1.16.4 (2026-09-23)
+
+## 1.16.4 (September 23, 2026)
+
+
+BUG FIXES:
+
+* Fixed an issue where Terraform fails when rendering policy evaluation outcomes for older versions of Terraform Enterprise ([#39095](https://github.com/hashicorp/terraform/issues/39095))
+
+* stacks: Fix invalid deferred error triggered by provider returning a deferral when a resource also has an unknown count/for_each. ([#39237](https://github.com/hashicorp/terraform/issues/39237))
 
 ## v1.16.3 (2026-09-16)
 
