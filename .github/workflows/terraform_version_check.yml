@@ -6,7 +6,8 @@
 #      and CHANGELOG.md with the upstream release notes.
 #   2. Updates the "Latest stable release" badge and version table in
 #      terraform-versions/README.md.
-#   3. Opens a Pull Request so the change can be reviewed before merging.
+#   3. Opens a Pull Request and enables auto-merge so it merges itself after
+#      required checks pass.
 #
 # Idempotency guarantee
 # ---------------------
@@ -230,6 +231,7 @@ jobs:
       #    the existing PR instead of opening a duplicate)
       # -----------------------------------------------------------------------
       - name: Create Pull Request
+        id: cpr
         if: steps.needs_update.outputs.required == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
@@ -255,3 +257,14 @@ jobs:
             > This PR was opened automatically by the **Terraform Version Monitor** workflow.
           labels: "automation,terraform-version"
           delete-branch: false
+
+      # -----------------------------------------------------------------------
+      # 9. Enable PR auto-merge (merge happens when required checks are green)
+      # -----------------------------------------------------------------------
+      - name: Enable PR auto-merge
+        if: steps.needs_update.outputs.required == 'true' && steps.cpr.outputs.pull-request-number && (steps.cpr.outputs.pull-request-operation == 'created' || steps.cpr.outputs.pull-request-operation == 'updated')
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash

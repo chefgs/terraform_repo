@@ -16,6 +16,7 @@ This repository uses [GitHub Actions](https://docs.github.com/en/actions) to aut
 - [Terraform AWS Workflow](#terraform-aws-workflow)
 - [Terraform Kubernetes Workflow](#terraform-kubernetes-workflow)
 - [Terraform Cloud AWS Workflow](#terraform-cloud-aws-workflow)
+- [Terraform Version Monitor](#terraform-version-monitor)
 - [GitHub Pages Workflow](#github-pages-workflow)
 - [How to Trigger Workflows Manually](#how-to-trigger-workflows-manually)
 - [Workflow Security](#workflow-security)
@@ -29,6 +30,7 @@ This repository uses [GitHub Actions](https://docs.github.com/en/actions) to aut
 | `tf_code_validation_aws.yml` | Terraform AWS Workflow | Push, PR, Manual | Validates and applies AWS Terraform code |
 | `tf_code_validation_k8s.yml` | Terraform Kubernetes Workflow | Push, PR, Manual | Deploys Kubernetes resources via Terraform |
 | `tf_cloud_aws.yml` | AWS Infra via TF Cloud | Push, PR, Manual | Runs Terraform plans via Terraform Cloud |
+| `terraform_version_check.yml` | Terraform Version Monitor | Daily schedule, Manual | Tracks upstream Terraform releases and auto-merges version update PRs after checks pass |
 | `pages.yml` | Deploy GitHub Pages | Push to main, Manual | Builds and deploys this documentation site |
 
 All workflows are stored in `.github/workflows/`.
@@ -290,6 +292,27 @@ This workflow has two jobs:
 | `hashicorp/setup-terraform@v2.0.2` | Install and configure Terraform CLI with TFC credentials |
 | `hashicorp/tfc-workflows-github/actions/create-run@v1.3.0` | Trigger a Terraform Cloud plan run |
 | `hashicorp/tfc-workflows-github/actions/plan-output@v1.3.0` | Fetch and display plan output |
+
+---
+
+## Terraform Version Monitor
+
+**File:** `.github/workflows/terraform_version_check.yml`
+
+This workflow checks for new Terraform releases daily, updates `terraform-versions/`, opens a PR, and enables GitHub auto-merge so the PR merges when required checks pass.
+
+### Required Repository Settings
+
+To merge without human PR approval while still keeping PR-based flow:
+
+1. **Settings → General → Pull Requests**
+   - Enable **Allow auto-merge**.
+2. **Settings → Branches → Branch protection rule (main)**
+   - Keep **Require a pull request before merging** enabled.
+   - Keep **required status checks** enabled.
+   - Either disable **required approving reviews**, or grant your automation actor bypass permission for PR requirements.
+
+Without these repository settings, the workflow can open the PR but cannot complete merge automatically.
 
 ---
 

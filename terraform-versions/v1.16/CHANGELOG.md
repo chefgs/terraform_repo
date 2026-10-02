@@ -1,0 +1,171 @@
+# Terraform v1.16 – Release Notes
+
+> **Latest version: 1.16.4** (released 2026-09-23)
+
+## v1.16.4 (2026-09-23)
+
+## 1.16.4 (September 23, 2026)
+
+
+BUG FIXES:
+
+* Fixed an issue where Terraform fails when rendering policy evaluation outcomes for older versions of Terraform Enterprise ([#39095](https://github.com/hashicorp/terraform/issues/39095))
+
+* stacks: Fix invalid deferred error triggered by provider returning a deferral when a resource also has an unknown count/for_each. ([#39237](https://github.com/hashicorp/terraform/issues/39237))
+
+## v1.16.3 (2026-09-16)
+
+## 1.16.3 (September 16, 2026)
+
+
+BUG FIXES:
+
+* Fix handling of destroy=false around create_before_destroy instances ([#39169](https://github.com/hashicorp/terraform/issues/39169))
+
+* Fix function result comparison when there are multiple marks ([#39170](https://github.com/hashicorp/terraform/issues/39170))
+
+* Filter logic for marks could cause values with multiple marks to erroneously fail validations ([#39171](https://github.com/hashicorp/terraform/issues/39171))
+
+* Fix issue with import provider resolution ([#39185](https://github.com/hashicorp/terraform/issues/39185))
+
+## v1.16.2 (2026-09-09)
+
+## 1.16.2 (September 9, 2026)
+
+
+BUG FIXES:
+
+* Fix panic in module installation when encoutering invalid module calls ([#39129](https://github.com/hashicorp/terraform/issues/39129))
+
+## v1.16.1 (2026-09-02)
+
+## 1.16.1 (September 2, 2026)
+
+
+BUG FIXES:
+
+* cloud: Fixed a bug causing the CLI to pause indefinitely after a run task failure with pending policy evaluations ([#38751](https://github.com/hashicorp/terraform/issues/38751))
+
+* Support referencing modules containing dynamic sources in Terraform Test ([#38950](https://github.com/hashicorp/terraform/issues/38950))
+
+* stacks: Fixed validation to ensure the provider versions in the lock file and configuration are compatible. ([#38829](https://github.com/hashicorp/terraform/issues/38829))
+
+* Fix panic when import identity references sensitive value ([#39013](https://github.com/hashicorp/terraform/issues/39013))
+
+* import: Fixed a bug where import blocks would be ignored when multiple imports targeted different instances of a resource config using `for_each` or `count`. ([#39068](https://github.com/hashicorp/terraform/issues/39068))
+
+* state show: Fix a panic when given an attribute path instead of a resource instance address ([#39087](https://github.com/hashicorp/terraform/issues/39087))
+
+* Fix create_before_destroy ordering in some combinations of changes ([#39091](https://github.com/hashicorp/terraform/issues/39091))
+
+## v1.16.0 (2026-08-26)
+
+## 1.16.0 (August 26, 2026)
+
+
+NEW FEATURES:
+
+* Terraform now stores planned private data for providers, allowing provider-specific state to be preserved across plan and apply. ([#37986](https://github.com/hashicorp/terraform/issues/37986))
+
+* `terraform_data`: The new `store` block can hold ephemeral and sensitive values across plan and apply. ([#38298](https://github.com/hashicorp/terraform/issues/38298))
+
+* Providers can now use nested blocks as computed values ([#38305](https://github.com/hashicorp/terraform/issues/38305))
+
+* import: `import` blocks inside modules are now supported. ([#38352](https://github.com/hashicorp/terraform/issues/38352))
+
+* Terraform is now available as a pre-built binary for Linux s390x (zLinux). ([#38384](https://github.com/hashicorp/terraform/issues/38384))
+
+* Resource action triggers can now use `on_failure` modes of `halt`, `taint`, or `continue`. ([#38722](https://github.com/hashicorp/terraform/issues/38722))
+
+
+ENHANCEMENTS:
+
+* state show: The `state show` command can now produce machine-readable output when supplied with the `-json` flag ([#23940](https://github.com/hashicorp/terraform/issues/23940))
+
+* workspace: The `workspace list` command can now produce machine-readable output when supplied with the `-json` flag ([#38397](https://github.com/hashicorp/terraform/issues/38397))
+
+* test: Terraform now reports which resources were left behind when `skip_cleanup` is set. ([#38449](https://github.com/hashicorp/terraform/issues/38449))
+
+* stacks: Action configurations now have access to a `caller` symbol containing the object value of the calling resource. ([#38668](https://github.com/hashicorp/terraform/issues/38668))
+
+* Actions can now use `before_destroy` and `after_destroy` events. ([#38668](https://github.com/hashicorp/terraform/issues/38668))
+
+* cloud: Terraform now displays a summary of policy evaluation outcomes for `plan` and `apply` runs against HCP Terraform. ([#38715](https://github.com/hashicorp/terraform/issues/38715))
+
+* policy: Terraform now resolves policy plugin credentials from the configured cloud or remote backend during `init`, `plan`, and `apply`, rather than requiring the plugin to read credentials itself. ([#38716](https://github.com/hashicorp/terraform/issues/38716))
+
+* graph: The `terraform graph` command can now output graphs in Mermaid format using the `-format=mermaid` flag. ([#38719](https://github.com/hashicorp/terraform/issues/38719))
+
+* Child module outputs with unreferenced deprecated nested attributes no longer return deprecation warnings. ([#38778](https://github.com/hashicorp/terraform/issues/38778))
+
+* Resource `lifecycle` blocks now support `destroy = false` to prevent a resource from being destroyed. ([#38784](https://github.com/hashicorp/terraform/issues/38784))
+
+* The `contains()` function can now test for `null` values. ([#38792](https://github.com/hashicorp/terraform/issues/38792))
+
+* console: The `terraform console` command now accepts an optional `-scope=<module address>` flag, which can be used to evaluate expressions within the scope of a module or a specific module instance. ([#31861](https://github.com/hashicorp/terraform/issues/31861))
+
+* `-invoke` can now be combined with `-target` to specify the calling resource instance when multiple resources trigger the same action. ([#38845](https://github.com/hashicorp/terraform/issues/38845))
+
+* The `terraform stacks` command now automatically infers the target hostname from the local credentials file (`credentials.tfrc.json`) when neither `TF_STACKS_HOSTNAME` nor `TF_CLOUD_HOSTNAME` is set ([#38896](https://github.com/hashicorp/terraform/issues/38896))
+
+
+BUG FIXES:
+
+* `import` blocks now correctly respect provider local names. ([#38338](https://github.com/hashicorp/terraform/issues/38338))
+
+* `terraform apply` no longer panics when the plan contains a no-op change for a deposed resource that has `lifecycle.precondition` or `lifecycle.postcondition` blocks. ([#38586](https://github.com/hashicorp/terraform/issues/38586))
+
+* workspace: Terraform now raises an error if an invalid workspace name becomes selected due to out-of-band changes. ([#38594](https://github.com/hashicorp/terraform/issues/38594))
+
+* test: Terraform now raises a warning when a file referenced via the `-filter` flag does not exist. ([#38603](https://github.com/hashicorp/terraform/issues/38603))
+
+* init: Terraform no longer removes locks from the dependency lock file for providers configured as `dev_override`. ([#38634](https://github.com/hashicorp/terraform/issues/38634))
+
+* init: Terraform now warns when unmanaged providers are in use and may impact provider installation. ([#38656](https://github.com/hashicorp/terraform/issues/38656))
+
+* Actions are now invoked with respect to all resource dependencies. ([#38668](https://github.com/hashicorp/terraform/issues/38668))
+
+* Terraform now returns the correct error when an `import` target exists in state but has no corresponding configuration. ([#38782](https://github.com/hashicorp/terraform/issues/38782))
+
+* The `merge()` function no longer panics when passed `null` objects. ([#38792](https://github.com/hashicorp/terraform/issues/38792))
+
+* Allow underscores in provider source address namespaces, so private registry provider addresses are no longer rejected as invalid ([#38894](https://github.com/hashicorp/terraform/issues/38894))
+
+* test: Optional ephemeral values do not have to be set at plan time ([#38974](https://github.com/hashicorp/terraform/issues/38974))
+
+
+NOTES:
+
+* init: Errors due to incompatible `-upgrade` and `-lockfile=readonly` flags are now raised earlier in the init process. ([#38561](https://github.com/hashicorp/terraform/issues/38561))
+
+
+UPGRADE NOTES:
+
+* `bastion_host_key` is now correctly applied by provisioners. Review your provisioner configurations to verify the configured key is correct before upgrading. ([#38318](https://github.com/hashicorp/terraform/issues/38318))
+
+
+## Previous Releases
+
+For information on prior major and minor releases, refer to their changelogs:
+
+- [v1.15](https://github.com/hashicorp/terraform/blob/v1.15/CHANGELOG.md)
+- [v1.14](https://github.com/hashicorp/terraform/blob/v1.14/CHANGELOG.md)
+- [v1.13](https://github.com/hashicorp/terraform/blob/v1.13/CHANGELOG.md)
+- [v1.12](https://github.com/hashicorp/terraform/blob/v1.12/CHANGELOG.md)
+- [v1.11](https://github.com/hashicorp/terraform/blob/v1.11/CHANGELOG.md)
+- [v1.10](https://github.com/hashicorp/terraform/blob/v1.10/CHANGELOG.md)
+- [v1.9](https://github.com/hashicorp/terraform/blob/v1.9/CHANGELOG.md)
+- [v1.8](https://github.com/hashicorp/terraform/blob/v1.8/CHANGELOG.md)
+- [v1.7](https://github.com/hashicorp/terraform/blob/v1.7/CHANGELOG.md)
+- [v1.6](https://github.com/hashicorp/terraform/blob/v1.6/CHANGELOG.md)
+- [v1.5](https://github.com/hashicorp/terraform/blob/v1.5/CHANGELOG.md)
+- [v1.4](https://github.com/hashicorp/terraform/blob/v1.4/CHANGELOG.md)
+- [v1.3](https://github.com/hashicorp/terraform/blob/v1.3/CHANGELOG.md)
+- [v1.2](https://github.com/hashicorp/terraform/blob/v1.2/CHANGELOG.md)
+- [v1.1](https://github.com/hashicorp/terraform/blob/v1.1/CHANGELOG.md)
+- [v1.0](https://github.com/hashicorp/terraform/blob/v1.0/CHANGELOG.md)
+- [v0.15](https://github.com/hashicorp/terraform/blob/v0.15/CHANGELOG.md)
+- [v0.14](https://github.com/hashicorp/terraform/blob/v0.14/CHANGELOG.md)
+- [v0.13](https://github.com/hashicorp/terraform/blob/v0.13/CHANGELOG.md)
+- [v0.12](https://github.com/hashicorp/terraform/blob/v0.12/CHANGELOG.md)
+- [v0.11 and earlier](https://github.com/hashicorp/terraform/blob/v0.11/CHANGELOG.md)
