@@ -1,6 +1,17 @@
 # Terraform v1.16 – Release Notes
 
-> **Latest version: 1.16.4** (released 2026-09-23)
+> **Latest version: 1.16.5** (released 2026-10-02)
+
+## v1.16.5 (2026-10-02)
+
+## 1.16.5 (September 30, 2026)
+
+
+BUG FIXES:
+
+* Fixed a crash that happens when a tainted instance state is seen without a valid status ([#39287](https://github.com/hashicorp/terraform/issues/39287))
+
+* resource-identity: fixed an issue where resource identity could be nil during delete ([#39285](https://github.com/hashicorp/terraform/issues/39285))
 
 ## v1.16.4 (2026-09-23)
 
