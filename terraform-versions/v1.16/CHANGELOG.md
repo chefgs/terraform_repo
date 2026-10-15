@@ -1,6 +1,22 @@
 # Terraform v1.16 – Release Notes
 
-> **Latest version: 1.16.5** (released 2026-10-02)
+> **Latest version: 1.16.6** (released 2026-10-14)
+
+## v1.16.6 (2026-10-14)
+
+## 1.16.6 (October 14, 2026)
+
+
+BUG FIXES:
+
+* cloud: `terraform init` can now find workspaces selected by key/value tags whose keys contain uppercase letters. ([#39306](https://github.com/hashicorp/terraform/issues/39306))
+
+* test: Allow module under test to use deprecated outputs. ([#39207](https://github.com/hashicorp/terraform/issues/39207))
+
+
+NOTES:
+
+* Prevent a HTTP/2 resource exhaustion via CVE-2026-78669. Exploitation would require a compromised (untrusted) provider/module registry. Such a threat is considered to be outside the perimeter of Terraform core security guarantees. ([#39375](https://github.com/hashicorp/terraform/issues/39375))
 
 ## v1.16.5 (2026-10-02)
 
