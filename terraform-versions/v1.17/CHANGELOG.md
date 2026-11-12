@@ -1,6 +1,22 @@
 # Terraform v1.17 – Release Notes
 
-> **Latest version: 1.17.1** (released 2026-10-28)
+> **Latest version: 1.17.2** (released 2026-11-11)
+
+## v1.17.2 (2026-11-11)
+
+## 1.17.2 (November 11, 2026)
+
+
+ENHANCEMENTS:
+
+* query: Improve performance and reduce allocations when generating configuration from large HCP Terraform queries. ([#39470](https://github.com/hashicorp/terraform/issues/39470))
+
+
+BUG FIXES:
+
+* Providers referencing a managed resource with detroy=false can cause a cycle ([#39507](https://github.com/hashicorp/terraform/issues/39507))
+
+* init: Fix repeated unavailable-provider schema warnings in log output ([#39517](https://github.com/hashicorp/terraform/issues/39517))
 
 ## v1.17.1 (2026-10-28)
 
