@@ -14,8 +14,6 @@ Prepared for Saravanan Gnanaguru, CloudEngine Labs, HUG Accra, 19 November 2026.
 4. Use it: look up docs, review Terraform, validate, plan
 5. Talk about infrastructure for an agentic app
 
-Suggested time per part (reference only, adjust freely): intro 10, context 5, setup 15, hands-on 35, agentic app 10, questions and cleanup 10.
-
 **Say:** Everything runs on a laptop with Docker. No cloud account is needed. You need internet and access to one AI coding tool.
 
 ---
@@ -153,8 +151,9 @@ The full server also has workspace, run and variable tools for HCP Terraform and
 
 ## Slide 9: Three ways to run it
 
-| | Local (this lab) | Self-hosted | Remote |
+| | Self-hosted on your laptop (this lab) | Self-hosted shared server | Remote |
 |---|---|---|---|
+| HashiCorp's name | Local | Self-hosted | Remote |
 | Who runs it | You, on your machine | You, in an environment you manage | HashiCorp |
 | Transport | stdio, or streamable-http | streamable-http | streamable-http |
 | Install | Docker, binary or source | Docker, binary or source | None |
@@ -166,7 +165,7 @@ The full server also has workspace, run and variable tools for HCP Terraform and
 - Remote at `https://mcp.terraform.io/mcp` supports US HCP Terraform organisations only and is rate limited
 - A self-hosted server exposed beyond localhost needs TLS and authentication in front of it
 
-**Say:** Today we run it locally in Docker. HashiCorp calls this Local. Their self-hosted option is a shared server a team operates. Check their deploy pages before presenting, because the remote server is in beta.
+**Say:** Today we self-host it ourselves, in Docker on the laptop. HashiCorp's docs call that setup Local, and reserve the name Self-hosted for a shared server a team operates over HTTP. Same container image either way. Check their deploy pages before presenting, because the remote server is in beta.
 
 ---
 
@@ -226,7 +225,7 @@ Check that `terraform` is connected and its registry tools are listed.
 - No Docker socket mounted into the MCP container
 - `--scope project`: the config is saved in `.mcp.json` in this folder
 
-**Say:** We demo Claude Code. The same server works with any MCP-capable AI tool, each with its own registration steps.
+**Say:** We demo Claude Code. The same server works with any MCP-capable AI tool, each with its own registration steps. GitHub Copilot and Codex steps are in the Process Guide in `docs/`, and are untested.
 
 ---
 
@@ -382,4 +381,4 @@ Product idea: a Session Planning Agent reads poll results, searches an approved 
 - Tool reference: https://developer.hashicorp.com/terraform/mcp-server/reference
 - Source: https://github.com/hashicorp/terraform-mcp-server
 - Docker provider: https://registry.terraform.io/providers/kreuzwerker/docker/4.6.0/docs
-- In this repo: `README.md` for the full lab, `docs/session-intro.md` for the diagram notes
+- In this repo: `README.md` for the full lab, `docs/session-intro.md` for the diagram notes, `docs/Terraform_MCP_Process_Guide.md` for the full process guide

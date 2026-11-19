@@ -2,7 +2,7 @@
 
 Prepared for Saravanan Gnanaguru and HUG Accra • 19 November 2026
 
-Session slides: [docs/session-slides.md](docs/session-slides.md). Diagram notes (manual vs AI-driven IaC, MCP architecture, deployment options): [docs/session-intro.md](docs/session-intro.md).
+Session slides: [docs/session-slides.md](docs/session-slides.md). Diagram notes (manual vs AI-driven IaC, MCP architecture, deployment options): [docs/session-intro.md](docs/session-intro.md). Presenter checklist: [docs/session-readiness.md](docs/session-readiness.md).
 
 ## Outcome and scope
 
@@ -57,10 +57,13 @@ Expected: Terraform and Claude versions print, and Docker reports BOTH a client 
 
 **Why we do this:** Two safety properties depend on this step. First, running everything from the project root means Claude Code picks up `CLAUDE.md` (the lab's safety rules) and the project-scoped MCP configuration, and `-chdir=infra` keeps Terraform working in the right folder. Second, the Docker CLI and the Terraform Docker provider can resolve *different* endpoints, for example the CLI pointing at a remote or SSH host while the provider uses the local socket. Inspecting the context and exporting `DOCKER_HOST` makes both use the same **local** engine, so Terraform can never create containers on a machine you did not intend. Launching Claude from this terminal means its commands inherit that setting.
 
-Extract this ZIP, open Terminal and change into its `terraform-mcp-workshop` directory. Example if extracted into Downloads:
+Clone the repository, open Terminal and change into the `terraform-mcp-workshop` folder. Until the workshop branch is merged, switch to it first:
 
 ```bash
-cd ~/Downloads/terraform-mcp-workshop
+git clone https://github.com/chefgs/terraform_repo.git
+cd terraform_repo
+git switch feature/mcp_workshop   # only until the branch is merged to main
+cd terraform-mcp-workshop
 pwd
 ls
 ```
@@ -384,9 +387,9 @@ Make clear that Terraform MCP assists infrastructure development here; it is not
 - [ ] Share source/configuration only; exclude state, binary plans, plan JSON and secrets.
 - [ ] Tell attendees that Claude access and local Docker setup are prerequisites.
 
-## Suggested 90-minute session
+## Other AI tools
 
-10 min: responsibilities and application requirements. 15 min: setup and MCP lookup. 25 min: generate/review Terraform and validate. 15 min: plan inspection and optional apply. 15 min: infrastructure for an agentic application. 10 min: questions and cleanup.
+This lab is written for Claude Code. Setup steps for GitHub Copilot and Codex are in [docs/Terraform_MCP_Process_Guide.md](docs/Terraform_MCP_Process_Guide.md) (also as `.docx`). Those two paths have **not** been tested.
 
 ## Official sources
 

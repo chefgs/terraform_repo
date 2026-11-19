@@ -115,8 +115,9 @@ Example lookup chain from the server's own instructions: `get_latest_provider_ve
 
 Source: HashiCorp's Terraform MCP server deploy pages, read on 2026-11-19. Check them again before the event, because the remote server is in beta.
 
-| | Local (this lab) | Self-hosted | Remote |
+| | Self-hosted on your laptop (this lab) | Self-hosted shared server | Remote |
 |---|---|---|---|
+| HashiCorp's name | Local | Self-hosted | Remote |
 | Who runs it | You, on your machine | You, in an environment you manage, for example ECS on Fargate | HashiCorp |
 | Transport | stdio, or streamable-http | streamable-http | streamable-http |
 | Install | Docker, binary or source | Docker, binary or source | None |
@@ -127,7 +128,7 @@ Source: HashiCorp's Terraform MCP server deploy pages, read on 2026-11-19. Check
 
 Notes for the presenter:
 
-- The lab runs the Docker image on the laptop over stdio. HashiCorp calls that **Local**. The lab README calls it "self-hosted", but under HashiCorp's definitions self-hosted means a server you operate for others over streamable-http.
+- The lab self-hosts the Docker image on the laptop over stdio. HashiCorp's docs call that setup **Local**, and use **Self-hosted** for a server you operate for others over streamable-http. Same container image either way.
 - Remote has no install, but it supports US HCP Terraform organisations only, it is rate limited, and the page discourages beta features in production.
 - Self-hosted over HTTP needs TLS and authentication in front of it if it is not bound to localhost.
 
