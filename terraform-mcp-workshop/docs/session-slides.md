@@ -151,21 +151,22 @@ The full server also has workspace, run and variable tools for HCP Terraform and
 
 ## Slide 9: Three ways to run it
 
-| | Self-hosted on your laptop (this lab) | Self-hosted shared server | Remote |
-|---|---|---|---|
-| HashiCorp's name | Local | Self-hosted | Remote |
-| Who runs it | You, on your machine | You, in an environment you manage | HashiCorp |
-| Transport | stdio, or streamable-http | streamable-http | streamable-http |
-| Install | Docker, binary or source | Docker, binary or source | None |
-| Best for | Getting started | Central management by a team | HCP Terraform without running a server |
-| Terraform Enterprise | Supported | Supported | Not supported |
-| Token | Not for registry lookups | Only for HCP or TFE features | HCP Terraform token on every request |
-| Status | Not marked beta | Not marked beta | Beta |
+| | Who runs it | Good for |
+|---|---|---|
+| **Laptop, in Docker (this lab)** | You, on your machine | Getting started. No token needed. |
+| Shared server | Your team, in an environment you manage | Central management by a team |
+| Remote | HashiCorp | HCP Terraform without running a server. Beta. |
 
-- Remote at `https://mcp.terraform.io/mcp` supports US HCP Terraform organisations only and is rate limited
-- A self-hosted server exposed beyond localhost needs TLS and authentication in front of it
+Today we use the first one.
 
-**Say:** Today we self-host it ourselves, in Docker on the laptop. HashiCorp's docs call that setup Local, and reserve the name Self-hosted for a shared server a team operates over HTTP. Same container image either way. Check their deploy pages before presenting, because the remote server is in beta.
+**Say:** Today we run it ourselves, in Docker on the laptop. HashiCorp's docs call that setup Local, and reserve the name Self-hosted for a shared server a team operates over HTTP. Same container image either way. Public lookups need no token. A token is only for HCP Terraform or Terraform Enterprise features.
+
+If asked for detail (all from HashiCorp's deploy page, so recheck it before presenting):
+- Transport: stdio or streamable-http for the laptop setup, streamable-http for the shared server and Remote. Install: Docker, binary or source for the first two, none for Remote.
+- Terraform Enterprise (the on-prem hosted version): the laptop and shared setups can connect to it. Remote cannot.
+- Remote at `https://mcp.terraform.io/mcp` supports US HCP Terraform organisations only, is rate limited and needs an HCP Terraform token on every request. It is the one marked beta.
+- The other two are not marked beta on the deploy page. That is not the same as generally available.
+- A shared server exposed beyond localhost needs TLS and authentication in front of it.
 
 ---
 
