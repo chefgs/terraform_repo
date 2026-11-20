@@ -12,7 +12,7 @@ Prepared for Saravanan Gnanaguru, CloudEngine Labs, HUG Accra, 19 November 2026.
 2. See what an MCP server is and where it sits
 3. Set up the Terraform MCP server
 4. Use it: look up docs, review Terraform, validate, plan
-5. Talk about infrastructure for an agentic app
+5. Scale up: several agents building independent modules, with human approval gates
 
 **Say:** Everything runs on a laptop with Docker. No cloud account is needed. You need internet and access to one AI coding tool.
 
@@ -346,39 +346,160 @@ terraform -chdir=infra apply cleanup.tfplan
 
 ---
 
-## Slide 19: Infrastructure for an agentic app
+## Slide 19: Scale up: agents building infrastructure
 
-Product idea: a Session Planning Agent reads poll results, searches an approved catalogue, checks prerequisites and drafts an agenda for an organiser to review.
+This section is about agents *building* infrastructure. It is not about the infrastructure an AI app needs to run.
 
-| Component | Why |
-|---|---|
-| API | Accept requests, expose job status |
-| Agent worker | Run tool calls and bounded reasoning loops |
-| Model access | Inference, hosted or local |
-| State | Polls, checkpoints, agendas |
-| Queue | Longer jobs and retries, only if the load needs it |
-| Secrets | Injected at runtime, not hard-coded in Terraform |
-| Observability | Model calls, tool actions, latency, failures |
+- One agent per independent module, working in parallel
+- Each agent tests its own module inside a boundary
+- One full integration run after every agent has finished
+- Agents report progress and test results
+- A human approves any cost and any real-environment deployment
 
-**Say:** Map every component to a requirement. Do not add services to look complex. This is an architecture discussion, not something the lab builds.
+Fits when modules only meet through typed inputs and outputs. Does not fit when modules reference each other's resources or must change atomically.
+
+**Say:** Full write-up: `docs/agentic-iac-development.md`. This is a pattern to try after today. The lab does not run it, and the steps in that document have not been run end to end.
 
 ---
 
-## Slide 20: Takeaways
+## Slide 20: The shape
+
+```mermaid
+flowchart TB
+    H["Human<br/>owns contract and approvals"] -->|"approves"| C["Interface contract<br/>inputs, outputs, tests"]
+    C --> O["Orchestrator agent"]
+    O --> A1["Agent: module A<br/>own worktree"]
+    O --> A2["Agent: module B<br/>own worktree"]
+    O --> A3["Agent: module C<br/>own worktree"]
+    A1 --> R["Reports, boundary check,<br/>independent re-run"]
+    A2 --> R
+    A3 --> R
+    R -->|"any red"| O
+    R -->|"all green"| I["Integration agent<br/>root composition, plan only"]
+    I -->|"failure goes back to<br/>the owning module"| O
+    I --> G["Human gate<br/>plan, cost, target"]
+    G -->|"approves saved plan"| AP["Human runs apply"]
+```
+
+**Say:** Two things the agents never do: change the contract, and run apply.
+
+---
+
+## Slide 21: Boundaries that are not just a prompt
+
+| Control | What it stops |
+|---|---|
+| Contract written and approved first | Agents inventing incompatible interfaces. Tests come from requirements, not from the generated code. |
+| One git worktree and branch per agent | Agents overwriting each other. Gives each its own audit trail. |
+| Allowlist: `modules/<name>/` plus its report | Edits to other modules and shared files |
+| Protected files: `CLAUDE.md`, `.mcp.json`, `.claude/`, provider pins, lock file | An agent loosening its own rules |
+| No credentials during the module phase | Real changes from a development step |
+| Deny rules for apply, destroy, import, state | Accidental commands. A speed bump, not a sandbox. |
+
+**Say:** "Stay in your module" in a prompt is a request. A diff check is evidence.
+
+---
+
+## Slide 22: Check the boundary
+
+```bash
+git worktree add -b agent/network ../wt-network main
+# agent works, then from inside the worktree:
+scripts/check-boundary.sh network main
+```
+
+- Compares the branch, uncommitted edits and untracked files against the module allowlist
+- Rename detection is off, so a file moved out of another module cannot hide
+- Any `OUT OF BOUNDS` line rejects the branch
+
+**Say:** The script is in the doc. We ran it in a throwaway repo: a clean branch passes, and edits to a shared file, to another module and to a moved file are caught. The agent setup around it has not been run.
+
+---
+
+## Slide 23: Test each module on its own
+
+| Layer | Per module | At integration |
+|---|---|---|
+| `fmt -check`, `validate` | Yes | Yes |
+| Lint and static security scan | Yes | Yes |
+| Mock-provider tests from the contract | Yes | No |
+| Negative and boundary tests | Yes | No |
+| Real-provider `plan` | No | Yes |
+| Cross-module checks | No | Yes |
+| Apply and smoke tests | No | Only after human approval |
+
+- Mock tests need Terraform 1.7 or newer. The lab pins `>= 1.6.0`, so raise it for this exercise.
+- A mock pass does not prove the real provider behaves the same way.
+
+---
+
+## Slide 24: Progress and test reports
+
+```text
+module        state           last result                          updated
+network       tests-run       validate ok, 4/4 mock tests pass     10:42
+static_site   code-written    fmt fixed 1 file                     10:41
+state_store   blocked         contract: volume name rule unclear   10:39
+```
+
+Each report lists: commit, tool versions, MCP tools called, requirement, command, result, what was mocked, what was not tested, open questions, and what needs a human.
+
+- Reports are claims, not evidence. The orchestrator re-runs fmt, validate and tests on the branch and compares.
+- A mismatch sends the module back.
+
+**Say:** Silence from an agent looks the same as being stuck. A fixed format makes reports comparable and checkable.
+
+---
+
+## Slide 25: Integration after all agents finish
+
+1. Start only when every module has a green re-run and a clean boundary check
+2. Merge into an integration branch, not main
+3. Compose in a root module that owns the provider pins and lock file
+4. `init`, `fmt -check`, `validate`, all module tests, then `plan -out`
+5. Read the plan: replacements, deletions, ports, mounts
+6. A failure goes back to the module's owner. The integration agent does not patch inside modules.
+7. Re-run everything after each fix
+
+**Say:** Independent modules can each pass and still fail together: a type mismatch, a duplicate name, a port clash.
+
+---
+
+## Slide 26: Human gates for cost and real environments
+
+| Gate | Human decides |
+|---|---|
+| G0 Contract | Interfaces, tests and allowlists |
+| G1 Fan-out cost | Number of agents, retry limits, model. Parallel agents multiply usage. |
+| G2 Integration review | Reports, re-run results and the plan |
+| G3 Infrastructure cost | Estimate for the exact plan |
+| G4 Real apply | One saved plan, one named target |
+
+- The agent stops with: target, plan file hash, changes, estimated cost, not tested, teardown
+- Approval is tied to the plan hash. A changed plan or input voids it.
+- A human or one pipeline runs apply. The agent holds no apply credentials.
+- Real cloud is outside this lab's rules. Use Process Guide section 11.
+
+**Say:** Same rule as slide 17, now with more agents: running the apply is the approval, so you run it.
+
+---
+
+## Slide 27: Takeaways
 
 1. MCP is a backend layer that gives AI tools current, authoritative answers
 2. Lookup and drafting move to the AI. Review and approval stay with you.
 3. Ask the AI to show its tool calls
 4. Give it only the tools it needs
 5. Plan before apply, every time
+6. With many agents: contract first, one boundary each, independent re-checks, one integration, human gates
 
 ---
 
-## Slide 21: Where to go next
+## Slide 28: Where to go next
 
 - Terraform MCP server docs: https://developer.hashicorp.com/terraform/mcp-server
 - Deployment options: https://developer.hashicorp.com/terraform/mcp-server/deploy
 - Tool reference: https://developer.hashicorp.com/terraform/mcp-server/reference
 - Source: https://github.com/hashicorp/terraform-mcp-server
 - Docker provider: https://registry.terraform.io/providers/kreuzwerker/docker/4.6.0/docs
-- In this repo: `README.md` for the full lab, `docs/session-intro.md` for the diagram notes, `docs/Terraform_MCP_Process_Guide.md` for the full process guide
+- In this repo: `README.md` for the full lab, `docs/session-intro.md` for the diagram notes, `docs/Terraform_MCP_Process_Guide.md` for the full process guide, `docs/agentic-iac-development.md` for multi-agent module development
