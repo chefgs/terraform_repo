@@ -10,8 +10,12 @@ in README.md.
     python3 app/server.py
 
 Settings (environment variables, all optional):
+    PULSE_HOST  address to listen on, default 127.0.0.1 (this computer only)
     PULSE_PORT  port to listen on, default 8000
     PULSE_DB    path of the SQLite file, default app/data/pulse.db
+
+Only set PULSE_HOST to 0.0.0.0 inside a container whose published port is
+limited to 127.0.0.1. On a normal computer it would open the poll to the network.
 """
 import json
 import os
@@ -201,15 +205,16 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
 
-def make_server(db_path, port=DEFAULT_PORT):
+def make_server(db_path, port=DEFAULT_PORT, host=HOST):
     init_db(db_path)
-    server = ThreadingHTTPServer((HOST, port), Handler)
+    server = ThreadingHTTPServer((host, port), Handler)
     server.db_path = str(db_path)
     return server
 
 
 def main():
     db_path = os.environ.get("PULSE_DB", str(DEFAULT_DB))
+    host = os.environ.get("PULSE_HOST", HOST)
     try:
         port = int(os.environ.get("PULSE_PORT", DEFAULT_PORT))
     except ValueError:
@@ -219,13 +224,14 @@ def main():
     except (OSError, sqlite3.Error) as err:
         sys.exit(f"Could not open the database at {db_path} ({err}). Set PULSE_DB to a writable path.")
     try:
-        server = make_server(db_path, port)
+        server = make_server(db_path, port, host)
     except OSError as err:
         sys.exit(
-            f"Could not listen on http://{HOST}:{port} ({err.strerror}). "
-            "Stop whatever else uses that port or set PULSE_PORT to a free one, for example PULSE_PORT=8001."
+            f"Could not listen on http://{host}:{port} ({err.strerror}). "
+            "Stop whatever else uses that port or set PULSE_PORT to a free one, for example PULSE_PORT=8001. "
+            "If PULSE_HOST is set, check that it is an address of this computer."
         )
-    print(f"Meeting Session Pulse: http://{HOST}:{port}  (database: {db_path})  Ctrl+C to stop", flush=True)
+    print(f"Meeting Session Pulse: http://{host}:{port}  (database: {db_path})  Ctrl+C to stop", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

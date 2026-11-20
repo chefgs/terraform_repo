@@ -45,10 +45,11 @@ You can also run it from inside the `app/` folder with `python3 server.py`. The 
 
 ### Settings
 
-Both are optional environment variables.
+All three are optional environment variables.
 
 | Variable | Default | Meaning |
 |---|---|---|
+| `PULSE_HOST` | `127.0.0.1` | Address to listen on. Leave it alone unless you run the server in a container (see below). |
 | `PULSE_PORT` | `8000` | Port to listen on. The default avoids port 8080, which the static lab uses. |
 | `PULSE_DB` | `app/data/pulse.db` | Path of the SQLite file. The folder is created if it does not exist. |
 
@@ -58,7 +59,7 @@ Example:
 PULSE_PORT=8001 PULSE_DB=/tmp/my-poll.db python3 app/server.py
 ```
 
-The server only listens on `127.0.0.1`, so only your own computer can reach it. There is no setting to change that.
+By default the server listens on `127.0.0.1`, so only your own computer can reach it. `PULSE_HOST` exists for one reason: inside a container the server must listen on `0.0.0.0` for a published port to reach it (see `infra/main.tf.reference`, where the published port is itself limited to `127.0.0.1`). On a normal computer, do not set `PULSE_HOST=0.0.0.0`: it opens the poll to everyone on your network, and the poll has no sign-in.
 
 ## How the page is wired to the server
 
@@ -147,7 +148,7 @@ From the workshop folder:
 python3 -m unittest app/test_server.py -v
 ```
 
-The 20 tests start the server on a free port with a temporary database, so they never touch your real poll data and do not need the server to be running.
+The 21 tests start the server on a free port with a temporary database, so they never touch your real poll data and do not need the server to be running.
 
 ## Troubleshooting
 
@@ -172,6 +173,8 @@ The 20 tests start the server on a free port with a temporary database, so they 
 |---|---|
 | `server.py` | The server: page, API and SQLite storage |
 | `static/index.html` | The poll page |
-| `test_server.py` | The 20 tests |
+| `test_server.py` | The 21 tests |
+| `infra/main.tf.reference` | Reference Terraform for running the poll in a local Docker container, as a dry-run plan only. It is ignored by Terraform until you rename it, so it never runs by accident. See `terraform-mcp-flow.md`, step 5. |
+| `infra/.terraform.lock.hcl` | The provider lock file, kept on purpose so everyone gets the same provider build |
 | `terraform-mcp-flow.md` | Application first, then Terraform with MCP: brief, architecture, IaC approach |
 | `.gitignore` | Keeps the database file and Python cache out of git |

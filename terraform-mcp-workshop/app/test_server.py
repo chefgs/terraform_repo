@@ -75,6 +75,9 @@ class PollServerTest(unittest.TestCase):
 
     # happy paths
 
+    def test_listens_on_this_computer_only_by_default(self):
+        self.assertEqual(self.srv.server_address[0], "127.0.0.1")
+
     def test_health(self):
         status, _, body = self.call("GET", "/api/health")
         self.assertEqual(status, 200)
