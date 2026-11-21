@@ -1,7 +1,5 @@
 # Agentic Infrastructure coding for Building IaC with the Terraform MCP Server
 
-Session slides for walking through live. Each slide is a section between `---` lines. Lines starting with **Say:** are presenter notes. Trim any slide you do not need.
-
 **Presenter**: Saravanan Gnanaguru, CloudEngine Labs
 
 **Event**: HUG Accra Session, 21 November 2026 - 1:00 PM GMT - 6:30 PM IST.
