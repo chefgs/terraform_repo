@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1350 520" width="1350" height="520" role="img" aria-label="A human approves an interface contract with inputs, outputs and tests. The orchestrator agent fans out to one agent per module, each in its own worktree. Their reports, boundary check and independent re-run are collected. Any red result goes back to the orchestrator. When all are green, the integration agent composes the root module and makes a plan only. A failure goes back to the owning module. Otherwise the plan reaches a human gate for plan, cost and target. The human approves the saved plan and a human runs apply." font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title>Several agents building modules, with human gates</title>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#334155"/></marker><marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#B45309"/></marker><marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#15803D"/></marker></defs>
+<rect x="1" y="1" width="1348" height="518" rx="14" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+<rect x="20" y="20" width="200" height="76" rx="8" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<text x="120.0" y="53.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Human</text>
+<text x="120.0" y="73.0" font-size="14" fill="#334155" text-anchor="middle">owns contract, approvals</text>
+<rect x="290" y="20" width="200" height="76" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+<text x="390.0" y="53.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Interface contract</text>
+<text x="390.0" y="73.0" font-size="14" fill="#334155" text-anchor="middle">inputs, outputs, tests</text>
+<path d="M221 58 L289 58" fill="none" stroke="#B45309" stroke-width="2" marker-end="url(#arrA)" stroke-linejoin="round"/>
+<text x="255" y="44" font-size="13" fill="#334155" text-anchor="middle">approves</text>
+<rect x="290" y="215" width="200" height="76" rx="8" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="2"/>
+<text x="390.0" y="258.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Orchestrator agent</text>
+<path d="M390 97 L390 214" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" stroke-linejoin="round"/>
+<rect x="580" y="105" width="190" height="66" rx="8" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="2"/>
+<text x="675.0" y="133.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Agent: module A</text>
+<text x="675.0" y="153.0" font-size="14" fill="#334155" text-anchor="middle">own worktree</text>
+<path d="M540 138 L579 138" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" stroke-linejoin="round"/>
+<rect x="580" y="220" width="190" height="66" rx="8" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="2"/>
+<text x="675.0" y="248.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Agent: module B</text>
+<text x="675.0" y="268.0" font-size="14" fill="#334155" text-anchor="middle">own worktree</text>
+<path d="M540 253 L579 253" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" stroke-linejoin="round"/>
+<rect x="580" y="335" width="190" height="66" rx="8" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="2"/>
+<text x="675.0" y="363.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Agent: module C</text>
+<text x="675.0" y="383.0" font-size="14" fill="#334155" text-anchor="middle">own worktree</text>
+<path d="M540 368 L579 368" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" stroke-linejoin="round"/>
+<path d="M491 253 L540 253 M540 138 L540 368" fill="none" stroke="#334155" stroke-width="2"/>
+<rect x="840" y="215" width="190" height="76" rx="8" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="2"/>
+<text x="935.0" y="248.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Reports</text>
+<text x="935.0" y="268.0" font-size="14" fill="#334155" text-anchor="middle">boundary check, re-run</text>
+<path d="M771 138 L805 138 L805 368 M771 368 L805 368 M771 253 L805 253" fill="none" stroke="#334155" stroke-width="2"/>
+<path d="M805 253 L839 253" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" stroke-linejoin="round"/>
+<rect x="1120" y="215" width="190" height="76" rx="8" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="2"/>
+<text x="1215.0" y="248.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Integration agent</text>
+<text x="1215.0" y="268.0" font-size="14" fill="#334155" text-anchor="middle">root composition, plan only</text>
+<path d="M1031 253 L1119 253" fill="none" stroke="#15803D" stroke-width="2" marker-end="url(#arrG)" stroke-linejoin="round"/>
+<rect x="1037.2" y="227.0" width="75.5" height="20" fill="#F8FAFC"/>
+<text x="1075" y="240" font-size="13" fill="#15803D" text-anchor="middle" font-weight="700">all green</text>
+<rect x="1120" y="20" width="190" height="76" rx="8" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<text x="1215.0" y="53.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Human gate</text>
+<text x="1215.0" y="73.0" font-size="14" fill="#334155" text-anchor="middle">plan, cost, target</text>
+<path d="M1215 214 L1215 97" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" stroke-linejoin="round"/>
+<rect x="840" y="20" width="190" height="76" rx="8" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<text x="935.0" y="53.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Human runs apply</text>
+<text x="935.0" y="73.0" font-size="14" fill="#334155" text-anchor="middle">the saved plan</text>
+<path d="M1119 58 L1031 58" fill="none" stroke="#B45309" stroke-width="2" marker-end="url(#arrA)" stroke-linejoin="round"/>
+<text x="1075" y="44" font-size="13" fill="#334155" text-anchor="middle">approves</text>
+<path d="M935 292 L935 440 L360 440 L360 292" fill="none" stroke="#B45309" stroke-width="2" marker-end="url(#arrA)" stroke-linejoin="round"/>
+<rect x="515.6" y="420.0" width="268.7" height="21" fill="#F8FAFC"/>
+<text x="650" y="434" font-size="14" fill="#B45309" text-anchor="middle" font-weight="700">any red: back to the orchestrator</text>
+<path d="M1215 292 L1215 478 L420 478 L420 292" fill="none" stroke="#B45309" stroke-width="2" marker-end="url(#arrA)" stroke-linejoin="round"/>
+<rect x="646.0" y="458.0" width="307.9" height="21" fill="#F8FAFC"/>
+<text x="800" y="472" font-size="14" fill="#B45309" text-anchor="middle" font-weight="700">failure goes back to the owning module</text>
+<rect x="24" y="487" width="18" height="18" rx="4" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<text x="50" y="501" font-size="14" fill="#334155">Human</text>
+<rect x="120" y="487" width="18" height="18" rx="4" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="2"/>
+<text x="146" y="501" font-size="14" fill="#334155">Agent</text>
+<rect x="216" y="487" width="18" height="18" rx="4" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+<text x="242" y="501" font-size="14" fill="#334155">Approved contract</text>
+</svg>

@@ -34,16 +34,7 @@
 
 ## Manual IaC development
 
-```mermaid
-flowchart LR
-    U["Engineer"] --> R["Read provider docs"]
-    R --> W["Write HCL by hand"]
-    W --> V["terraform validate"]
-    V -->|"error"| R
-    V -->|"ok"| P["terraform plan"]
-    P --> RV["Engineer reviews plan"]
-    RV --> A["terraform apply"]
-```
+![Diagram: manual IaC development. The engineer reads provider docs, writes HCL by hand and runs terraform validate. An error goes back to the docs. When validate passes: terraform plan, the engineer reviews the plan, terraform apply.](images/manual-iac.svg)
 
 - Every lookup is yours
 - You learn the provider by reading. That is the strength of this path.
@@ -52,20 +43,7 @@ flowchart LR
 
 ## AI-driven IaC development with MCP
 
-```mermaid
-flowchart LR
-    U["Engineer"] -->|"asks in plain language"| AI["AI coding tool"]
-    AI -->|"tool call"| MCP["Terraform MCP server"]
-    MCP -->|"fetches"| REG["Terraform Registry"]
-    REG -->|"current docs, versions"| MCP
-    MCP -->|"result"| AI
-    AI --> W["Drafts HCL<br/>from retrieved docs"]
-    W --> V["terraform validate"]
-    V -->|"error"| AI
-    V -->|"ok"| P["terraform plan"]
-    P --> RV["Engineer reviews plan"]
-    RV --> A["terraform apply<br/>(engineer approves)"]
-```
+![Diagram: AI-driven IaC development with MCP. The engineer asks the AI coding tool, which calls the Terraform MCP server. The server fetches current docs and versions from the Terraform Registry and returns the result. The AI drafts HCL from the retrieved docs and runs terraform validate; an error goes back to the AI. Then terraform plan, the engineer reviews the plan, and the engineer approves terraform apply.](images/ai-driven-iac.svg)
 
 **Say:** The lookup moved. The review and the approval did not.
 
@@ -73,17 +51,7 @@ flowchart LR
 
 ## Who does each step
 
-```mermaid
-flowchart TB
-    subgraph M["Manual"]
-        direction TB
-        M1["Find docs: engineer"] --> M2["Write HCL: engineer"] --> M3["Fix errors: engineer"] --> M4["Review plan: engineer"] --> M5["Approve apply: engineer"]
-    end
-    subgraph D["AI-driven with MCP"]
-        direction TB
-        D1["Find docs: AI via MCP"] --> D2["Write HCL: AI"] --> D3["Fix errors: AI, engineer checks"] --> D4["Review plan: engineer"] --> D5["Approve apply: engineer"]
-    end
-```
+![Diagram: who does each step. Manual: the engineer does all five steps. AI-driven with MCP: the AI finds docs through MCP, writes HCL and fixes errors with the engineer checking. The engineer reviews the plan and approves apply.](images/who-does-each-step.svg)
 
 - AI speeds up research and drafting
 - The engineer keeps the decisions
@@ -106,25 +74,7 @@ flowchart TB
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    subgraph Client["Your machine"]
-        E["Engineer"]
-        H["AI coding tool<br/>(MCP host and client)"]
-        S["Terraform MCP server<br/>(Docker container, stdio)"]
-        T["Terraform CLI"]
-        DK["Docker engine"]
-    end
-    REG["registry.terraform.io"]
-    LLM["AI model service"]
-
-    E <--> H
-    H <-->|"model API"| LLM
-    H <-->|"MCP: JSON-RPC over stdio"| S
-    S <-->|"HTTPS"| REG
-    H -->|"runs via terminal tool"| T
-    T --> DK
-```
+![Diagram: architecture. On your machine, the engineer uses an AI coding tool (MCP host and client). It talks MCP, JSON-RPC over stdio, to the Terraform MCP server running as a Docker container, and runs the Terraform CLI through a terminal tool, which drives the Docker engine. The MCP server reaches registry.terraform.io over HTTPS. The AI tool calls an AI model service through its model API.](images/mcp-architecture.svg)
 
 | Piece | Job |
 |---|---|
@@ -369,22 +319,7 @@ Fits when modules only meet through typed inputs and outputs. Does not fit when 
 
 ## The shape
 
-```mermaid
-flowchart TB
-    H["Human<br/>owns contract and approvals"] -->|"approves"| C["Interface contract<br/>inputs, outputs, tests"]
-    C --> O["Orchestrator agent"]
-    O --> A1["Agent: module A<br/>own worktree"]
-    O --> A2["Agent: module B<br/>own worktree"]
-    O --> A3["Agent: module C<br/>own worktree"]
-    A1 --> R["Reports, boundary check,<br/>independent re-run"]
-    A2 --> R
-    A3 --> R
-    R -->|"any red"| O
-    R -->|"all green"| I["Integration agent<br/>root composition, plan only"]
-    I -->|"failure goes back to<br/>the owning module"| O
-    I --> G["Human gate<br/>plan, cost, target"]
-    G -->|"approves saved plan"| AP["Human runs apply"]
-```
+![Diagram: a human approves an interface contract. The orchestrator agent fans out to one agent per module. Reports, a boundary check and an independent re-run follow; any red goes back to the orchestrator. When all are green, the integration agent composes the root module and makes a plan only; a failure goes back to the owning module. The plan reaches a human gate for plan, cost and target, the human approves the saved plan, and a human runs apply.](images/multi-agent-shape.svg)
 
 **Say:** Two things the agents never do: change the contract, and run apply.
 

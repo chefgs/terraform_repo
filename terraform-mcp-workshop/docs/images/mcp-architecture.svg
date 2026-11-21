@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1290 436" width="1290" height="436" role="img" aria-label="Inside your machine: the engineer talks to an AI coding tool, which is the MCP host and client. It speaks MCP, JSON-RPC over stdio, to the Terraform MCP server running as a Docker container, and runs the Terraform CLI through a terminal tool. The Terraform CLI drives the Docker engine. Outside the machine: the MCP server reaches registry.terraform.io over HTTPS, and the AI tool calls an AI model service over its model API." font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title>Architecture: where the Terraform MCP server sits</title>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#334155"/></marker><marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#B45309"/></marker><marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#15803D"/></marker></defs>
+<rect x="1" y="1" width="1288" height="434" rx="14" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+<rect x="20" y="40" width="1000" height="372" rx="12" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="44" y="70" font-size="15" fill="#334155" text-anchor="start" font-weight="700">YOUR MACHINE</text>
+<rect x="50" y="190" width="150" height="80" rx="8" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<text x="125.0" y="235.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Engineer</text>
+<rect x="280" y="170" width="230" height="120" rx="8" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="2"/>
+<text x="395.0" y="225.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">AI coding tool</text>
+<text x="395.0" y="245.0" font-size="14" fill="#334155" text-anchor="middle">(MCP host and client)</text>
+<rect x="640" y="70" width="280" height="90" rx="8" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="2"/>
+<text x="780.0" y="110.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Terraform MCP server</text>
+<text x="780.0" y="130.0" font-size="14" fill="#334155" text-anchor="middle">(Docker container, stdio)</text>
+<rect x="640" y="290" width="150" height="80" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+<text x="715.0" y="335.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Terraform CLI</text>
+<rect x="850" y="290" width="150" height="80" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+<text x="925.0" y="335.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Docker engine</text>
+<rect x="1070" y="70" width="200" height="90" rx="8" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+<text x="1170.0" y="110.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Terraform Registry</text>
+<text x="1170.0" y="130.0" font-size="14" fill="#334155" text-anchor="middle">registry.terraform.io</text>
+<rect x="1070" y="290" width="200" height="80" rx="8" fill="#FFFFFF" stroke="#64748B" stroke-width="2" stroke-dasharray="6 5"/>
+<text x="1170.0" y="335.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">AI model service</text>
+<path d="M201 230 L279 230" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" marker-start="url(#arr)" stroke-linejoin="round"/>
+<path d="M511 205 L575 205 L575 115 L639 115" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" marker-start="url(#arr)" stroke-linejoin="round"/>
+<text x="565" y="100" font-size="14" fill="#334155" text-anchor="end">MCP: JSON-RPC over stdio</text>
+<path d="M511 258 L575 258 L575 330 L639 330" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" stroke-linejoin="round"/>
+<text x="565" y="330" font-size="14" fill="#334155" text-anchor="end">runs via terminal tool</text>
+<path d="M791 330 L849 330" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" stroke-linejoin="round"/>
+<path d="M921 115 L1069 115" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" marker-start="url(#arr)" stroke-linejoin="round"/>
+<text x="965" y="104" font-size="14" fill="#334155" text-anchor="middle">HTTPS</text>
+<path d="M395 291 L395 392 L1170 392 L1170 371" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" marker-start="url(#arr)" stroke-linejoin="round"/>
+<rect x="739.7" y="372.0" width="80.6" height="21" fill="#F8FAFC"/>
+<text x="780" y="386" font-size="14" fill="#334155" text-anchor="middle">model API</text>
+</svg>
