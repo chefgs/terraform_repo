@@ -2,8 +2,9 @@
 
 Session slides for walking through live. Each slide is a section between `---` lines. Lines starting with **Say:** are presenter notes. Trim any slide you do not need.
 
-Presenter: Saravanan Gnanaguru, CloudEngine Labs
-Event: HUG Accra Session, 21 November 2026 - 1:00 PM GMT - 6:30 PM IST.
+**Presenter**: Saravanan Gnanaguru, CloudEngine Labs
+
+**Event**: HUG Accra Session, 21 November 2026 - 1:00 PM GMT - 6:30 PM IST.
 
 ![Diagram: one agent turns an application brief into an architecture, Terraform code and a dry-run plan, looking up provider docs through the Terraform MCP server, with human gates; several agents fan out from an approved contract, are re-checked and merge into one integration plan before the same human gate.](images/session-overview.svg)
 
@@ -11,7 +12,7 @@ Event: HUG Accra Session, 21 November 2026 - 1:00 PM GMT - 6:30 PM IST.
 
 ---
 
-## What we will do today
+## The Session Agenda
 
 1. Compare manual and AI-driven IaC development
 2. See what an MCP server is and where it sits
@@ -23,7 +24,7 @@ Event: HUG Accra Session, 21 November 2026 - 1:00 PM GMT - 6:30 PM IST.
 
 ---
 
-## The problem
+## The Problem
 
 - Learning a provider means reading many doc pages
 - Then write HCL, hit an error, go back to the docs
@@ -140,7 +141,7 @@ flowchart LR
 
 ## What the server can do
 
-We start it with `--toolsets=registry`, so only read-only registry lookups are enabled.
+Start it with `--toolsets=registry`, so only read-only registry lookups are enabled.
 
 | Purpose | Tools |
 |---|---|
