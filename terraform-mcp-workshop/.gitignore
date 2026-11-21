@@ -1,8 +1,41 @@
+# --- Terraform ---
+# Provider downloads and local working data
 **/.terraform/*
+# State and plans can hold resource details and secrets: never commit them
 *.tfstate
 *.tfstate.*
 *.tfplan
 plan.json
+# Crash logs
 crash.log
+crash.*.log
+# Variable files are local overrides and may hold secrets
+*.tfvars
+*.tfvars.json
+# Local override files and CLI config
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+# NOTE: .terraform.lock.hcl is deliberately NOT ignored. Keep it committed so every machine
+# installs the same provider build.
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+
+# --- Local environment / OS ---
 .env
 .DS_Store
