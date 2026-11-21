@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 548" width="1280" height="548" role="img" aria-label="One agent drafts an architecture from the application brief, a human approves it, the agent writes Terraform while looking up provider documentation through the Terraform MCP server, runs a dry-run plan, and a human decides on cost and any real apply. With several agents, an approved contract fans out to module agents, their reports are re-checked, one integration plan is made, and the same human gate follows." font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>From one agent with a docs lookup to several agents with human gates</title>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#334155"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#B45309"/></marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#15803D"/></marker>
+  </defs>
+
+  <rect x="1" y="1" width="1278" height="546" rx="14" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+
+  <!-- lane labels -->
+  <g fill="#334155" font-size="14" font-weight="700">
+    <text x="24" y="103">ONE</text><text x="24" y="122">AGENT</text>
+    <text x="24" y="403">SEVERAL</text><text x="24" y="422">AGENTS</text>
+  </g>
+  <line x1="20" y1="290" x2="1260" y2="290" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="6 6"/>
+
+  <!-- ===== lane 1: one agent ===== -->
+  <g stroke-width="2">
+    <rect x="120" y="70" width="170" height="76" rx="8" fill="#F1F5F9" stroke="#64748B"/>
+    <rect x="360" y="70" width="170" height="76" rx="8" fill="#DBEAFE" stroke="#1D4ED8"/>
+    <rect x="600" y="70" width="170" height="76" rx="8" fill="#DBEAFE" stroke="#1D4ED8"/>
+    <rect x="840" y="70" width="170" height="76" rx="8" fill="#F1F5F9" stroke="#64748B"/>
+    <rect x="1080" y="70" width="170" height="76" rx="8" fill="#FEF3C7" stroke="#B45309"/>
+  </g>
+  <g fill="#0F172A" font-size="17" font-weight="700" text-anchor="middle">
+    <text x="205" y="102">Application brief</text>
+    <text x="445" y="102">Architecture</text>
+    <text x="685" y="102">Terraform code</text>
+    <text x="925" y="102">Dry-run plan</text>
+    <text x="1165" y="102">Human gate</text>
+  </g>
+  <g fill="#334155" font-size="13" text-anchor="middle">
+    <text x="205" y="126">what it is, needs</text>
+    <text x="445" y="126">diagram, why each part</text>
+    <text x="685" y="126">from approved design</text>
+    <text x="925" y="126">init · validate · plan</text>
+    <text x="1165" y="126">cost, then real apply</text>
+  </g>
+  <!-- lane 1 arrows -->
+  <g stroke="#334155" stroke-width="2.2" fill="none">
+    <line x1="292" y1="108" x2="358" y2="108" marker-end="url(#arr)"/>
+    <line x1="772" y1="108" x2="838" y2="108" marker-end="url(#arr)"/>
+    <line x1="1012" y1="108" x2="1078" y2="108" marker-end="url(#arr)"/>
+  </g>
+  <line x1="532" y1="108" x2="598" y2="108" stroke="#B45309" stroke-width="2.6" marker-end="url(#arrA)"/>
+  <g font-size="13" text-anchor="middle">
+    <text x="325" y="98" fill="#334155">asks</text>
+    <text x="805" y="98" fill="#334155">runs</text>
+    <text x="1045" y="98" fill="#334155">plan file</text>
+    <text x="565" y="82" fill="#B45309" font-weight="700">human</text>
+    <text x="565" y="97" fill="#B45309" font-weight="700">approves</text>
+  </g>
+
+  <!-- MCP lookup under the code box -->
+  <rect x="570" y="198" width="230" height="58" rx="8" fill="#DCFCE7" stroke="#15803D" stroke-width="2"/>
+  <text x="685" y="224" fill="#0F172A" font-size="16" font-weight="700" text-anchor="middle">Terraform MCP server</text>
+  <text x="685" y="244" fill="#334155" font-size="13" text-anchor="middle">provider docs, read-only</text>
+  <line x1="655" y1="148" x2="655" y2="196" stroke="#15803D" stroke-width="2.2" marker-end="url(#arrG)"/>
+  <line x1="715" y1="196" x2="715" y2="148" stroke="#15803D" stroke-width="2.2" marker-end="url(#arrG)"/>
+  <text x="645" y="178" fill="#15803D" font-size="13" font-weight="600" text-anchor="end">which resource?</text>
+  <text x="725" y="178" fill="#15803D" font-size="13" font-weight="600" text-anchor="start">current docs</text>
+
+  <!-- ===== lane 2: several agents ===== -->
+  <g stroke-width="2">
+    <rect x="120" y="370" width="170" height="76" rx="8" fill="#F1F5F9" stroke="#64748B"/>
+    <rect x="360" y="324" width="170" height="48" rx="8" fill="#DBEAFE" stroke="#1D4ED8"/>
+    <rect x="360" y="384" width="170" height="48" rx="8" fill="#DBEAFE" stroke="#1D4ED8"/>
+    <rect x="360" y="444" width="170" height="48" rx="8" fill="#DBEAFE" stroke="#1D4ED8"/>
+    <rect x="600" y="370" width="170" height="76" rx="8" fill="#F1F5F9" stroke="#64748B"/>
+    <rect x="840" y="370" width="170" height="76" rx="8" fill="#F1F5F9" stroke="#64748B"/>
+    <rect x="1080" y="370" width="170" height="76" rx="8" fill="#FEF3C7" stroke="#B45309"/>
+  </g>
+  <g fill="#0F172A" font-size="17" font-weight="700" text-anchor="middle">
+    <text x="205" y="402">Approved contract</text>
+    <text x="685" y="402">Re-check</text>
+    <text x="925" y="402">Integration run</text>
+    <text x="1165" y="402">Human gate</text>
+  </g>
+  <g fill="#334155" font-size="13" text-anchor="middle">
+    <text x="205" y="426">interfaces + tests</text>
+    <text x="685" y="426">re-runs every test</text>
+    <text x="925" y="426">all modules, one plan</text>
+    <text x="1165" y="426">cost, then real apply</text>
+  </g>
+  <g fill="#0F172A" font-size="15" font-weight="700" text-anchor="middle">
+    <text x="445" y="344">Module agent A</text>
+    <text x="445" y="404">Module agent B</text>
+    <text x="445" y="464">Module agent C</text>
+  </g>
+  <g fill="#334155" font-size="12" text-anchor="middle">
+    <text x="445" y="362">own branch · own tests</text>
+    <text x="445" y="422">own branch · own tests</text>
+    <text x="445" y="482">own branch · own tests</text>
+  </g>
+  <text x="445" y="516" fill="#15803D" font-size="13" font-weight="600" text-anchor="middle">each looks up docs through the same MCP server</text>
+  <!-- lane 2 arrows -->
+  <g stroke="#334155" stroke-width="2.2" fill="none">
+    <line x1="292" y1="408" x2="358" y2="348" marker-end="url(#arr)"/>
+    <line x1="292" y1="408" x2="358" y2="408" marker-end="url(#arr)"/>
+    <line x1="292" y1="408" x2="358" y2="468" marker-end="url(#arr)"/>
+    <line x1="532" y1="348" x2="598" y2="388" marker-end="url(#arr)"/>
+    <line x1="532" y1="408" x2="598" y2="408" marker-end="url(#arr)"/>
+    <line x1="532" y1="468" x2="598" y2="428" marker-end="url(#arr)"/>
+    <line x1="772" y1="408" x2="838" y2="408" marker-end="url(#arr)"/>
+  </g>
+  <line x1="1012" y1="408" x2="1078" y2="408" stroke="#B45309" stroke-width="2.6" marker-end="url(#arrA)"/>
+  <g font-size="13" text-anchor="middle">
+    <text x="322" y="338" fill="#334155">fan out</text>
+    <text x="566" y="338" fill="#334155">reports</text>
+    <text x="805" y="398" fill="#334155">pass</text>
+    <text x="1045" y="398" fill="#B45309" font-weight="700">plan file</text>
+  </g>
+</svg>

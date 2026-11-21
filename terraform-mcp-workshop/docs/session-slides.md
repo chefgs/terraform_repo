@@ -1,8 +1,12 @@
-# Terraform MCP: AI-assisted IaC without leaving the docs behind
+# Agentic Infrastructure coding for Building IaC with the Terraform MCP Server
 
 Session slides for walking through live. Each slide is a section between `---` lines. Lines starting with **Say:** are presenter notes. Trim any slide you do not need.
 
 Prepared for Saravanan Gnanaguru, CloudEngine Labs, HUG Accra, 19 November 2026.
+
+![Diagram: one agent turns an application brief into an architecture, Terraform code and a dry-run plan, looking up provider docs through the Terraform MCP server, with human gates; several agents fan out from an approved contract, are re-checked and merge into one integration plan before the same human gate.](images/session-overview.svg)
+
+*The session in one picture: one agent goes from the application brief to an approved architecture, then writes Terraform while checking provider docs through the Terraform MCP server, and stops at a dry-run plan. With several agents, an approved contract fans out to module agents, their reports are re-checked, and one integration plan reaches the same human gate. A human approves the architecture and decides on cost and any real apply.*
 
 ---
 
