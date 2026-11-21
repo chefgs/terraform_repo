@@ -2,7 +2,8 @@
 
 Session slides for walking through live. Each slide is a section between `---` lines. Lines starting with **Say:** are presenter notes. Trim any slide you do not need.
 
-Prepared for Saravanan Gnanaguru, CloudEngine Labs, HUG Accra, 19 November 2026.
+Presenter: Saravanan Gnanaguru, CloudEngine Labs
+Event: HUG Accra Session, 21 November 2026 - 1:00 PM GMT - 6:30 PM IST.
 
 ![Diagram: one agent turns an application brief into an architecture, Terraform code and a dry-run plan, looking up provider docs through the Terraform MCP server, with human gates; several agents fan out from an approved contract, are re-checked and merge into one integration plan before the same human gate.](images/session-overview.svg)
 
