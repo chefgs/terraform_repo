@@ -6,7 +6,7 @@ Prepared for Saravanan Gnanaguru, CloudEngine Labs, HUG Accra, 19 November 2026.
 
 ---
 
-## Slide 1: What we will do today
+## What we will do today
 
 1. Compare manual and AI-driven IaC development
 2. See what an MCP server is and where it sits
@@ -18,7 +18,7 @@ Prepared for Saravanan Gnanaguru, CloudEngine Labs, HUG Accra, 19 November 2026.
 
 ---
 
-## Slide 2: The problem
+## The problem
 
 - Learning a provider means reading many doc pages
 - Then write HCL, hit an error, go back to the docs
@@ -28,7 +28,7 @@ Prepared for Saravanan Gnanaguru, CloudEngine Labs, HUG Accra, 19 November 2026.
 
 ---
 
-## Slide 3: Manual IaC development
+## Manual IaC development
 
 ```mermaid
 flowchart LR
@@ -46,7 +46,7 @@ flowchart LR
 
 ---
 
-## Slide 4: AI-driven IaC development with MCP
+## AI-driven IaC development with MCP
 
 ```mermaid
 flowchart LR
@@ -67,7 +67,7 @@ flowchart LR
 
 ---
 
-## Slide 5: Who does each step
+## Who does each step
 
 ```mermaid
 flowchart TB
@@ -89,7 +89,7 @@ flowchart TB
 
 ---
 
-## Slide 6: What is MCP
+## What is MCP
 
 - MCP is the Model Context Protocol: a standard way for AI tools to call external servers
 - The server exposes tools. The AI tool discovers them and calls them.
@@ -100,7 +100,7 @@ flowchart TB
 
 ---
 
-## Slide 7: Architecture
+## Architecture
 
 ```mermaid
 flowchart LR
@@ -133,7 +133,7 @@ flowchart LR
 
 ---
 
-## Slide 8: What the server can do
+## What the server can do
 
 We start it with `--toolsets=registry`, so only read-only registry lookups are enabled.
 
@@ -149,7 +149,7 @@ The full server also has workspace, run and variable tools for HCP Terraform and
 
 ---
 
-## Slide 9: Three ways to run it
+## Three ways to run it
 
 | | Who runs it | Good for |
 |---|---|---|
@@ -170,7 +170,7 @@ If asked for detail (all from HashiCorp's deploy page, so recheck it before pres
 
 ---
 
-## Slide 10: Does it work offline?
+## Does it work offline?
 
 - No, not for lookups. The Docker image holds the server, not the docs.
 - Image pull needs internet once. Lookups are live calls to the registry.
@@ -179,7 +179,7 @@ If asked for detail (all from HashiCorp's deploy page, so recheck it before pres
 
 ---
 
-## Slide 11: Setup: prerequisites
+## Setup: prerequisites
 
 ```bash
 brew tap hashicorp/tap
@@ -202,7 +202,7 @@ docker pull hashicorp/terraform-mcp-server:1.4.1
 
 ---
 
-## Slide 12: Setup: connect the MCP server
+## Setup: connect the MCP server
 
 ```bash
 claude mcp add --transport stdio --scope project terraform -- \
@@ -230,7 +230,7 @@ Check that `terraform` is connected and its registry tools are listed.
 
 ---
 
-## Slide 13: Hands-on 1: prove a real lookup
+## Hands-on 1: prove a real lookup
 
 Paste into the AI tool:
 
@@ -251,7 +251,7 @@ say so. Do not edit files or run Terraform yet.
 
 ---
 
-## Slide 14: Hands-on 2: review the Terraform
+## Hands-on 2: review the Terraform
 
 Open `infra/main.tf` and walk through it:
 
@@ -274,7 +274,7 @@ apply. Keep this a static web infrastructure foundation, not a full app.
 
 ---
 
-## Slide 15: Hands-on 3: validate
+## Hands-on 3: validate
 
 ```bash
 terraform -chdir=infra init
@@ -288,7 +288,7 @@ terraform -chdir=infra fmt -check
 
 ---
 
-## Slide 16: Hands-on 4: plan, then stop
+## Hands-on 4: plan, then stop
 
 ```bash
 terraform -chdir=infra plan -out=demo.tfplan
@@ -310,7 +310,7 @@ health and image-pull success, which have not been tested. Stop for review.
 
 ---
 
-## Slide 17: Optional: apply, change, clean up
+## Optional: apply, change, clean up
 
 ```bash
 terraform -chdir=infra apply demo.tfplan
@@ -337,7 +337,7 @@ terraform -chdir=infra apply cleanup.tfplan
 
 ---
 
-## Slide 18: Guardrails we used
+## Guardrails we used
 
 - Registry toolset only: no tokens, no cloud credentials
 - No Docker socket in the MCP container
@@ -347,7 +347,7 @@ terraform -chdir=infra apply cleanup.tfplan
 
 ---
 
-## Slide 19: Scale up: agents building infrastructure
+## Scale up: agents building infrastructure
 
 This section is about agents *building* infrastructure. It is not about the infrastructure an AI app needs to run.
 
@@ -363,7 +363,7 @@ Fits when modules only meet through typed inputs and outputs. Does not fit when 
 
 ---
 
-## Slide 20: The shape
+## The shape
 
 ```mermaid
 flowchart TB
@@ -386,7 +386,7 @@ flowchart TB
 
 ---
 
-## Slide 21: Boundaries that are not just a prompt
+## Boundaries that are not just a prompt
 
 | Control | What it stops |
 |---|---|
@@ -401,7 +401,7 @@ flowchart TB
 
 ---
 
-## Slide 22: Check the boundary
+## Check the boundary
 
 ```bash
 git worktree add -b agent/network ../wt-network main
@@ -417,7 +417,7 @@ scripts/check-boundary.sh network main
 
 ---
 
-## Slide 23: Test each module on its own
+## Test each module on its own
 
 | Layer | Per module | At integration |
 |---|---|---|
@@ -434,7 +434,7 @@ scripts/check-boundary.sh network main
 
 ---
 
-## Slide 24: Progress and test reports
+## Progress and test reports
 
 ```text
 module        state           last result                          updated
@@ -452,7 +452,7 @@ Each report lists: commit, tool versions, MCP tools called, requirement, command
 
 ---
 
-## Slide 25: Integration after all agents finish
+## Integration after all agents finish
 
 1. Start only when every module has a green re-run and a clean boundary check
 2. Merge into an integration branch, not main
@@ -466,7 +466,7 @@ Each report lists: commit, tool versions, MCP tools called, requirement, command
 
 ---
 
-## Slide 26: Human gates for cost and real environments
+## Human gates for cost and real environments
 
 | Gate | Human decides |
 |---|---|
@@ -481,11 +481,11 @@ Each report lists: commit, tool versions, MCP tools called, requirement, command
 - A human or one pipeline runs apply. The agent holds no apply credentials.
 - Real cloud is outside this lab's rules. Use Process Guide section 11.
 
-**Say:** Same rule as slide 17, now with more agents: running the apply is the approval, so you run it.
+**Say:** Same rule as "Optional: apply, change, clean up", now with more agents: running the apply is the approval, so you run it.
 
 ---
 
-## Slide 27: Takeaways
+## Takeaways
 
 1. MCP is a backend layer that gives AI tools current, authoritative answers
 2. Lookup and drafting move to the AI. Review and approval stay with you.
@@ -496,7 +496,7 @@ Each report lists: commit, tool versions, MCP tools called, requirement, command
 
 ---
 
-## Slide 28: Where to go next
+## Where to go next
 
 - Terraform MCP server docs: https://developer.hashicorp.com/terraform/mcp-server
 - Deployment options: https://developer.hashicorp.com/terraform/mcp-server/deploy
