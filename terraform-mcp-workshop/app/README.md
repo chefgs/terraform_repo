@@ -59,7 +59,85 @@ Example:
 PULSE_PORT=8001 PULSE_DB=/tmp/my-poll.db python3 app/server.py
 ```
 
-By default the server listens on `127.0.0.1`, so only your own computer can reach it. `PULSE_HOST` exists for one reason: inside a container the server must listen on `0.0.0.0` for a published port to reach it (see `infra/main.tf.reference`, where the published port is itself limited to `127.0.0.1`). On a normal computer, do not set `PULSE_HOST=0.0.0.0`: it opens the poll to everyone on your network, and the poll has no sign-in.
+By default the server listens on `127.0.0.1`, so only your own computer can reach it. `PULSE_HOST` exists for one reason: inside a container the server must listen on `0.0.0.0` for a published port to reach it (see `infra/main.tf`, where the published port is itself limited to `127.0.0.1`). On a normal computer, do not set `PULSE_HOST=0.0.0.0`: it opens the poll to everyone on your network, and the poll has no sign-in.
+
+## Run it in a local Docker container (Terraform)
+
+`infra/main.tf` runs the poll in one Docker container, using Terraform 1.6 or newer (below 2.0) and the `kreuzwerker/docker` provider pinned to 4.6.0. It is local Docker only: no cloud account, no credentials, no remote Docker host, no Docker socket mounted into the container.
+
+| Created | Name | What it is |
+|---|---|---|
+| `docker_image.api` | `python:3.15-alpine` | A public Python image, pulled. Kept locally on destroy. |
+| `docker_volume.data` | `meeting-pulse-poll-data` | Holds the SQLite file at `/data/pulse.db`. |
+| `docker_container.api` | `meeting-pulse-poll` | Runs `python3 /app/server.py`. `server.py` and `static/` are mounted read-only. Has a healthcheck on `/api/health`. |
+
+The container sets `PULSE_HOST=0.0.0.0`, `PULSE_PORT=8000` and `PULSE_DB=/data/pulse.db`. The `0.0.0.0` is inside the container only. The published port is `127.0.0.1` on the host, set in the Terraform and not a variable, so the poll opens only on this computer.
+
+| Terraform variable | Default | Meaning |
+|---|---|---|
+| `host_port` | `8000` | Host port, a whole number from 1024 to 65535. The static lab uses 8080, so the two can run together. |
+| `python_image` | `python:3.15-alpine` | Image that runs `server.py`. The app was tested on Python 3.15.2 only. |
+
+### Before you run it
+
+Docker Desktop must be running, and Terraform must use the same **local** engine as the Docker CLI. Check it, then export it (the same step as README step 2 of the static lab):
+
+```bash
+docker context inspect --format '{{.Endpoints.docker.Host}}'     # must be a local unix socket
+export DOCKER_HOST="$(docker context inspect --format '{{.Endpoints.docker.Host}}')"
+```
+
+Port 8000 must be free on the host.
+
+### Plan, then apply
+
+From the workshop folder:
+
+```bash
+terraform -chdir=app/infra init
+terraform -chdir=app/infra validate
+terraform -chdir=app/infra plan -out=poll.tfplan
+terraform -chdir=app/infra show -no-color poll.tfplan
+```
+
+Review the plan. For a fresh start it should say `Plan: 3 to add, 0 to change, 0 to destroy`, and the container's `ports` block should show `ip = "127.0.0.1"`. Then, if you approve:
+
+```bash
+terraform -chdir=app/infra apply poll.tfplan
+```
+
+Applying a saved plan does not ask for a yes or no: running the command is your approval. `init` downloads the provider into the git-ignored `.terraform/`. The first apply pulls the Python image.
+
+### Check it
+
+```bash
+docker ps --filter name=meeting-pulse-poll     # Status should end in (healthy); right after apply it may say (health: starting) for a few seconds
+docker port meeting-pulse-poll                 # 8000/tcp -> 127.0.0.1:8000
+curl --fail http://127.0.0.1:8000/api/health   # {"status": "ok", ...}
+```
+
+Then open http://127.0.0.1:8000. A recorded run of exactly these steps is in [infra/evidence/](infra/evidence/README.md).
+
+### Stop and clean up
+
+Plan the destroy first and read it:
+
+```bash
+terraform -chdir=app/infra plan -destroy -out=cleanup.tfplan
+terraform -chdir=app/infra show -no-color cleanup.tfplan
+terraform -chdir=app/infra apply cleanup.tfplan
+```
+
+**This deletes the volume `meeting-pulse-poll-data` and every vote in it.** There is no backup. The image is kept (`keep_locally`). Do not use `docker system prune`, and do not delete the Terraform state first, or Terraform loses track of the container. These three commands were run once in the recorded session. The plan showed 3 to destroy, the apply removed the container and the volume (and the one vote that was in it), the image stayed in Docker's cache, and `terraform state list` was empty afterwards. See [infra/evidence/destroy-log.txt](infra/evidence/destroy-log.txt).
+
+### What this does not do
+
+- No restart policy: the container stays stopped if Docker restarts.
+- No `wait`: an apply does not fail if the healthcheck fails. Check `docker ps`.
+- No dedicated Docker network, and the container runs as the image's default user.
+- No backup, and nothing that limits how large the volume can grow.
+- Votes surviving a container restart or replacement, and a vote through the container, were not tested in the recorded run.
+- The poll is reachable only from this computer. Attendees' own devices cannot open it. Reaching them would mean leaving `127.0.0.1`, which the workshop rules do not allow without a decision, and the poll has no sign-in.
 
 ## How the page is wired to the server
 
@@ -132,6 +210,7 @@ A vote body must be JSON with the header `Content-Type: application/json`, and a
 
 - Votes live in one SQLite file, by default `app/data/pulse.db`. It is created on first start and is ignored by git.
 - Votes survive restarts.
+- **In Docker**, the votes are not in `app/data/pulse.db`. They live in the named volume `meeting-pulse-poll-data`, mounted at `/data`, and a container started this way begins with an empty poll. `terraform destroy` deletes that volume and the votes with it.
 - **Reset the poll:** stop the server, delete the file, start again.
 
   ```bash
@@ -174,7 +253,9 @@ The 21 tests start the server on a free port with a temporary database, so they 
 | `server.py` | The server: page, API and SQLite storage |
 | `static/index.html` | The poll page |
 | `test_server.py` | The 21 tests |
-| `infra/main.tf.reference` | Reference Terraform for running the poll in a local Docker container, as a dry-run plan only. It is ignored by Terraform until you rename it, so it never runs by accident. See `terraform-mcp-flow.md`, step 5. |
+| `infra/main.tf` | Terraform that runs the poll in a local Docker container. It was planned, applied and destroyed once (see "Run it in a local Docker container"). |
+| `infra/main.tf.reference` | The earlier reference solution for the same job. Terraform ignores it because of its extension, so it never runs by accident. Never keep it as a `.tf` file next to `main.tf`: the resources would be declared twice. See `terraform-mcp-flow.md`, step 5. |
+| `infra/evidence/` | Outputs of the recorded Docker run and its cleanup: `run-log.txt`, `plan.txt`, `mcp-lookups.md` and `destroy-log.txt`. State, binary plans and plan JSON are deliberately not kept here. |
 | `infra/.terraform.lock.hcl` | The provider lock file, kept on purpose so everyone gets the same provider build |
 | `terraform-mcp-flow.md` | Application first, then Terraform with MCP: brief, architecture, IaC approach |
 | `.gitignore` | Keeps the database file and Python cache out of git |

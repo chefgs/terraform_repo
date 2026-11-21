@@ -2,7 +2,7 @@
 
 The infrastructure you need depends on the application you are deploying. So the first prompt to an AI tool must describe the application, and the architecture is drafted and approved by a human before any Terraform is written.
 
-This document uses the Meeting Session Pulse poll in this folder as the example. It takes you from the application, to an architecture, to Terraform written with MCP lookups, and it stops at a dry-run plan. It includes a worked example with real tool output. **Nothing here is ever applied, so no infrastructure is created for this app.** The static lab (`infra/`, `site/`, the README and the slides) is unchanged and separate.
+This document uses the Meeting Session Pulse poll in this folder as the example. It takes you from the application, to an architecture, to Terraform written with MCP lookups, and it stops at a dry-run plan. It includes a worked example with real tool output. **The flow itself stops at a dry-run plan, and steps 2 to 5 of the worked example create nothing. A later run on the same day did one real apply and then a destroy, each at the owner's explicit instruction. They are recorded in "Step 6: the apply run", with the output files in `infra/evidence/`.** The static lab (`infra/`, `site/`, the README and the slides) is unchanged and separate.
 
 ## Skim path
 
@@ -234,17 +234,17 @@ Why it looks like this:
 
 Result for the poll: see "Worked example", step 5.
 
-## 6. After the plan (not done here)
+## 6. After the plan
 
 1. Stop. This flow does not apply or destroy anything.
-2. An apply, if anyone ever wants one, is a separate human decision on cost and risk. Running an apply is the approval, so you run it, not the agent. It would also be the first time the image is pulled and the container started.
+2. An apply, if anyone ever wants one, is a separate human decision on cost and risk. Running an apply is the approval, so you run it, not the agent. It is also the first time the image is pulled and the container started. One apply, and a destroy afterwards, were run in a later session, by the assistant at the owner's explicit instruction; see "Step 6: the apply run" in the worked example, and the commands in [README.md](README.md#run-it-in-a-local-docker-container-terraform).
 3. Several independent modules and several agents: see `docs/agentic-iac-development.md`.
 
 ## Worked example
 
 This is what steps 2 to 5 produced for the poll, so you can compare it with your own run. It was run on 2026-11-21 in one Claude Code session by the assistant, using the brief above and this session's Terraform MCP tools. Another run may word things differently, and the tool output is only as current as the registry on that day.
 
-**This is not a human-reviewed run.** The assistant drafted the architecture and then ran steps 4 and 5 itself, to capture real tool calls and a real plan. The rule in this document, no step 4 or 5 before step 3 is approved, was broken on purpose for the example. Nothing was applied: Terraform was written and a plan was made, and no container, volume or image was created.
+**This is not a human-reviewed run.** The assistant drafted the architecture and then ran steps 4 and 5 itself, to capture real tool calls and a real plan. The rule in this document, no step 4 or 5 before step 3 is approved, was broken on purpose for the example. Nothing was applied in this run: Terraform was written and a plan was made, and no container, volume or image was created. The apply that came later is step 6.
 
 ### Step 2: the architecture draft
 
@@ -348,7 +348,7 @@ What the lookups changed in the plan for the poll:
 
 Run from the workshop folder with `DOCKER_HOST` set from the active Docker context, which was Docker Desktop's local unix socket (README step 2). Steps 2 to 4 ran before `PULSE_HOST` existed in `server.py`, which is why risk 1 and decision 1 appear there. The one app change, before this step, was `PULSE_HOST` (default unchanged, so the poll still listens on `127.0.0.1`), and a new test pins that default.
 
-**Written:** `app/infra/main.tf`, then saved as `app/infra/main.tf.reference` so the prompt writes a fresh `main.tf` for the next person. `init` created the provider lock file `app/infra/.terraform.lock.hcl`, which is kept on purpose. The plan files and `.terraform/` were deleted afterwards.
+**Written:** `app/infra/main.tf`, then saved as `app/infra/main.tf.reference` so the prompt writes a fresh `main.tf` for the next person. `init` created the provider lock file `app/infra/.terraform.lock.hcl`, which is kept on purpose. The plan files and `.terraform/` were deleted afterwards. (A `main.tf` exists next to the reference again: the later run in step 6 wrote and applied one.)
 
 | Command | Result |
 |---|---|
@@ -389,6 +389,72 @@ Nothing is replaced or deleted. The container depends on the image through `imag
 - The healthcheck passes. It was never executed.
 - Alpine's SQLite behaves like the host's, since only the host's SQLite 3.54.1 was tested.
 
+### Step 6: the apply run (a later run, 2026-11-21)
+
+One real apply of `app/infra/main.tf`, the checks after it, and then a destroy. Output files are in [infra/evidence/](infra/evidence/README.md): `run-log.txt`, `plan.txt`, `mcp-lookups.md` and `destroy-log.txt`.
+
+**How this run differed from the dry-run example above. Read this before comparing the two:**
+
+- **The gates.** The owner supplied the brief and the architecture as approved, then asked for the registry lookups, then for the code, then for `init` and `plan`, `validate`, `plan.json`, and finally the apply. Each was a separate instruction, and the assistant stopped after each one.
+- **The apply and the destroy were run by the assistant**, at the owner's explicit instruction. This document's default is that the human runs it.
+- **The assistant read `main.tf.reference` before writing its own `main.tf`**, against the rule in step 5. So this `main.tf` is not an independent generation, and its agreement with the reference proves nothing.
+- **Defaults the assistant chose, because the owner had not answered:** provider 4.6.0, a named volume, no network, no restart policy, no `wait`, host port 8000, and a pulled `python:3.15-alpine` image.
+- **Order:** `validate` ran after `plan`. `plan` evaluates the configuration too.
+
+**Before the apply:** the Docker endpoint was checked and was Docker Desktop's local unix socket. `DOCKER_HOST` was set inline to it. The engine answered, host port 8000 was free, and no `meeting-pulse-poll` container or volume existed. These pre-apply results were observed in the session and were not saved to a file, so `infra/evidence/` does not back them.
+
+| Command | Result |
+|---|---|
+| `terraform -chdir=app/infra fmt -check -diff` | Exit 0, nothing to change. |
+| `terraform -chdir=app/infra init` | Installed `kreuzwerker/docker` 4.6.0 from the existing lock file. The lock file did not change. |
+| `terraform -chdir=app/infra plan -out=poll.tfplan` | "Plan: 3 to add, 0 to change, 0 to destroy." Same three creations as step 5. |
+| `terraform -chdir=app/infra validate` | "Success! The configuration is valid." |
+| `terraform -chdir=app/infra show -json poll.tfplan` | Written to `plan.json`: three creates and one output. Git-ignored. |
+| `terraform -chdir=app/infra apply poll.tfplan` | Image created in 6s, volume in 0s, container in 0s. "Apply complete! Resources: 3 added, 0 changed, 0 destroyed." No `-auto-approve`: the saved plan that was reviewed was applied. |
+
+**Checked after the apply (read-only; the assistant cast no vote):**
+
+| Check | Result |
+|---|---|
+| Container state | `running`, health `healthy` |
+| `docker port meeting-pulse-poll` | `8000/tcp -> 127.0.0.1:8000` |
+| Host listener on port 8000 | `127.0.0.1:8000` only, owned by Docker Desktop |
+| Container log | Listening on `0.0.0.0:8000` inside the container, database `/data/pulse.db` |
+| `GET /api/health` | HTTP 200 |
+| `GET /api/poll` | HTTP 200, four options, total 0 |
+| `terraform plan -detailed-exitcode` | Exit 0, "No changes." |
+
+**What this resolved from the "cannot prove" lists above:**
+
+- The image pulls: `python:3.15-alpine` was pulled in 6s.
+- `python3` is in the image, and the healthcheck runs and passes.
+- The app starts in the container and answers through the published port.
+- The bind finding: `0.0.0.0` inside the container with a `127.0.0.1`-only published port works. The host shows only `127.0.0.1`.
+- The container user can write the database: inferred, not inspected. `server.py` creates its table at start and exits if it cannot, the container is running, and `/api/poll` returns counts. No vote was inserted.
+- The configuration converges: a second plan showed no changes.
+
+**Still not verified:**
+
+- Votes persisting across a container restart or replacement, and a vote cast through the container (`POST /api/votes`).
+- The poll page in a browser, and access from another device. The poll is reachable only from this computer.
+- The SQLite version in the Alpine image.
+- The brief's open questions: repeated votes, who sees the results, retention and backup.
+
+The owner reported the poll working after the apply. What they exercised was not recorded.
+
+**The destroy (afterwards, at the owner's explicit instruction):** the assistant planned the destroy first, checked with a script that it targeted exactly `docker_container.api`, `docker_image.api` and `docker_volume.data` and nothing else, then applied the saved plan (`cleanup.tfplan`) without `-auto-approve`. Output: `infra/evidence/destroy-log.txt`.
+
+| Command | Result |
+|---|---|
+| `terraform -chdir=app/infra plan -destroy -out=cleanup.tfplan` | "Plan: 0 to add, 0 to change, 3 to destroy." The `application_url` output is removed too. |
+| `terraform -chdir=app/infra apply cleanup.tfplan` | Container destroyed in 0s, image in 0s, volume in 2s. "Apply complete! Resources: 0 added, 0 changed, 3 destroyed." |
+
+Just before it, the poll held **1 vote** (`GET /api/poll`). It was deleted with the volume. Who cast it was not checked.
+
+**Checked after the destroy (read-only):** no `meeting-pulse-poll` container, no `meeting-pulse-poll-data` volume, an empty `terraform state list`, and nothing listening on port 8000. The image `python:3.15-alpine` is still in Docker's cache, because of `keep_locally = true`. No `meeting-pulse-web` container was listed, so the static lab was not involved.
+
+**State now:** nothing from this poll is running, and Terraform's state lists no resources. Local, git-ignored files from the run may remain in `app/infra/` (`.terraform/`, the state files, `poll.tfplan`, `cleanup.tfplan` and `plan.json`). With no resources in state, a plan has nothing to destroy, so the generation exercise can be done in this folder after moving `main.tf` aside.
+
 ## Verification status
 
 **Run:**
@@ -402,13 +468,14 @@ Nothing is replaced or deleted. The container depends on the image through `imag
 - `PULSE_HOST`: the default listens on 127.0.0.1 only (a test and a check with `lsof`), an explicit `PULSE_HOST=127.0.0.1` works, and a bad host name shows a clear message. `0.0.0.0` was not tried on this computer, to avoid opening the poll to the network.
 - `init`, `fmt`, `validate` and a saved `plan` for the poll's Terraform, with Terraform 1.17.2 and `kreuzwerker/docker` 4.6.0 against Docker Desktop's local socket, with the plan's claims read from `plan.json` and Docker's state compared before and after.
 - Steps 2, 4 and 5 of this document, run once by the assistant, as the worked example above.
+- Step 6, in a later run: the four registry lookups again (nine calls in all, including `get_latest_provider_version`), `init`, `plan`, `validate`, an `apply` of the saved plan, and read-only checks of the running poll (container health, the published port, the host listener, `GET /api/health` and `GET /api/poll`, and a no-change plan). Then a destroy: `plan -destroy`, an `apply` of the saved destroy plan, and read-only checks that everything was removed. Outputs are in `infra/evidence/`.
 
 **Not run:**
 
 - Step 3 as a real human decision. The review gate was not approved by anyone.
 - The prompts in a separate, fresh Claude Code session, and how different runs or attendees' runs differ.
-- An apply, or any run of the poll in a container. No image was pulled and no volume or container was created. So the app inside Docker (the published port, the volume, the healthcheck) and the Python and SQLite versions in the image are untested.
-- The container finding (a 127.0.0.1 bind is not reachable through a published port): standard Docker behaviour, but nothing was containerised here.
+- In the dry-run example (steps 2 to 5), nothing was applied. The later apply (step 6) did run the poll in a container. Still untested there: votes persisting across a container restart or replacement, a vote cast through the container, the SQLite version in the image, and access from another device. The destroy was run, so cleanup is no longer in this list.
+- The container finding in its failing form (a 127.0.0.1 bind is not reachable through a published port). It was not tried. Step 6 showed only that `0.0.0.0` inside the container with a `127.0.0.1` publish works.
 - The poll page in a real browser (layout, dark mode, clicking).
 - Python versions other than 3.15.2.
 - GitHub Copilot and Codex. The MCP setup above is the Claude Code one.

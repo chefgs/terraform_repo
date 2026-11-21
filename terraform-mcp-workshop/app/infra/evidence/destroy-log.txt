@@ -1,0 +1,203 @@
+# Destroy log: plan -destroy, apply of the saved destroy plan, and read-only checks (2026-11-21)
+#
+# Run by the assistant at the owner's explicit instruction ("run terraform destroy"), in the same session as run-log.txt.
+# The destroy was planned first and applied from the saved plan (cleanup.tfplan). Terraform was not run with -auto-approve.
+# Sanitised: the workshop folder is shown as <workshop>, the home folder as <home>, and the local Docker socket path is removed.
+# Not included on purpose: terraform.tfstate, cleanup.tfplan and the plan JSON (see evidence/README.md).
+#
+# This log is NOT exhaustive. Also run in the session and not saved to any file:
+#   - terraform show -json cleanup.tfplan, and a script that checked the plan. Its printed result was: exactly
+#     docker_container.api, docker_image.api and docker_volume.data, all "delete". It is re-run at the end of this file.
+#   - git status after the destroy (only the two modified docs, the untracked main.tf and evidence/).
+# One vote was in the poll and was deleted with the volume (see the GET /api/poll line below). Who cast it was not checked.
+# --------------------------------------------------------------------------------------------------
+
+# 2026-11-21 20:37:50 IST  destroy of app/infra (DOCKER_HOST inline, local socket)
+$ endpoint check
+unix://<home>/.docker/run/docker.sock
+$ lab objects before
+container meeting-pulse-poll Up 14 minutes (healthy)
+volume meeting-pulse-poll-data
+$ votes about to be deleted (GET /api/poll)
+{"question": "How useful was this session?", "options": [{"id": "very-useful", "label": "Very useful", "votes": 1}, {"id": "useful", "label": "Useful", "votes": 0}, {"id": "neutral", "label": "Neutral", "votes": 0}, {"id": "not-useful", "label": "Not useful", "votes": 0}], "total": 1}
+$ terraform state list
+docker_container.api
+docker_image.api
+docker_volume.data
+
+$ terraform -chdir=app/infra plan -destroy -out=cleanup.tfplan
+docker_image.api: Refreshing state... [id=sha256:0f9552bb28711333da16915ec146f5e6bb44a7fdac9ced15dc17c2e0206346ddpython:3.15-alpine]
+docker_volume.data: Refreshing state... [id=meeting-pulse-poll-data]
+docker_container.api: Refreshing state... [id=da7aece98126dd8a1fd1ed0861fc097777d0fab97636c515a8818eead163b8bc]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # docker_container.api will be destroyed
+  - resource "docker_container" "api" {
+      - attach                                      = false -> null
+      - command                                     = [
+          - "python3",
+          - "/app/server.py",
+        ] -> null
+      - container_read_refresh_timeout_milliseconds = 15000 -> null
+      - cpu_shares                                  = 0 -> null
+      - device_cgroup_rules                         = [] -> null
+      - dns                                         = [] -> null
+      - dns_opts                                    = [] -> null
+      - dns_search                                  = [] -> null
+      - entrypoint                                  = [] -> null
+      - env                                         = [
+          - "PULSE_DB=/data/pulse.db",
+          - "PULSE_HOST=0.0.0.0",
+          - "PULSE_PORT=8000",
+        ] -> null
+      - group_add                                   = [] -> null
+      - hostname                                    = "da7aece98126" -> null
+      - id                                          = "da7aece98126dd8a1fd1ed0861fc097777d0fab97636c515a8818eead163b8bc" -> null
+      - image                                       = "sha256:0f9552bb28711333da16915ec146f5e6bb44a7fdac9ced15dc17c2e0206346dd" -> null
+      - init                                        = false -> null
+      - ipc_mode                                    = "private" -> null
+      - log_driver                                  = "local" -> null
+      - log_opts                                    = {} -> null
+      - logs                                        = false -> null
+      - max_retry_count                             = 0 -> null
+      - memory                                      = 0 -> null
+      - memory_reservation                          = 0 -> null
+      - memory_swap                                 = 0 -> null
+      - must_run                                    = true -> null
+      - name                                        = "meeting-pulse-poll" -> null
+      - network_data                                = [
+          - {
+              - gateway                   = "172.17.0.1"
+              - global_ipv6_prefix_length = 0
+              - ip_address                = "172.17.0.4"
+              - ip_prefix_length          = 16
+              - mac_address               = "ae:71:c2:55:d8:0d"
+              - network_name              = "bridge"
+                # (2 unchanged attributes hidden)
+            },
+        ] -> null
+      - network_mode                                = "bridge" -> null
+      - platform                                    = "linux" -> null
+      - privileged                                  = false -> null
+      - publish_all_ports                           = false -> null
+      - read_only                                   = false -> null
+      - remove_volumes                              = true -> null
+      - restart                                     = "no" -> null
+      - rm                                          = false -> null
+      - runtime                                     = "runc" -> null
+      - security_opts                               = [] -> null
+      - shm_size                                    = 64 -> null
+      - start                                       = true -> null
+      - stdin_open                                  = false -> null
+      - stop_timeout                                = 0 -> null
+      - storage_opts                                = {} -> null
+      - sysctls                                     = {} -> null
+      - tmpfs                                       = {} -> null
+      - tty                                         = false -> null
+      - wait                                        = false -> null
+      - wait_timeout                                = 60 -> null
+      - working_dir                                 = "/" -> null
+        # (6 unchanged attributes hidden)
+
+      - healthcheck {
+          - interval       = "10s" -> null
+          - retries        = 3 -> null
+          - start_interval = "0s" -> null
+          - start_period   = "5s" -> null
+          - test           = [
+              - "CMD",
+              - "python3",
+              - "-c",
+              - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=3)",
+            ] -> null
+          - timeout        = "5s" -> null
+        }
+
+      - ports {
+          - external = 8000 -> null
+          - internal = 8000 -> null
+          - ip       = "127.0.0.1" -> null
+          - protocol = "tcp" -> null
+        }
+
+      - volumes {
+          - container_path  = "/app/server.py" -> null
+          - host_path       = "<workshop>/app/server.py" -> null
+          - read_only       = true -> null
+            # (3 unchanged attributes hidden)
+        }
+      - volumes {
+          - container_path  = "/app/static" -> null
+          - host_path       = "<workshop>/app/static" -> null
+          - read_only       = true -> null
+            # (3 unchanged attributes hidden)
+        }
+      - volumes {
+          - container_path  = "/data" -> null
+          - read_only       = false -> null
+          - volume_name     = "meeting-pulse-poll-data" -> null
+            # (3 unchanged attributes hidden)
+        }
+    }
+
+  # docker_image.api will be destroyed
+  - resource "docker_image" "api" {
+      - id           = "sha256:0f9552bb28711333da16915ec146f5e6bb44a7fdac9ced15dc17c2e0206346ddpython:3.15-alpine" -> null
+      - image_id     = "sha256:0f9552bb28711333da16915ec146f5e6bb44a7fdac9ced15dc17c2e0206346dd" -> null
+      - keep_locally = true -> null
+      - name         = "python:3.15-alpine" -> null
+      - repo_digest  = "python@sha256:0f9552bb28711333da16915ec146f5e6bb44a7fdac9ced15dc17c2e0206346dd" -> null
+    }
+
+  # docker_volume.data will be destroyed
+  - resource "docker_volume" "data" {
+      - driver      = "local" -> null
+      - driver_opts = {} -> null
+      - id          = "meeting-pulse-poll-data" -> null
+      - mountpoint  = "/var/lib/docker/volumes/meeting-pulse-poll-data/_data" -> null
+      - name        = "meeting-pulse-poll-data" -> null
+    }
+
+Plan: 0 to add, 0 to change, 3 to destroy.
+
+Changes to Outputs:
+  - application_url = "http://127.0.0.1:8000" -> null
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: cleanup.tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "cleanup.tfplan"
+# plan -destroy exit: 0
+
+# 2026-11-21 20:37:59 IST
+$ terraform -chdir=app/infra apply cleanup.tfplan
+docker_container.api: Destroying... [id=da7aece98126dd8a1fd1ed0861fc097777d0fab97636c515a8818eead163b8bc]
+docker_container.api: Destruction complete after 0s
+docker_volume.data: Destroying... [id=meeting-pulse-poll-data]
+docker_image.api: Destroying... [id=sha256:0f9552bb28711333da16915ec146f5e6bb44a7fdac9ced15dc17c2e0206346ddpython:3.15-alpine]
+docker_image.api: Destruction complete after 0s
+docker_volume.data: Destruction complete after 2s
+
+Apply complete! Resources: 0 added, 0 changed, 3 destroyed.
+# apply (destroy) exit: 0
+
+$ verification (read-only)
+-- container (expect none)
+-- volume (expect none)
+-- image kept locally by keep_locally (expect python:3.15-alpine)
+python:3.15-alpine
+-- terraform state list (expect empty)
+-- port 8000 listener (expect none)
+-- static lab objects untouched?
+  (nothing listed = the static lab was not running)
+
+# 2026-11-21 20:39:09 IST  RE-RUN of the scope check, on the saved destroy-plan JSON (not the original printout)
+resource changes: [('docker_container.api', ['delete']), ('docker_image.api', ['delete']), ('docker_volume.data', ['delete'])]
+exactly the 3 lab resources, all delete: True

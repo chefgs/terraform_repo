@@ -1,0 +1,118 @@
+# Rendered plan: terraform -chdir=app/infra show -no-color poll.tfplan   (2026-11-21)
+# This is the plan that was applied. Sanitised: workshop folder shown as <workshop>.
+
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # docker_container.api will be created
+  + resource "docker_container" "api" {
+      + attach                                      = false
+      + bridge                                      = (known after apply)
+      + command                                     = [
+          + "python3",
+          + "/app/server.py",
+        ]
+      + container_logs                              = (known after apply)
+      + container_read_refresh_timeout_milliseconds = 15000
+      + entrypoint                                  = (known after apply)
+      + env                                         = [
+          + "PULSE_DB=/data/pulse.db",
+          + "PULSE_HOST=0.0.0.0",
+          + "PULSE_PORT=8000",
+        ]
+      + exit_code                                   = (known after apply)
+      + hostname                                    = (known after apply)
+      + id                                          = (known after apply)
+      + image                                       = (known after apply)
+      + init                                        = (known after apply)
+      + ipc_mode                                    = (known after apply)
+      + log_driver                                  = (known after apply)
+      + logs                                        = false
+      + memory_reservation                          = 0
+      + must_run                                    = true
+      + name                                        = "meeting-pulse-poll"
+      + network_data                                = (known after apply)
+      + network_mode                                = "bridge"
+      + platform                                    = (known after apply)
+      + read_only                                   = false
+      + remove_volumes                              = true
+      + restart                                     = "no"
+      + rm                                          = false
+      + runtime                                     = (known after apply)
+      + security_opts                               = (known after apply)
+      + shm_size                                    = (known after apply)
+      + start                                       = true
+      + stdin_open                                  = false
+      + stop_signal                                 = (known after apply)
+      + stop_timeout                                = (known after apply)
+      + tty                                         = false
+      + wait                                        = false
+      + wait_timeout                                = 60
+
+      + healthcheck {
+          + interval       = "10s"
+          + retries        = 3
+          + start_interval = "0s"
+          + start_period   = "5s"
+          + test           = [
+              + "CMD",
+              + "python3",
+              + "-c",
+              + "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=3)",
+            ]
+          + timeout        = "5s"
+        }
+
+      + labels (known after apply)
+
+      + ports {
+          + external = 8000
+          + internal = 8000
+          + ip       = "127.0.0.1"
+          + protocol = "tcp"
+        }
+
+      + volumes {
+          + container_path  = "/app/server.py"
+          + host_path       = "<workshop>/app/server.py"
+          + read_only       = true
+            # (3 unchanged attributes hidden)
+        }
+      + volumes {
+          + container_path  = "/app/static"
+          + host_path       = "<workshop>/app/static"
+          + read_only       = true
+            # (3 unchanged attributes hidden)
+        }
+      + volumes {
+          + container_path  = "/data"
+          + volume_name     = "meeting-pulse-poll-data"
+            # (3 unchanged attributes hidden)
+        }
+    }
+
+  # docker_image.api will be created
+  + resource "docker_image" "api" {
+      + id           = (known after apply)
+      + image_id     = (known after apply)
+      + keep_locally = true
+      + name         = "python:3.15-alpine"
+      + repo_digest  = (known after apply)
+    }
+
+  # docker_volume.data will be created
+  + resource "docker_volume" "data" {
+      + driver     = (known after apply)
+      + id         = (known after apply)
+      + mountpoint = (known after apply)
+      + name       = "meeting-pulse-poll-data"
+    }
+
+Plan: 3 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + application_url = "http://127.0.0.1:8000"
