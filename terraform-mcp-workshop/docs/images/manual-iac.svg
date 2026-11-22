@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 240" width="1280" height="240" role="img" aria-label="Manual IaC development: the engineer reads provider docs, writes HCL by hand and runs terraform validate. An error sends the engineer back to the docs. When validate passes, terraform plan runs, the engineer reviews the plan, then terraform apply." font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title>Manual IaC development</title>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#334155"/></marker><marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#B45309"/></marker><marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#15803D"/></marker></defs>
+<rect x="1" y="1" width="1278" height="238" rx="14" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+<rect x="37.0" y="56" width="150" height="84" rx="8" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<text x="112.0" y="103.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Engineer</text>
+<rect x="213.0" y="56" width="150" height="84" rx="8" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<text x="288.0" y="93.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Read provider</text>
+<text x="288.0" y="113.0" font-size="14" fill="#334155" text-anchor="middle">docs</text>
+<rect x="389.0" y="56" width="150" height="84" rx="8" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<text x="464.0" y="93.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Write HCL</text>
+<text x="464.0" y="113.0" font-size="14" fill="#334155" text-anchor="middle">by hand</text>
+<rect x="565.0" y="56" width="150" height="84" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+<text x="640.0" y="93.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">terraform</text>
+<text x="640.0" y="113.0" font-size="14" fill="#334155" text-anchor="middle">validate</text>
+<rect x="741.0" y="56" width="150" height="84" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+<text x="816.0" y="93.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">terraform</text>
+<text x="816.0" y="113.0" font-size="14" fill="#334155" text-anchor="middle">plan</text>
+<rect x="917.0" y="56" width="150" height="84" rx="8" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<text x="992.0" y="93.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">Engineer</text>
+<text x="992.0" y="113.0" font-size="14" fill="#334155" text-anchor="middle">reviews plan</text>
+<rect x="1093.0" y="56" width="150" height="84" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+<text x="1168.0" y="93.0" font-size="17" font-weight="700" fill="#0F172A" text-anchor="middle">terraform</text>
+<text x="1168.0" y="113.0" font-size="14" fill="#334155" text-anchor="middle">apply</text>
+<path d="M188.0 98.0 L212.0 98.0" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" stroke-linejoin="round"/>
+<path d="M364.0 98.0 L388.0 98.0" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" stroke-linejoin="round"/>
+<path d="M540.0 98.0 L564.0 98.0" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" stroke-linejoin="round"/>
+<path d="M716.0 98.0 L740.0 98.0" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" stroke-linejoin="round"/>
+<path d="M892.0 98.0 L916.0 98.0" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" stroke-linejoin="round"/>
+<path d="M1068.0 98.0 L1092.0 98.0" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arr)" stroke-linejoin="round"/>
+<rect x="715.7" y="77.0" width="24.6" height="20" fill="#F8FAFC"/>
+<text x="728.0" y="90.0" font-size="13" fill="#334155" text-anchor="middle">ok</text>
+<path d="M640.0 141 L640.0 178 L288.0 178 L288.0 141" fill="none" stroke="#B45309" stroke-width="2" marker-end="url(#arrA)" stroke-linejoin="round"/>
+<rect x="439.4" y="169.0" width="49.2" height="21" fill="#F8FAFC"/>
+<text x="464.0" y="183" font-size="14" fill="#B45309" text-anchor="middle" font-weight="700">error</text>
+<rect x="24" y="201" width="18" height="18" rx="4" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+<text x="50" y="215" font-size="14" fill="#334155">Engineer</text>
+<rect x="144" y="201" width="18" height="18" rx="4" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="2"/>
+<text x="170" y="215" font-size="14" fill="#334155">AI tool or MCP</text>
+<rect x="312" y="201" width="18" height="18" rx="4" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+<text x="338" y="215" font-size="14" fill="#334155">Terraform CLI or registry</text>
+</svg>

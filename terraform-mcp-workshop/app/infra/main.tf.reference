@@ -1,0 +1,83 @@
+terraform {
+  required_version = ">= 1.6.0, < 2.0.0"
+  required_providers {
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "4.6.0"
+    }
+  }
+}
+
+provider "docker" {}
+
+variable "host_port" {
+  type    = number
+  default = 8000
+  validation {
+    condition     = var.host_port >= 1024 && var.host_port <= 65535 && floor(var.host_port) == var.host_port
+    error_message = "Use an integer port between 1024 and 65535."
+  }
+}
+
+variable "python_image" {
+  type    = string
+  default = "python:3.15-alpine"
+}
+
+resource "docker_image" "api" {
+  name         = var.python_image
+  keep_locally = true
+}
+
+resource "docker_volume" "data" {
+  name = "meeting-pulse-poll-data"
+}
+
+resource "docker_container" "api" {
+  name    = "meeting-pulse-poll"
+  image   = docker_image.api.image_id
+  command = ["python3", "/app/server.py"]
+
+  # PULSE_HOST=0.0.0.0 is only safe because the published port below is limited
+  # to 127.0.0.1. The votes are written to the named volume mounted at /data.
+  env = [
+    "PULSE_HOST=0.0.0.0",
+    "PULSE_PORT=8000",
+    "PULSE_DB=/data/pulse.db",
+  ]
+
+  ports {
+    internal = 8000
+    external = var.host_port
+    ip       = "127.0.0.1"
+  }
+
+  volumes {
+    host_path      = abspath("${path.module}/../server.py")
+    container_path = "/app/server.py"
+    read_only      = true
+  }
+
+  volumes {
+    host_path      = abspath("${path.module}/../static")
+    container_path = "/app/static"
+    read_only      = true
+  }
+
+  volumes {
+    volume_name    = docker_volume.data.name
+    container_path = "/data"
+  }
+
+  healthcheck {
+    test         = ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=3)"]
+    interval     = "10s"
+    timeout      = "5s"
+    retries      = 3
+    start_period = "5s"
+  }
+}
+
+output "application_url" {
+  value = "http://127.0.0.1:${var.host_port}"
+}

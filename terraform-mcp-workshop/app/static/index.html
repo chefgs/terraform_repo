@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meeting Session Pulse</title>
+<style>
+  :root { --bg: #ffffff; --fg: #1b1f24; --muted: #5b6470; --line: #d0d7de; --accent: #1f6feb; --bad: #b42318; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0f1419; --fg: #e6edf3; --muted: #9aa4b0; --line: #30363d; --accent: #58a6ff; --bad: #ff8a80; }
+  }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, sans-serif; }
+  main { max-width: 34rem; margin: 0 auto; padding: 2rem 1rem; }
+  small { color: var(--muted); }
+  fieldset { border: 0; padding: 0; margin: 1rem 0; }
+  label { display: block; padding: .5rem 0; }
+  button { font: inherit; padding: .5rem 1.25rem; border: 0; border-radius: 6px; background: var(--accent); color: #fff; cursor: pointer; }
+  button:disabled { opacity: .6; cursor: default; }
+  .bar { height: .5rem; background: var(--accent); border-radius: 4px; }
+  .row { margin: .75rem 0; }
+  #message { min-height: 1.5rem; margin-top: 1rem; }
+  #message.bad { color: var(--bad); }
+</style>
+</head>
+<body>
+<main>
+  <small>Terraform MCP workshop &bull; Application</small>
+  <h1>Meeting Session Pulse</h1>
+  <form id="vote-form">
+    <fieldset>
+      <legend id="question">Loading the poll...</legend>
+      <div id="choices"></div>
+    </fieldset>
+    <button type="submit" id="submit" disabled>Vote</button>
+  </form>
+  <p id="message" role="status" aria-live="polite"></p>
+  <section aria-label="Results"><h2>Results</h2><div id="results"></div></section>
+</main>
+<script>
+"use strict";
+// How this page is wired to server.py (same server that served this page, so the paths are relative):
+//   load()          -> GET  /api/poll   -> render(poll)   on page load, and after a vote if the reply has no poll
+//   submit handler  -> POST /api/votes  -> render(poll)   when the Vote button is pressed
+// call() is the only place that uses fetch(). It turns every failure into a message for #message.
+const $ =(id) => document.getElementById(id);
+const OUR_SIDE = "This is on our side, not yours. Try again in a moment, and tell the workshop host if it keeps happening.";
+const NO_SERVER = "Could not reach the poll server. Check that python3 app/server.py is still running in your terminal, then try again.";
+const UNREADABLE = "The server sent a reply this page cannot read. " + OUR_SIDE;
+
+function say(text, bad) {
+  $("message").textContent = text;
+  $("message").className = bad ? "bad" : "";
+}
+
+// Returns { data } on success or { message } on any failure, never throws.
+async function call(path, options) {
+  let res;
+  try {
+    res = await fetch(path, options);
+  } catch (err) {
+    return { message: NO_SERVER };
+  }
+  let data;
+  try {
+    data = JSON.parse(await res.text());
+  } catch (err) {
+    return { message: UNREADABLE };
+  }
+  if (!res.ok) {
+    const fields = Object.values(data.errors || {}).join(" ");
+    return { message: [data.message || UNREADABLE, fields].filter(Boolean).join(" ") };
+  }
+  return { data };
+}
+
+function render(poll) {
+  $("question").textContent = poll.question;
+  const choices = $("choices");
+  if (!choices.children.length) {
+    for (const opt of poll.options) {
+      const label = document.createElement("label");
+      const input = document.createElement("input");
+      input.type = "radio"; input.name = "option"; input.value = opt.id;
+      label.append(input, " " + opt.label);
+      choices.append(label);
+    }
+    $("submit").disabled = false;
+  }
+  const results = $("results");
+  results.replaceChildren();
+  for (const opt of poll.options) {
+    const row = document.createElement("div");
+    row.className = "row";
+    const text = document.createElement("div");
+    text.textContent = `${opt.label}: ${opt.votes}`;
+    const bar = document.createElement("div");
+    bar.className = "bar";
+    bar.style.width = poll.total ? `${Math.round((opt.votes / poll.total) * 100)}%` : "0%";
+    row.append(text, bar);
+    results.append(row);
+  }
+}
+
+async function load() {
+  const { data, message } = await call("/api/poll");
+  if (data) { render(data); return true; }
+  $("question").textContent = "The poll could not be loaded.";
+  say(message, true);
+  return false;
+}
+
+$("vote-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const picked = document.querySelector('input[name="option"]:checked');
+  if (!picked) { say("Choose an option before voting.", true); return; }
+  $("submit").disabled = true;
+  const { data, message } = await call("/api/votes", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ option: picked.value }),
+  });
+  $("submit").disabled = false;
+  if (!data) { say(message, true); return; }
+  say(data.message, false);
+  if (data.poll) render(data.poll); else await load();
+});
+
+load();
+</script>
+</body>
+</html>
