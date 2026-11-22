@@ -52,8 +52,7 @@ resource "docker_container" "api" {
   command = ["python3", "/app/server.py"]
 
   # server.py reads these. PULSE_HOST=0.0.0.0 is for inside the container only; the
-  # host-side exposure is limited by `ports.ip` below. That this combination works is
-  # what app/README.md says. It has not been tested here.
+  # host-side exposure is limited by `ports.ip` below. A recorded run of this exact setup is in app/infra/evidence/.
   env = [
     "PULSE_HOST=0.0.0.0",
     "PULSE_PORT=8000",
